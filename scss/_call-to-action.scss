@@ -1,0 +1,17 @@
+.call-to-action {
+  position: relative;
+  background-color: $first-color;
+  background: url('../img/test-bg4.jpg') no-repeat center center;
+  @include background-cover;
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+  .overlay {
+    position: absolute;
+    background-color: $first-color;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0.8;
+  }
+}

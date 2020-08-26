@@ -1,0 +1,30 @@
+.features-icons {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+  background: $text-color;
+  .features-icons-item {
+    max-width: 20rem;
+    .features-icons-icon {
+      height: 7rem;
+      i {
+        font-size: 4.5rem;
+      }
+      svg{
+        height: 5rem;
+        width: 5rem;
+        fill: $second-color;
+      }
+    }
+    &:hover {
+      .features-icons-icon {
+        i {
+          font-size: 5rem;
+        }
+        svg{
+          height: 5.5rem;
+          width: 5.5rem;
+        }
+      }
+    }
+  }
+}

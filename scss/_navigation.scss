@@ -1,0 +1,13 @@
+@import "./variables";
+
+.nav-custom{
+    background: $first-color;
+    color: $text-color;
+    a.navbar-brand{
+        color: $text-color;
+    }
+    a.btn {
+        color: $text-color;
+        background: $blue;
+    }
+}

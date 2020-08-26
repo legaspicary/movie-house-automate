@@ -1,0 +1,278 @@
+<!-- 
+  AUTHOR: Gwynn C.
+  CO-AUTHOR: Cary L.
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Condor WatchBox</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+  <!-- Custom styles for this template -->
+  <link href="./scss/landing-page.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar static-top nav-custom">
+    <div class="container">
+      <a class="navbar-brand" href="#">Condor WatchBox</a>
+      <a class="btn btn-primary" data-toggle="modal" data-target="#signin" href="#">Sign In</a>
+    </div>
+  </nav>
+
+  <div class="modal fade" id="signin">
+    <div class="modal-dialog modal-l">
+	    <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Login</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form class="needs-validation" action="dashboard.html">
+            <!-- Email  -->
+            <h6>Email</h6>
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <input type="text" class="form-control" id="email" placeholder="juandelacruz@example.com">
+              </div>
+            </div>
+            <!-- Password  -->
+            <h6>Password</h6>
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <input type="password" class="form-control" id="password" placeholder="juanpassword">
+              </div>
+            </div>
+            <p class="mt-4 float-left">Don't have an account yet? <a href="#">Click Here.</a></p>
+            <button type="submit" class="btn btn-primary mt-3 float-right btn-md">Sign in</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Masthead -->
+  <header class="masthead text-white text-center">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-9 mx-auto">
+          <h1 class="mb-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit suscipit enim ut!</h1>
+        </div>
+        <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+          <!-- <form>
+            <div class="form-row">
+              <div class="col-12 col-md-9 mb-2 mb-md-0">
+                <input type="email" class="form-control form-control-lg" placeholder="Enter your email...">
+              </div>
+              <div class="col-12 col-md-3">
+                <button type="submit" class="btn btn-block btn-lg btn-primary">Sign up!</button>
+              </div>
+            </div>
+          </form> -->
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Icons Grid -->
+  <section class="features-icons text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+            <div class="features-icons-icon d-flex">
+              <!-- <i class="icon-screen-desktop m-auto text-primary"></i> -->
+              <svg viewBox="0 0 16 16" class="bi bi-film m-auto" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M0 1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V1zm4 0h8v6H4V1zm8 8H4v6h8V9zM1 1h2v2H1V1zm2 3H1v2h2V4zM1 7h2v2H1V7zm2 3H1v2h2v-2zm-2 3h2v2H1v-2zM15 1h-2v2h2V1zm-2 3h2v2h-2V4zm2 3h-2v2h2V7zm-2 3h2v2h-2v-2zm2 3h-2v2h2v-2z"/>
+              </svg>
+            </div>
+            <h3>Updated Movies Daily</h3>
+            <p class="lead mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit!</p>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+            <div class="features-icons-icon d-flex">
+              <!-- <i class="icon-layers m-auto text-primary"></i> -->
+              <svg  viewBox="0 0 16 16" class="bi bi-bar-chart-line-fill m-auto" xmlns="http://www.w3.org/2000/svg">
+                <rect width="4" height="5" x="1" y="10" rx="1"/>
+                <rect width="4" height="9" x="6" y="6" rx="1"/>
+                <rect width="4" height="14" x="11" y="1" rx="1"/>
+                <path fill-rule="evenodd" d="M0 14.5a.5.5 0 0 1 .5-.5h15a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5z"/>
+              </svg>
+            </div>
+            <h3>Popular WatchBox</h3>
+            <p class="lead mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit!</p>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="features-icons-item mx-auto mb-0 mb-lg-3">
+            <div class="features-icons-icon d-flex">
+              <!-- <i class="icon-check m-auto text-primary"></i> -->
+              <svg  viewBox="0 0 16 16" class="bi bi-check2-circle m-auto" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L8 9.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                <path fill-rule="evenodd" d="M8 2.5A5.5 5.5 0 1 0 13.5 8a.5.5 0 0 1 1 0 6.5 6.5 0 1 1-3.25-5.63.5.5 0 1 1-.5.865A5.472 5.472 0 0 0 8 2.5z"/>
+              </svg>
+            </div>
+            <h3>Easy to Use</h3>
+            <p class="lead mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Image Showcases -->
+  <section class="showcase">
+    <div class="container-fluid p-0 overlay">
+      <div class="row no-gutters">
+        <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('img/1x-1-2-980x653.jpg');"></div>
+        <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+          <h2>Comfortable Seats</h2>
+          <p class="lead mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In mauris felis, porttitor eget sapien laoreet, eleifend accumsan mauris!</p>
+        </div>
+      </div>
+      <div class="row no-gutters">
+        <div class="col-lg-6 text-white showcase-img" style="background-image: url('img/2014-03-25-co3.jpg');"></div>
+        <div class="col-lg-6 my-auto showcase-text">
+          <h2>Always ready to serve</h2>
+          <p class="lead mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In mauris felis, porttitor eget sapien laoreet, eleifend accumsan mauris!</p>
+        </div>
+      </div>
+      <div class="row no-gutters">
+        <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('img/home-cinema-1.jpg');"></div>
+        <div class="col-lg-6 order-lg-1 my-auto showcase-text">
+          <h2>Variety of rooms to choose</h2>
+          <p class="lead mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In mauris felis, porttitor eget sapien laoreet, eleifend accumsan mauris!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials text-center">
+    <div class="container">
+      <h2 class="mb-5">Be one of our regular customers!</h2>
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+            <img class="img-fluid rounded-circle mb-3" src="img/testimonials-1.jpg" alt="">
+            <h5>Margaret E.</h5>
+            <p class="font-weight-light mb-0">"This is fantastic! Thanks so much guys!"</p>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+            <img class="img-fluid rounded-circle mb-3" src="img/testimonials-2.jpg" alt="">
+            <h5>Fred S.</h5>
+            <p class="font-weight-light mb-0">"Condor is amazing. I've been using it to create lots of memories."</p>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+            <img class="img-fluid rounded-circle mb-3" src="img/testimonials-3.jpg" alt="">
+            <h5>Sarah W.</h5>
+            <p class="font-weight-light mb-0">"Thanks so much for giving these free foods available to us!"</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="call-to-action text-white text-center">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-9 mx-auto">
+          <h2 class="mb-4">Watch movies with your friends now!</h2>
+        </div>
+        <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+          <form>
+            <div class="form-row">
+              <!-- <div class="col-12 col-md-9 mb-2 mb-md-0">
+                <input type="email" class="form-control form-control-lg" placeholder="Enter your email...">
+              </div> -->
+              <div class="col-12 col-md-3 mx-auto">
+                <button type="submit" class="btn btn-block btn-lg btn-primary">Sign up!</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
+          <ul class="list-inline mb-2">
+            <li class="list-inline-item">
+              <a href="#">About</a>
+            </li>
+            <li class="list-inline-item">&sdot;</li>
+            <li class="list-inline-item">
+              <a href="#">Contact</a>
+            </li>
+            <li class="list-inline-item">&sdot;</li>
+            <li class="list-inline-item">
+              <a href="#">Terms of Use</a>
+            </li>
+            <li class="list-inline-item">&sdot;</li>
+            <li class="list-inline-item">
+              <a href="#">Privacy Policy</a>
+            </li>
+          </ul>
+          <p class="text-muted small mb-4 mb-lg-0">&copy; Your Website 2020. All Rights Reserved.</p>
+        </div>
+        <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
+          <ul class="list-inline mb-0">
+            <li class="list-inline-item mr-3">
+              <a href="#">
+                <i class="fab fa-facebook fa-2x fa-fw"></i>
+              </a>
+            </li>
+            <li class="list-inline-item mr-3">
+              <a href="#">
+                <i class="fab fa-twitter-square fa-2x fa-fw"></i>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a href="#">
+                <i class="fab fa-instagram fa-2x fa-fw"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

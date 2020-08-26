@@ -1,0 +1,210 @@
+<!-- 
+  AUTHOR: Gwynn C.
+  CO-AUTHOR: Cary L.
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Condor WatchBox</title>
+
+  <!-- Script Files -->
+  <script src="./scripts/dashboard.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+  <!-- Custom styles for this template -->
+  <link href="./scss/landing-page.css" rel="stylesheet">
+
+
+  <script>
+    //IMPORTANT: renderTable function should be called after the page has loaded or the element will be null -C.LEGASPI
+    window.onload = function(){
+      renderTable();
+    }
+  </script>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    
+  <nav class="navbar static-top nav-custom">
+    <div class="container">
+      <a class="navbar-brand" href="landing-page.html">Condor WatchBox</a>
+      <!-- <a class="btn btn-primary" data-toggle="modal" data-target="#signin" href="#">Sign In</a> -->
+    </div>
+  </nav>
+
+  <div class="container w-100">
+      <div class="jumbotron">
+          <div class="card">
+            <div class="card-header">
+                <h4>Dashboard</h4>
+                <!-- TODO: Insert the add customer and add dvd for opening the registration modals -C.LEGASPI-->
+            </div>
+            <div class="card-body">
+            <h5 class="card-title">Customer Report Summary</h5>
+            <!-- TODO: Add on mouse hover listener so that the mouse pointer will turn into hand instead of text editing mode -C.LEGASPI-->
+            <table class="table table-striped table-dark" >
+                <thead>
+                  <tr>
+                    <!-- Note: Added data-colum and data-order here which are used for the filter/sort -C.LEGASPI -->
+                    <th scope="col" data-column="dateRegistered" data-order="desc" id="dateRegistered">Date Registered</th>
+                    <th scope="col" data-column="firstName" data-order="desc" id="firstName">Firstname</th>
+                    <th scope="col" data-column="lastName" data-order="desc" id="lastName">Lastname</th>
+                    <th scope="col" data-column="birthDate" data-order="desc" id="birthDate">Date of Birth</th>
+                    <th scope="col" data-column="city" data-order="desc" id="city">Address City</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody id="customerTable">
+                  <!-- EMPTY, to be rendered by the js file after fetching it from the server -C.LEGASPI-->
+                </tbody>
+             </table>
+            </div>
+
+            <div class="card-body">
+                <h5 class="card-title">DVD Report Summary</h5>
+                <table class="table table-striped table-dark">
+                    <thead>
+                      <tr>
+                        <th scope="col">Date Registered</th>
+                        <th scope="col">Genre</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Release Date</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">No. of Items</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <!-- TODO: Add data attributes to allow filter feature -C.LEGASPI-->
+                    <tbody>
+                        <tr>
+                            <td>August 25, 2020</td>
+                            <td>Romance</td>
+                            <td>Kaguya-sama Love is War!</td>
+                            <td>August 24, 2020</td>
+                            <td>0 Php</td>
+                            <td>1,042</td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-primary btn-sm mr-2 mb-2 w-auto">View</button>
+                                <button type="button" class="btn btn-success btn-sm mr-2 mb-2 w-auto">Update</button>
+                                <button type="button" class="btn btn-danger btn-sm mr-2 mb-2 w-auto">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>August 25, 2020</td>
+                            <td>Romance</td>
+                            <td>Kaguya-sama Love is War!</td>
+                            <td>August 24, 2020</td>
+                            <td>1 Php</td>
+                            <td>1,042</td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-primary btn-sm mr-2 mb-2 w-auto">View</button>
+                                <button type="button" class="btn btn-success btn-sm mr-2 mb-2 w-auto">Update</button>
+                                <button type="button" class="btn btn-danger btn-sm mr-2 mb-2 w-auto">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>August 25, 2020</td>
+                            <td>Romance</td>
+                            <td>Kaguya-sama Love is War!</td>
+                            <td>August 24, 2020</td>
+                            <td>2 Php</td>
+                            <td>1,042</td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-primary btn-sm mr-2 mb-2 w-auto">View</button>
+                                <button type="button" class="btn btn-success btn-sm mr-2 mb-2 w-auto">Update</button>
+                                <button type="button" class="btn btn-danger btn-sm mr-2 mb-2 w-auto">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>August 25, 2020</td>
+                            <td>Romance</td>
+                            <td>Kaguya-sama Love is War!</td>
+                            <td>August 24, 2020</td>
+                            <td>3 Php</td>
+                            <td>1,042</td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-primary btn-sm mr-2 mb-2 w-auto">View</button>
+                                <button type="button" class="btn btn-success btn-sm mr-2 mb-2 w-auto">Update</button>
+                                <button type="button" class="btn btn-danger btn-sm mr-2 mb-2 w-auto">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                 </table>
+                </div>
+        </div>
+      </div>
+  </div>
+    
+
+
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
+          <ul class="list-inline mb-2">
+            <li class="list-inline-item">
+              <a href="#">About</a>
+            </li>
+            <li class="list-inline-item">&sdot;</li>
+            <li class="list-inline-item">
+              <a href="#">Contact</a>
+            </li>
+            <li class="list-inline-item">&sdot;</li>
+            <li class="list-inline-item">
+              <a href="#">Terms of Use</a>
+            </li>
+            <li class="list-inline-item">&sdot;</li>
+            <li class="list-inline-item">
+              <a href="#">Privacy Policy</a>
+            </li>
+          </ul>
+          <p class="text-muted small mb-4 mb-lg-0">&copy; Your Website 2020. All Rights Reserved.</p>
+        </div>
+        <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
+          <ul class="list-inline mb-0">
+            <li class="list-inline-item mr-3">
+              <a href="#">
+                <i class="fab fa-facebook fa-2x fa-fw"></i>
+              </a>
+            </li>
+            <li class="list-inline-item mr-3">
+              <a href="#">
+                <i class="fab fa-twitter-square fa-2x fa-fw"></i>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a href="#">
+                <i class="fab fa-instagram fa-2x fa-fw"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+  
+</body>
+
+</html>

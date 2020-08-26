@@ -1,0 +1,27 @@
+header.masthead {
+  position: relative;
+  background: url('../img/test-bg3.jpg') no-repeat center center;
+  @include background-cover;
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+  .overlay {
+    position: absolute;
+    background-color: $first-color;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    opacity: .8;
+  }
+  h1 {
+    color: $text-color;
+    font-size: 2rem;
+  }
+  @media (min-width: 768px) {
+    padding-top: 12rem;
+    padding-bottom: 13rem;
+    h1 {
+      font-size: 3rem;
+    }
+  }
+}
