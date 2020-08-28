@@ -5,17 +5,6 @@
 
 'use strict'
 
-/***
-* To be replaced by fetching data from the server and parsing it as an array of JSON object 
-* Also sorts it by date registered in descending order -C.LEGASPI
-*/
-let customerArr = [
-    {'dateRegistered': 'August 1, 2020', 'firstName': '1', 'lastName': 'ReZero', 'birthDate': 'August 2, 1990', 'city': 'ABC City'},
-    {'dateRegistered': 'August 2, 2019', 'firstName': '2', 'lastName': 'Loren', 'birthDate': 'August 3, 1990', 'city': 'ABC City'},
-    {'dateRegistered': 'August 3, 2018', 'firstName': '3', 'lastName': 'Ipsum', 'birthDate': 'August 4, 1990', 'city': 'ABC City'},
-    {'dateRegistered': 'August 4, 2017', 'firstName': '4', 'lastName': 'Dolo', 'birthDate': 'August 5, 1990', 'city': 'ABC City'},
-    {'dateRegistered': 'August 5, 2016', 'firstName': '5', 'lastName': 'Rete', 'birthDate': 'August 6, 1990', 'city': 'ABC City'}
-].sort( (firstElement,secondElement) => firstElement['dateRegistered'] > secondElement['dateRegistered']? 1 : -1);
 const buttonElement = `<td class="text-center">
                         <button type="button" class="btn btn-primary btn-sm mr-2 mb-2 w-auto">
                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -26,6 +15,17 @@ const buttonElement = `<td class="text-center">
                         <button type="button" class="btn btn-success btn-sm mr-2 mb-2 w-auto">Update</button>
                         <button type="button" class="btn btn-danger btn-sm mr-2  mb-2 w-auto">Delete</button>
                     </td>`;
+/***
+* To be replaced by fetching data from the server and parsing it as an array of JSON object 
+*/
+let customerArr = [
+    {'dateRegistered': 'August 1, 2020', 'firstName': '1', 'lastName': 'ReZero', 'birthDate': 'August 2, 1990', 'city': 'ABC City'},
+    {'dateRegistered': 'August 2, 2019', 'firstName': '2', 'lastName': 'Loren', 'birthDate': 'August 3, 1990', 'city': 'ABC City'},
+    {'dateRegistered': 'August 3, 2018', 'firstName': '3', 'lastName': 'Ipsum', 'birthDate': 'August 4, 1990', 'city': 'ABC City'},
+    {'dateRegistered': 'August 4, 2017', 'firstName': '4', 'lastName': 'Dolo', 'birthDate': 'August 5, 1990', 'city': 'ABC City'},
+    {'dateRegistered': 'August 5, 2016', 'firstName': '5', 'lastName': 'Rete', 'birthDate': 'August 6, 1990', 'city': 'ABC City'}
+];
+
 //Renders the customer table -C.LEGASPI
 function buildCustomerTable(){
     'use strict'
@@ -43,15 +43,12 @@ function buildCustomerTable(){
         tableBody.innerHTML += row;
     }
 }
-
-//The same thing with customer array, then sort it by date registered in descending order
 let dvdArr = [
     {'dateRegistered': 'August 12, 2020', 'genre': 'Romance', 'title': 'Kaguya-sama Love is War?', 'releaseDate': 'August 21, 2021', 'price': 1100,'numOfItems':12},
     {'dateRegistered': 'August 13, 2020', 'genre': 'Comedy', 'title': 'Gintama', 'releaseDate': 'August 4, 2021', 'price': 441,'numOfItems':22},
     {'dateRegistered': 'August 16, 2020', 'genre': 'Action', 'title': 'Shingeki no Kyojin', 'releaseDate': 'August 14, 2021', 'price': 771,'numOfItems':17},
     {'dateRegistered': 'August 6, 2020', 'genre': 'Fantasy', 'title': 'Re: Zero', 'releaseDate': 'August 3, 2021', 'price': 512,'numOfItems':52},
-].sort( (firstElement,secondElement) => firstElement['dateRegistered'] > secondElement['dateRegistered']? 1 : -1);
-//TODO: Refactor below code so that there will be only 1 build table function
+];
 function buildDvdTable(){
     'use strict'
     let tableBody = document.getElementById('dvdTable');

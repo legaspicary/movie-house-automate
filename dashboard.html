@@ -71,7 +71,7 @@
                 <!-- Card Title -->
                 <div class="card-title ml-4 mr-4 mt-3 mb-0">
                   <!-- <h5 class="d-inline align-middle">Customer Report Summary</h5> -->
-                  <button type="button" class="btn btn-primary float-right btn-md mb-2" data-toggle="modal" data-target="#addCustomer">
+                  <button type="button" class="btn btn-primary float-right btn-md mt-3" data-toggle="modal" data-target="#addCustomer">
                   Add Customer</button>
                 </div>
 
@@ -98,7 +98,7 @@
               <div class="tab-pane fade" id="dvd" role="tabpanel" aria-labelledby="dvd-tab">
                 <div class="card-title ml-4 mr-4 mt-3 mb-0">
                   <!-- <h5 class="d-inline align-middle">DVD Report Summary</h5> -->
-                  <button type="button" class="btn btn-primary float-right mb-2" data-toggle="modal" data-target="#addDVD">
+                  <button type="button" class="btn btn-primary float-right mt-3" data-toggle="modal" data-target="#addDVD">
                     Add DVD</button>
                 </div>
                 <div class="card-body">
@@ -391,7 +391,25 @@
       renderTable();
     };
     $(document).ready(function() {
-          $('.customDataTable').DataTable();
+          $('.customDataTable').DataTable({
+            order: [[0,'asc']],
+            pagingType: 'full_numbers',
+            lengthMenu: [[5,10,25,50,-1],[5,10,25,50,'All']],
+            dom: //`<"top"l>rt<"bottom"fp><"clear">`
+            `<
+              <"d-flex float-left mb-2"
+                <"mr-3 ml-1"f>
+                l
+              >
+              <t>
+              <"bottom"
+                <"d-inline"
+                  <"float-left mt-0 ml-1 mb-3"i>
+                  <"float-right mt-1"p>
+                >
+              >
+            >`
+          });
       } );
   </script>
 </body>
