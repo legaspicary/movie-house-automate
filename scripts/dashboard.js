@@ -69,51 +69,8 @@ function buildDvdTable(){
         tableBody.innerHTML += row;
     }
 }
-
-//function that allows the feature of filtering by columns in ascending or descending order -C.LEGASPI
-//TODO: Implement it in way that only the clicked column will have an order indicator
-var filterBy = function(header,arr) {
-    let order = header.getAttribute('data-order');
-    let column = header.getAttribute('data-column');
-    let text = header.innerHTML;
-    text = text.substring(0, text.length - 1);
-    
-    if(order == "desc"){
-        console.log(order);
-        header.setAttribute("data-order","asc");
-        arr = arr.sort( (firstElement,secondElement) => firstElement[column] > secondElement[column]? 1 : -1);
-        text += `&#9650`;
-    }else{
-        console.log(order);
-        header.setAttribute("data-order","desc");
-        arr = arr.sort( (firstElement,secondElement) => firstElement[column] < secondElement[column]? 1 : -1);
-        text += `&#9660`;
-    }
-    header.innerHTML = text;
-}
-//initializes the listeners for the columns -C.LEGASPI
-//TODO: Add listeners for the DVD table -C.LEGASPI
-function initializeListeners(){
-    let customerColumns = ["dateRegistered","firstName","lastName","birthDate","city"];
-    for(let i = 0; i < customerColumns.length; i++){
-        let column = document.getElementById(customerColumns[i]);
-        column.addEventListener("click", function(){
-            filterBy(this,customerArr);
-            buildCustomerTable();
-        });
-    }
-    let dvdColumns = ["DVDdateRegistered","genre","title","releaseDate","price","numOfItems"];
-    for(let i = 0; i < dvdColumns.length; i++){
-        let column = document.getElementById(dvdColumns[i]);
-        column.addEventListener("click", function(){
-            filterBy(this,dvdArr);
-            buildDvdTable();
-        });
-    }
-}
 //To be called in HTML file after the page has loaded -C.LEGASPI
 function renderTable(){
-    initializeListeners();
     buildCustomerTable();
     buildDvdTable();
     console.log("Called rendertable()");
