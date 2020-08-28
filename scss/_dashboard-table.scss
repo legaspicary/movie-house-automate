@@ -1,5 +1,19 @@
-table{
-    .table-custom {
-        background: red;
+.table-custom{
+    .button-container {
+        display: flex;
+        flex-direction: row;
     }
+    thead {
+        background: $first-color;
+        color: $text-color;
+    }
+    // tr:nth-child(odd) { /* selects every odd row */
+    //     background: $first-color
+    // } 
+    // tr:nth-child(even) { /* selects every even row */
+    //     background: #a293ff
+    // } 
+    // .table-header-custom{
+    //     background: red;
+    // }
 }

@@ -10,21 +10,24 @@
 * Also sorts it by date registered in descending order -C.LEGASPI
 */
 let customerArr = [
-    {'dateRegistered': 'August 1, 2020', 'firstName': '1', 'lastName': 'ReZero', 'birthDate': 'August 2, 1990', 'city': 'ABC City'},
-    {'dateRegistered': 'August 2, 2019', 'firstName': '2', 'lastName': 'Loren', 'birthDate': 'August 3, 1990', 'city': 'ABC City'},
-    {'dateRegistered': 'August 3, 2018', 'firstName': '3', 'lastName': 'Ipsum', 'birthDate': 'August 4, 1990', 'city': 'ABC City'},
-    {'dateRegistered': 'August 4, 2017', 'firstName': '4', 'lastName': 'Dolo', 'birthDate': 'August 5, 1990', 'city': 'ABC City'},
-    {'dateRegistered': 'August 5, 2016', 'firstName': '5', 'lastName': 'Rete', 'birthDate': 'August 6, 1990', 'city': 'ABC City'}
+    {'dateRegistered': 'August 1, 2020', 'firstName': 'Jessica', 'lastName': 'ReZero', 'birthDate': 'August 2, 1990', 'city': 'ABC City'},
+    {'dateRegistered': 'August 2, 2019', 'firstName': 'James', 'lastName': 'Loren', 'birthDate': 'August 3, 1990', 'city': 'ABC City'},
+    {'dateRegistered': 'August 3, 2018', 'firstName': 'Jake', 'lastName': 'Ipsum', 'birthDate': 'August 4, 1990', 'city': 'ABC City'},
+    {'dateRegistered': 'August 4, 2017', 'firstName': 'Mike', 'lastName': 'Dolo', 'birthDate': 'August 5, 1990', 'city': 'ABC City'},
+    {'dateRegistered': 'August 5, 2016', 'firstName': 'May', 'lastName': 'Rete', 'birthDate': 'August 6, 1990', 'city': 'ABC City'}
 ].sort( (firstElement,secondElement) => firstElement['dateRegistered'] > secondElement['dateRegistered']? 1 : -1);
 const buttonElement = `<td class="text-center">
-                        <button type="button" class="btn btn-primary btn-sm mr-2 mb-2 w-auto">
-                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
-                                <path fill-rule="evenodd" d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
-                            </svg>
-                        </button>
-                        <button type="button" class="btn btn-success btn-sm mr-2 mb-2 w-auto">Update</button>
-                        <button type="button" class="btn btn-danger btn-sm mr-2  mb-2 w-auto">Delete</button>
+                        <div class="button-container">
+                            <button type="button" class="btn btn-primary btn-sm mr-2 mb-2 w-auto">
+                                <i class="far fa-eye"></i>
+                            </button>
+                            <button type="button" class="btn btn-success btn-sm mr-2 mb-2 w-auto">
+                                <i class="far fa-trash-alt"></i>
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm mr-2  mb-2 w-auto">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
                     </td>`;
 //Renders the customer table -C.LEGASPI
 function buildCustomerTable(){
