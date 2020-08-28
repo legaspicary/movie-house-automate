@@ -6,9 +6,6 @@
     max-width: 20rem;
     .features-icons-icon {
       height: 7rem;
-      i {
-        font-size: 4.5rem;
-      }
       svg{
         height: 5rem;
         width: 5rem;
@@ -17,9 +14,6 @@
     }
     &:hover {
       .features-icons-icon {
-        i {
-          font-size: 5rem;
-        }
         svg{
           height: 5.5rem;
           width: 5.5rem;
