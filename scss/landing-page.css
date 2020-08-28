@@ -65,6 +65,16 @@ header.masthead h1 {
   }
 }
 
+.showcase .overlay {
+  position: absolute;
+  background-color: #06051F;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 1;
+}
+
 .features-icons {
   padding-top: 7rem;
   padding-bottom: 7rem;
@@ -80,7 +90,8 @@ header.masthead h1 {
 }
 
 .features-icons .features-icons-item .features-icons-icon i {
-  font-size: 4.5rem;
+  font-size: 5rem;
+  color: #0E0D49;
 }
 
 .features-icons .features-icons-item .features-icons-icon svg {
@@ -90,7 +101,7 @@ header.masthead h1 {
 }
 
 .features-icons .features-icons-item:hover .features-icons-icon i {
-  font-size: 5rem;
+  font-size: 6rem;
 }
 
 .features-icons .features-icons-item:hover .features-icons-icon svg {
@@ -151,5 +162,20 @@ footer.footer {
 .nav-custom a.btn {
   color: #e9ecef;
   background: #007bff;
+}
+
+.table-custom .button-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.table-custom thead {
+  background: #06051F;
+  color: #e9ecef;
 }
 /*# sourceMappingURL=landing-page.css.map */
