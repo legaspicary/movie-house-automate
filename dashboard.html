@@ -90,6 +90,15 @@
                     <tbody id="customerTable">
                       <!-- EMPTY, to be rendered by the js file after fetching it from the server -C.LEGASPI-->
                     </tbody>
+                    <tfoot>
+                      <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                      </tr>
+                    </tfoot>
                   </table>
                 </div>
               </div>
@@ -117,6 +126,16 @@
                         <tbody id="dvdTable">
                             <!-- Fetch from Server and render-->
                         </tbody>
+                        <tfoot>
+                          <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                          </tr>
+                        </tfoot>
                     </table>
                   </div>
             </div>
@@ -130,10 +149,10 @@
   <!-- Customer Modal -->
   <div class="modal fade" id="addCustomer" data-backdrop="static">
   <div class="modal-dialog modal-l">
-    <div class="modal-content">
+    <div class="modal-content p-2">
       <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Add a Customer</h4>
+      <div class="modal-header text-left">
+        <h3 class="modal-title py-2 w-100 ">Add a Customer</h3>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <!-- Modal body -->
@@ -332,10 +351,10 @@
 
 
   <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
+  <footer class="footer container-fluid">
+    <div class="container-fluid">
       <div class="row">
-        <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
+        <div class="col-lg-6 h-100 text-center  my-auto">
           <ul class="list-inline mb-2">
             <li class="list-inline-item">
               <a href="#">About</a>
@@ -387,31 +406,9 @@
   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
   <!-- Initialization -->
   <script>
-    window.onload = function(){
-      renderTable();
-    };
     $(document).ready(function() {
-          $('.customDataTable').DataTable({
-            order: [[0,'asc']],
-            pagingType: 'full_numbers',
-            lengthMenu: [[5,10,25,50,-1],[5,10,25,50,'All']],
-            dom: //`<"top"l>rt<"bottom"fp><"clear">`
-            `<
-              <"d-flex float-left mb-2"
-                <"mr-3 ml-1"f>
-                l
-              >
-              <t>
-              <"bottom"
-                <"d-inline"
-                  <"float-left mt-0 ml-1 mb-3"i>
-                  <"float-right mt-1"p>
-                >
-              >
-            >`
-          });
-      } );
+          renderTable();
+    });
   </script>
 </body>
-
 </html>

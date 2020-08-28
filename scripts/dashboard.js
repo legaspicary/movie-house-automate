@@ -66,9 +66,48 @@ function buildDvdTable(){
         tableBody.innerHTML += row;
     }
 }
-//To be called in HTML file after the page has loaded -C.LEGASPI
+//Customizes the table and inputs the data -C.LEGASPI
 function renderTable(){
     buildCustomerTable();
     buildDvdTable();
+    //Customizes table
     console.log("Called rendertable()");
+    $('.customDataTable').DataTable({
+        order: [[0,'asc']],
+        pagingType: 'full_numbers',
+        lengthMenu: [[5,10,25,50,-1],[5,10,25,50,'All']],
+        //repositions feature elements and adds necessary margins
+        dom:`<
+            <"d-flex float-left mb-2"
+                <"mr-3 ml-1"f>
+                l
+            >
+            <t>
+            <"bottom"
+                <"d-inline"
+                    <"float-left mt-0 ml-1 mb-3"i>
+                    <"float-right mt-1"p>
+                >   
+            >
+        >`,
+        //Adds filter feature
+        initComplete: function(){
+            this.api().columns().every( function() {
+                var column = this;
+                var select = $('<select><option value=""></option></select>')
+                .appendTo( $(column.footer()).empty() )
+                .on( 'change', function () {
+                    let val = $.fn.dataTable.util.escapeRegex(
+                    $(this).val()
+                    );
+                    column
+                    .search( val ? '^'+val+'$' : '', true, false )
+                    .draw();
+                });
+                column.data().unique().sort().each( function ( d, j ) {
+                select.append( '<option value="'+d+'">'+d+'</option>' );
+                });
+            });
+        }
+    });
 }
