@@ -79,7 +79,7 @@
                 </div>
 
                 <div class="card-body mt-0">
-                  <table class="table table-striped table-dark customDataTable" >
+                  <table class="table table-responsive-md customDataTable table-custom-bg table-hover">
                     <thead>
                       <tr>
                         <th scope="col" >Date Registered</th>
@@ -107,14 +107,14 @@
               </div>
 
               <!-- DVD Report Summary Table -->
-              <div class="tab-pane fade" id="dvd" role="tabpanel" aria-labelledby="dvd-tab">
+            <div class="tab-pane fade" id="dvd" role="tabpanel" aria-labelledby="dvd-tab">
                 <div class="card-title ml-4 mr-4 mt-3 mb-0">
                   <!-- <h5 class="d-inline align-middle">DVD Report Summary</h5> -->
                   <button type="button" class="btn btn-primary float-right mt-3" data-toggle="modal" data-target="#addDVD">
                     Add DVD</button>
                 </div>
                 <div class="card-body">
-                    <table class="table table-responsive-md table-striped table-dark customDataTable">
+                    <table class="table table-responsive-md customDataTable table-custom-bg table-hover">
                         <thead>
                           <tr>
                             <th scope="col" data-column="dateRegistered" data-order="desc" id="DVDdateRegistered">Date Registered</th>
@@ -140,15 +140,13 @@
                           </tr>
                         </tfoot>
                     </table>
-                  </div>
+                </div>
             </div>
-
-            
-
-            
-        </div>
+            </div>
+          </div>
       </div>
   </div>
+
   <!-- Customer Modal -->
   <div class="modal fade" id="addCustomer" data-backdrop="static">
   <div class="modal-dialog modal-l">
@@ -367,7 +365,7 @@
 
   <!-- Footer -->
   <footer class="footer container-fluid">
-    <div class="container-fluid">
+    <div class="container">
       <div class="row">
         <div class="col-lg-6 h-100 text-center  my-auto">
           <ul class="list-inline mb-2">

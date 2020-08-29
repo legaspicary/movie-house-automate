@@ -19,14 +19,14 @@ let customerArr = [
 
 const buttonElement = `<td class="text-center">
                         <div class="button-container">
-                            <button type="button" class="btn btn-primary btn-sm mr-2 mb-2 w-auto">
+                            <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-view">
                                 <i class="far fa-eye"></i>
                             </button>
-                            <button type="button" class="btn btn-success btn-sm mr-2 mb-2 w-auto">
-                                <i class="far fa-trash-alt"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger btn-sm mr-2  mb-2 w-auto">
+                            <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-update">
                                 <i class="fas fa-sync-alt"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-delete">
+                                <i class="far fa-trash-alt"></i>
                             </button>
                         </div>
                     </td>`;
@@ -99,7 +99,7 @@ function renderTable(){
         initComplete: function(){
             this.api().columns().every( function() {
                 var column = this;
-                var select = $('<select><option value=""></option></select>')
+                var select = $('<select class="form-control"><option value="">Filter None</option></select>')
                 .appendTo( $(column.footer()).empty() )
                 .on( 'change', function () {
                     let val = $.fn.dataTable.util.escapeRegex(
