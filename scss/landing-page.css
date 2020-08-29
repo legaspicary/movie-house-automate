@@ -164,7 +164,21 @@ footer.footer {
   background: #007bff;
 }
 
-.table-custom .button-container {
+table.table-custom-bg {
+  background-color: rgba(6, 5, 31, 0.9);
+  color: #e9ecef;
+}
+
+table.table-custom-bg tbody tr:hover {
+  color: white;
+  background-color: #06051F;
+}
+
+table.table-custom-bg thead {
+  color: #F5BF33;
+}
+
+table.table-custom-bg .button-container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -174,8 +188,30 @@ footer.footer {
           flex-direction: row;
 }
 
-.table-custom thead {
-  background: #06051F;
+table.table-custom-bg th, table.table-custom-bg td {
+  border-top: none;
+}
+
+table.table-custom-bg .form-control {
+  height: 2rem;
+  background-color: #f3f3f3;
+  padding-top: 0.2rem;
+}
+
+table.table-custom-bg .vud {
   color: #e9ecef;
+  border: none;
+}
+
+table.table-custom-bg .vud-view {
+  background-color: rgba(0, 123, 255, 0.7);
+}
+
+table.table-custom-bg .vud-update {
+  background-color: rgba(40, 167, 69, 0.7);
+}
+
+table.table-custom-bg .vud-delete {
+  background-color: rgba(220, 53, 69, 0.7);
 }
 /*# sourceMappingURL=landing-page.css.map */
