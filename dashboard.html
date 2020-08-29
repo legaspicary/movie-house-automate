@@ -155,12 +155,12 @@
     <div class="modal-content p-2">
       <!-- Modal Header -->
       <div class="modal-header text-left">
-        <h3 class="modal-title py-2 w-100 ">Add a Customer</h3>
+        <h3 class="modal-title">Add Customer</h3>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <!-- Modal body -->
       <div class="modal-body">
-        <form class="needs-validation">
+        <form class="needs-validation" aria-autocomplete="off" autocomplete="off">
           <!-- Full name -->
           <h6>Name</h6>
           <div class="form-row">
@@ -213,23 +213,31 @@
           <h6>Status</h6>
           <div class="form-row ml-3 statusRadio">
           <div class="form-check-inline">
-            <label class="form-check-label">
-              <input type="radio" class="form-check-input" name="statusRadio" required>Single
+            <label class="form-check-label radio-container">
+              Single
+              <input type="radio" class="form-check-input" name="statusRadio" required>
+              <span class="checkmark"></span>
             </label>
           </div>
           <div class="form-check-inline">
-            <label class="form-check-label">
-              <input type="radio" class="form-check-input" name="statusRadio" required>Married
+            <label class="form-check-label radio-container">
+              Married
+              <input type="radio" class="form-check-input" name="statusRadio" required>
+              <span class="checkmark"></span>
             </label>
           </div>
           <div class="form-check-inline">
-            <label class="form-check-label">
-              <input type="radio" class="form-check-input" name="statusRadio" required>Widow/er
+            <label class="form-check-label radio-container">
+              Widow
+              <input type="radio" class="form-check-input" name="statusRadio" required>/er
+              <span class="checkmark"></span>
             </label>
           </div>
-          <div class="form-check-inline">
-            <label class="form-check-label">
-              <input type="radio" class="form-check-input" name="statusRadio" required>Divorced
+          <div class="form-check-inline ">
+            <label class="form-check-label radio-container">
+              Divorced
+              <input type="radio" class="form-check-input" name="statusRadio" required>
+              <span class="checkmark"></span>
             </label>
           </div>
           </div>
@@ -237,13 +245,17 @@
           <h6>Gender</h6>
           <div class="form-row ml-3 status">
           <div class="form-check-inline">
-            <label class="form-check-label">
-              <input type="radio" class="form-check-input" name="genderRadio" required>Male
+            <label class="form-check-label radio-container pr-2">
+              Male
+              <input type="radio" class="form-check-input" name="genderRadio" required>
+              <span class="checkmark"></span>
             </label>
           </div>
           <div class="form-check-inline">
-            <label class="form-check-label">
-              <input type="radio" class="form-check-input" name="genderRadio" required>Female
+            <label class="form-check-label radio-container">
+              Female
+              <input type="radio" class="form-check-input" name="genderRadio" required>
+              <span class="checkmark"></span>
             </label>
           </div>
           </div>
@@ -287,7 +299,7 @@
     <div class="modal-content">
       <!-- Modal Header -->
       <div class="modal-header">
-        <h4 class="modal-title">Add a DVD</h4>
+        <h3 class="modal-title">Add DVD</h3>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <!-- Modal body -->

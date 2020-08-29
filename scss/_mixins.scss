@@ -1,3 +1,4 @@
+@import url(http://fonts.googleapis.com/css?family=Ubuntu:400italic,700italic,400,700bold);
 // Mixins
 // Background Cover Mixin
 @mixin background-cover {
@@ -9,5 +10,5 @@
 
 // Font Mixins
 @mixin body-font {
-  font-family: 'Ubuntu', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Ubuntu', sans-serif;
 }
