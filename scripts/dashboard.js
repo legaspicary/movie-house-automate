@@ -17,15 +17,23 @@ let customerArr = [
     {'dateRegistered': 'August 5, 2016', 'firstName': 'May', 'lastName': 'Rete', 'birthDate': 'August 6, 1990', 'city': 'ABC City'}
 ];
 
-const buttonElement = `<td class="text-center">
+const buttonElementCustomer = `<td class="text-center">
                         <div class="button-container">
-                            <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-view">
+                            <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-view" data-toggle="modal" data-target="#viewCustomer">
                                 <i class="far fa-eye"></i>
                             </button>
-                            <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-update">
-                                <i class="fas fa-sync-alt"></i>
+                            <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-delete" data-toggle="modal" data-target="#deleteRow">
+                                <i class="far fa-trash-alt"></i>
                             </button>
-                            <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-delete">
+                        </div>
+                    </td>`;
+
+const buttonElementDVD = `<td class="text-center">
+                        <div class="button-container">
+                            <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-view" data-toggle="modal" data-target="#viewDVD">
+                                <i class="far fa-eye"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-delete" data-toggle="modal" data-target="#deleteRow">
                                 <i class="far fa-trash-alt"></i>
                             </button>
                         </div>
@@ -43,7 +51,7 @@ function buildCustomerTable(){
                         <td>${customerArr[i].lastName}</td>
                         <td>${customerArr[i].birthDate}</td>
                         <td>${customerArr[i].city}</td>
-                        ${buttonElement}
+                        ${buttonElementCustomer}
                     </tr>`;
         tableBody.innerHTML += row;
     }
@@ -66,7 +74,7 @@ function buildDvdTable(){
                         <td>${dvdArr[i].releaseDate}</td>
                         <td>${dvdArr[i].price}</td>
                         <td>${dvdArr[i].numOfItems}</td>
-                        ${buttonElement}
+                        ${buttonElementDVD}
                     </tr>`;
         tableBody.innerHTML += row;
     }
