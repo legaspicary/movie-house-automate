@@ -1,7 +1,8 @@
+{% load static %}
 <!-- 
   AUTHOR: Gwynn C.
   CO-AUTHOR: Cary L.
- -->
+-->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,12 +20,12 @@
 
   <!-- Custom fonts for this template -->
   <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
-
+  
   <!-- Custom styles for this template -->
-  <link href="./scss/landing-page.css" rel="stylesheet">
+  <link href="{% static 'customer/scss/landing-page.css' %}" rel="stylesheet">
 
   <!-- Font Awesome Vector Images -->
-  <link rel="stylesheet" href="/scss/fontawesome-all.css">
+  <link rel="stylesheet" href="{% static 'customer/scss/fontawesome-all.css' %}">
 
 </head>
 
@@ -48,7 +49,7 @@
         </div>
         <!-- Modal body -->
         <div class="modal-body">
-          <form class="needs-validation" action="dashboard.html">
+          <form class="needs-validation" action="{% url 'customer:customer_registration' %}">
             <!-- Email  -->
             <h6>Email</h6>
             <div class="form-row">
