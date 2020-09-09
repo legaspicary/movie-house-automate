@@ -165,6 +165,15 @@ footer.footer {
   background: #007bff;
 }
 
+.nav-custom .nav-links {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 30%;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
 table.table-custom-bg {
   background-color: rgba(6, 5, 31, 0.9);
   color: #e9ecef;
@@ -372,5 +381,11 @@ table.table-custom-bg .vud-delete {
 .modal .modal-content form input[type=date]::-webkit-calendar-picker-indicator {
   -webkit-filter: invert(1);
           filter: invert(1);
+}
+
+.modal .modal-content .about-contact-us {
+  text-justify: inter-word;
+  text-align: justify;
+  margin: 10px;
 }
 /*# sourceMappingURL=landing-page.css.map */

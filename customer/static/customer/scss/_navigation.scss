@@ -10,4 +10,9 @@
         color: $text-color;
         background: $blue;
     }
+    .nav-links{
+        display: flex;
+        width: 30%;
+        justify-content: space-around;
+    }
 }
