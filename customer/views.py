@@ -5,7 +5,7 @@ from django.views.generic import View
 # Create your views here.
 
 def registration(request):
-  return render(request, 'customer/dashboard.html')
+  return render(request, 'customer/dashboard.html', {'title': 'Dashboard'})
 
 class CustomerView(View):
   def get(self,request):

@@ -1,53 +1,23 @@
-{% load static %}
-
-<!-- 
-  AUTHOR: Gwynn C.
-  CO-AUTHOR: Cary L.
- -->
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <title>Condor WatchBox</title>
-
+{% extends "customer/base.html" %}
+{% block dependencies %}
   <!-- Script Files -->
-  <script src="{% static 'customer/scripts/dashboard.js' %}"></script>
-
-
-  <!-- Bootstrap core CSS -->
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Custom fonts for this template -->
-  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
-
-  <!-- Custom styles for this template -->
-  <link href="{% static 'customer/scss/landing-page.css' %}" rel="stylesheet">
-
-  <!-- Font Awesome Vector Images -->
-  <link rel="stylesheet" href="{% static 'customer/scss/fontawesome-all.css' %}">
+  <script src="{% url '../../../../static/customer/scripts/dashboard.js"></script>
 
   <!-- Data Table CSS Dependencies -->
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
-</head>
+{% endblock dependencies %}
 
-<body>
-
+{% block content %}
     <!-- Navigation -->
   <nav class="navbar static-top nav-custom">
     <div class="container">
-      <a class="navbar-brand" href="landing-page.html">Condor WatchBox</a>
+      <a class="navbar-brand" href="{% url 'customer:customer_landing_page' %}">Condor WatchBox</a>
       <a class="btn btn-primary" data-toggle="modal" data-target="#signout" href="#">Sign Out</a>
     </div>
   </nav>
 
-  <!-- About Us Modal -->
+  <!-- Sign Out Modal -->
   <div class="modal fade" id="signout">
     <div class="modal-dialog modal-l">
       <div class="modal-content">
@@ -625,58 +595,9 @@
         </div>
       </div>
     </div>
+{% endblock content %}
 
-  <!-- Footer -->
-  <footer class="footer container-fluid">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6 h-100 text-center  my-auto">
-          <ul class="list-inline mb-2">
-            <li class="list-inline-item">
-              <a href="#">About</a>
-            </li>
-            <li class="list-inline-item">&sdot;</li>
-            <li class="list-inline-item">
-              <a href="#">Contact</a>
-            </li>
-            <li class="list-inline-item">&sdot;</li>
-            <li class="list-inline-item">
-              <a href="#">Terms of Use</a>
-            </li>
-            <li class="list-inline-item">&sdot;</li>
-            <li class="list-inline-item">
-              <a href="#">Privacy Policy</a>
-            </li>
-          </ul>
-          <p class="text-muted small mb-4 mb-lg-0">&copy; Gwynn Causing & Cary Legaspi 2020. All Rights Reserved.</p>
-        </div>
-        <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
-          <ul class="list-inline mb-0">
-            <li class="list-inline-item mr-3">
-              <a href="#">
-                <i class="fab fa-facebook fa-2x fa-fw"></i>
-              </a>
-            </li>
-            <li class="list-inline-item mr-3">
-              <a href="#">
-                <i class="fab fa-twitter-square fa-2x fa-fw"></i>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="#">
-                <i class="fab fa-instagram fa-2x fa-fw"></i>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Bootstrap core JavaScript -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+{% block scriptContent %}
   <!-- Data Table JS Dependencies -->
   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
   <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
@@ -686,5 +607,4 @@
           renderTable();
     });
   </script>
-</body>
-</html>
+{% endblock scriptContent %}
