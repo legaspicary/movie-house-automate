@@ -11,7 +11,6 @@ customers = [
     {'dateRegistered': 'August 5, 2016', 'firstName': 'May', 'lastName': 'Rete', 'birthDate': 'August 6, 1990', 'city': 'ABC City'}
 ]
 
-
 def registration(request):
   context = {
     'title': 'Customer Dashboard',
