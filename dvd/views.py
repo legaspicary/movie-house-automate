@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import View
+from django.http import HttpResponse
+from .forms import DVDForm
+from .models import *
 
 # Create your views here.
 dvds = [
@@ -15,3 +18,24 @@ class DvdView(View):
 			'title':'DVD Dashboard'
 		}
 		return render(request, 'dvd/dashboard.html',context)
+
+	def post(self, request):
+		form = DVDForm(request.POST)
+		# if form.is_valid():
+		title = request.POST.get('add-title')
+		director = request.POST.get('add-title')
+		genre = request.POST.get('add-title')
+		release_date = request.POST.get('add-release_date')
+		casts = request.POST.get('add-casts')
+		price = request.POST.get('add-price')
+		number_of_items = request.POST.get('add-number_of_items')
+		picture = request.POST.get('add-picture')
+		form = DVD(title = title, director = director, genre = genre, release_date = release_date,
+								casts = casts, price = price, number_of_items = number_of_items, picture = picture)
+		form.save()
+
+		return HttpResponse('DVD recorded successfully')
+		# else:
+		# 	print(form.errors)
+		# 	print(request.POST.get('add-picture'))
+		# 	return HttpResponse('not valid')
