@@ -5,7 +5,7 @@ from .models import Customer
 
 
 class CustomerForm(forms.ModelForm):
-    # use the class Meta to specify the model for your customer form
+    # use the class Meta to specify the model for the customer form
     class Meta:
         model = Customer
         # fields to check for is_valid() method
