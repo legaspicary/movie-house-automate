@@ -9,7 +9,7 @@ class CustomerForm(forms.ModelForm):
     class Meta:
         model = Customer
         # fields to check for is_valid() method
-        fields = ('firstname', 'lastname')
+        fields = ('firstname', 'lastname','city')
 
     def __docstring__(self):
         return 'The form module for customer, validates firstname and lastname'

@@ -1,25 +1,30 @@
 from django.shortcuts import render
 from django.views.generic import View
-
+from django.http import JsonResponse
+from .forms import CustomerForm
+from .models import Customer
 
 # Create your views here.
-customers = [
-    {'dateRegistered': 'August 1, 2020', 'firstName': 'Jessica','lastName': 'ReZero', 'birthDate': 'August 2, 1990', 'city': 'ABC City'},
-    {'dateRegistered': 'August 2, 2019', 'firstName': 'James','lastName': 'Loren', 'birthDate': 'August 3, 1990', 'city': 'ABC City'},
-    {'dateRegistered': 'August 3, 2018', 'firstName': 'Jake','lastName': 'Ipsum', 'birthDate': 'August 4, 1990', 'city': 'ABC City'},
-    {'dateRegistered': 'August 4, 2017', 'firstName': 'Mike','lastName': 'Dolo', 'birthDate': 'August 5, 1990', 'city': 'ABC City'},
-    {'dateRegistered': 'August 5, 2016', 'firstName': 'May','lastName': 'Rete', 'birthDate': 'August 6, 1990', 'city': 'ABC City'}
-]
 
-
-def registration(request):
-    context = {
-        'title': 'Customer Dashboard',
-        'customers': customers,
-    }
-    return render(request, 'customer/dashboard.html', context)
+def landing_page(request):
+    return render(request, 'customer/landing-page.html')
 
 
 class CustomerView(View):
     def get(self, request):
-        return render(request, 'customer/landing-page.html')
+        print(Customer.objects.all())
+        context = {
+            'title': 'Customer Dashboard',
+            'customers': Customer.objects.values(),
+        }
+        return render(request, 'customer/dashboard.html', context)
+    def post(self,request):
+        if request.is_ajax():
+            form = CustomerForm(request.POST)
+            print("is form valid?"+str(form.is_valid()))
+            if form.is_valid():
+                #print(form.cleaned_data['city'])
+                form.save()
+                return JsonResponse({'return_text': 'returned from server views.py'})
+        else:
+            return render(request,'customer/dashboard.html')

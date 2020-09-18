@@ -87,10 +87,10 @@
           <tbody>
               {% for customer in customers %}
                 <tr>
-                  <td>{{customer.dateRegistered}}</td>
-                  <td>{{customer.firstName}}</td>
-                  <td>{{customer.lastName}}</td>
-                  <td>{{customer.birthDate}}</td>
+                  <td>{{customer.date_registered}}</td>
+                  <td>{{customer.firstname}}</td>
+                  <td>{{customer.lastname}}</td>
+                  <td>{{customer.birthdate}}</td>
                   <td>{{customer.city}}</td>
                   <td class="text-center">
                     <div class="button-container">
@@ -132,7 +132,8 @@
       </div>
       <!-- Modal body -->
       <div class="modal-body">
-        <form id="addCustomerForm"class="needs-validation" aria-autocomplete="off" autocomplete="off">
+        <!-- Add Customer Form -->
+        <form id="addCustomerForm" action="" method="POST" class="needs-validation" aria-autocomplete="off" autocomplete="off">
           <!-- Full name -->
           <h6>Name</h6>
           <div class="form-row">
@@ -259,7 +260,7 @@
               <input type="file" accept="image/*" class="form-control-file" id="addPicture" name="picture">
             </div>
           </div>
-          <button type="button" class="btn btn-primary mt-3 float-right btn-md">Add</button>
+          <button id="addCustomerBtn" type="button" class="btn btn-primary mt-3 float-right btn-md">Add</button>
         </form>
       </div>
     </div>
@@ -513,6 +514,33 @@
       $("input[type=date][name$=max]").val(new Date().toISOString().slice(0,10));
       table.draw();
     });
+
+    //ajax form for add customer
+    $('#addCustomerBtn').click(function(){
+          
+          //console.log($('#addCustomerForm').serialize()+'{{ csrf_token }}');
+          $.ajax({
+              url: '',
+              type: 'post',
+              headers:{
+                  "X-CSRFToken": '{{ csrf_token }}'
+              },
+              //data to be passed to django view
+              data: $('#addCustomerForm').serialize(),
+              //when successful
+              success: function(response){
+                  console.log(response.return_text);
+                  //Resetting the form
+                  $(':input','#addCustomerForm')
+                  .not(':button, :submit, :reset, :hidden')
+                  .val('')
+                  .prop('checked', false)
+                  .prop('selected', false);
+              }
+          });
+          //closes the modal
+          $('#addCustomer').modal('toggle');
+      });
   });
 </script>
 {% endblock scriptContent %}

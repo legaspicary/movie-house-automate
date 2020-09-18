@@ -25,8 +25,7 @@ class Person(models.Model):
     birthdate = models.DateField(default=datetime.now())
     # family info
     status = models.CharField(max_length=20,default='Single')
-    spouse_firstname = models.CharField(max_length=100,default='N/A')
-    spouse_lastname = models.CharField(max_length=100,default='N/A')
+    spouse_name = models.CharField(max_length=100,default='N/A')
     spouse_occupation = models.CharField(max_length=100,default='N/A')
     no_of_children = models.IntegerField(default=0)
     # deleted identifier
@@ -36,7 +35,7 @@ class Person(models.Model):
         db_table = "Person"
 
     def __str__(self):
-        return self.firstname + self.middlename + self.lastname
+        return self.firstname + self.lastname
 
 
 class Customer(Person):
