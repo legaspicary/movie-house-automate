@@ -26,8 +26,9 @@
                 <div class="">
                     <p>&emsp; Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laborum magni magnam consequuntur eum nesciunt odio asperiores at soluta repudiandae ex corrupti ratione quia explicabo vitae quis quos amet, aliquid molestiae?</p>
                 </div>
-                <button type="submit" class="btn btn-secondary mt-3 float-right btn-md ml-3" data-dismiss="modal">No, I want to
-          stay</button>
+                <button type="submit" class="btn btn-secondary mt-3 float-right btn-md ml-3" data-dismiss="modal">No, I
+                    want to
+                    stay</button>
                 <button type="submit" class="btn btn-danger mt-3 float-right btn-md">Sign out</button>
             </div>
         </div>
@@ -42,7 +43,8 @@
                     <h4>DVD Dashboard</h4>
                 </div>
                 <div class="col float-right align-items-center">
-                    <a class="btn-primary p-2 float-right" href="{% url 'customer:customer_dashboard' %}">Go to Customer Dashboard</a>
+                    <a class="btn-primary p-2 float-right" href="{% url 'customer:customer_dashboard' %}">Go to Customer
+                        Dashboard</a>
                 </div>
             </div>
             <div class="card-title ml-4 mr-4 mt-3 mb-0">
@@ -56,7 +58,7 @@
                 </div>
                 <div class="col-6 float-right ">
                     <button type="button" class="btn btn-primary float-right mt-3" data-toggle="modal" data-target="#addDVD">
-              Add DVD</button>
+                        Add DVD</button>
                 </div>
             </div>
             <div class="card-body">
@@ -75,20 +77,20 @@
                     <tbody>
                         {% for dvd in dvds %}
                         <tr>
-                            <td>{{dvd.dateRegistered}}</td>
+                            <td>{{dvd.date_registered}}</td>
                             <td>{{dvd.genre}}</td>
                             <td>{{dvd.title}}</td>
-                            <td>{{dvd.releaseDate}}</td>
-                            <td>{{dvd.price}}</td>
-                            <td>{{dvd.numOfItems}}</td>
+                            <td>{{dvd.release_date}}</td>
+                            <td>PHP {{dvd.price}}</td>
+                            <td>{{dvd.number_of_items}}</td>
                             <td class="text-center">
                                 <div class="button-container">
                                     <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-view" data-toggle="modal" data-target="#viewDVD">
-                              <i class="far fa-eye"></i>
-                          </button>
+                                        <i class="far fa-eye"></i>
+                                    </button>
                                     <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-delete" data-toggle="modal" data-target="#deleteRow">
-                              <i class="far fa-trash-alt"></i>
-                          </button>
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -359,6 +361,20 @@
             $("input[type=date][name$=max]").val(new Date().toISOString().slice(0, 10));
             table.draw();
         });
+        // $('#addDVD').on('submit', function(e) {
+        //     e.preventDefault();
+        //     console.log('prevent refresh');
+
+        //     $.ajax({
+        //         type: 'POST',
+        //         data: {
+        //             addtitle: $('#add-title').val,
+        //         },
+        //         success: function() {
+        //             // $('#addDVD').modal('hide');
+        //         }
+        //     })
+        // });
     });
 </script>
 {% endblock scriptContent %}
