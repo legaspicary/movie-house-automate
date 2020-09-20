@@ -5,17 +5,23 @@
 
 'use strict'
 
-//Customizes the table and inputs the data -C.LEGASPI
+//******************************        CUSTOMER by Legaspi C        **************************
 let customer_table = null;
 function loadCustomerTable() {
+    //to be passed to DataTable constructor
     let initialTableSettings = {
+        //enables search bar
         searching: true,
+        //enables export buttons
         buttons: [
             'print', 'copy', 'pdf', 'excel'
         ],
-        order: [[0, 'asc']],
+        //orders the first column as desc by default
+        order: [[0, 'desc']],
         pagingType: 'full_numbers',
+        //the choices for numbers of entries to be shown
         lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
+        //positions the table, buttons etc. according to the html code
         dom: `<
                 <"d-flex float-left mb-2"
                     <"mr-3 ml-1"f>
@@ -32,11 +38,13 @@ function loadCustomerTable() {
                 >
             >`,
         columnDefs: [
-            { "orderable": false, "targets": -1 },
+            //removes the sort buttons in the buttons column
+            { orderable: false, "targets": 5 },
+            //Adds View Delete buttons to every row in the datatable
             {
-                "targets": -1,
-                "data": null,
-                "defaultContent": `<div class="button-container">
+                targets: 5,
+                data: null,
+                defaultContent: `<div class="button-container">
                         <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-view" data-toggle="modal" data-target="#viewCustomer">
                             <i class="far fa-eye"></i>
                         </button>
@@ -46,19 +54,25 @@ function loadCustomerTable() {
                     </div>`
             }
         ],
-        //ajax: "{% url 'customer:customer_dashboard' %}",
+        //alternatively you can use the syntax-->>>  ajax: "{% url 'customer:customer_dashboard' %}",
         ajax: {
             //empty means this will just redirect to the current url of the page
             url: '',
             dataSrc: "data"
         },
-        "columns": [
+        //matches the data to appropriate column
+        columns: [
             { "data": 'date_registered' },
             { "data": 'firstname' },
             { "data": 'lastname' },
             { "data": 'birthdate' },
-            { "data": 'city' }
+            { "data": 'city' ,"defaultContent": "<i>Not Set</i>"},
         ],
+        //Adds data-id attribute to each row
+        createdRow: function (row, data, dataIndex) {
+            $(row).attr('data-id', data.id);
+        },
+        //Adds filter function at footer after the datatable has been initialized
         initComplete: function () {
             this.api().columns().every(function () {
                 var column = this;
@@ -80,10 +94,13 @@ function loadCustomerTable() {
 
     }
     let table = $('#customerTable').DataTable(initialTableSettings);
-    //passing it to customer_table to use in loadInitializers function
+    //passing it to customer_table, so that it can be used in loadInitializers function
     customer_table = table;
+    //sets the minimum default value for the date range
     $("input[type=date][name$=min]").val(new Date(0).toISOString().slice(0, 10));
+    //sets the maximum default value for the date range
     $("input[type=date][name$=max]").val(new Date().toISOString().slice(0, 10));
+    //function for filtering data according to date range
     let dateRangeFunc = function (settings, data, dataIndex) {
         let min = new Date($('#min').val()).getTime();
         let max = new Date($('#max').val()).getTime();
@@ -95,12 +112,13 @@ function loadCustomerTable() {
         }
         return false;
     }
+    //adds the date range filter to the data table
     $.fn.dataTable.ext.search.push(dateRangeFunc);
-
+    //redraws the table so that the filter will be in effect
     $('#min, #max').change(function () {
         table.draw();
     });
-
+    //resets the date range and table
     $('#resetDateRange').click(function () {
         $("input[type=date][name$=min]").val(new Date(0).toISOString().slice(0, 10));
         $("input[type=date][name$=max]").val(new Date().toISOString().slice(0, 10));
@@ -117,18 +135,20 @@ function initializeCustomerListeners(csrf_token) {
             url: '',
             type: 'post',
             headers: {
+                //csrf token passed from the dashboard.html template under $(document).ready function
                 "X-CSRFToken": csrf_token
             },
             //data to be passed to django view
             data: formData,
             contentType: false,
             processData: false,
-            //when successful, the customer is in json response
+            //when successful, change the data in table with new data from server
             success: function (response) {
                 console.log(response.status);
                 customer_table.clear().draw();
                 customer_table.rows.add(response.data);
                 customer_table.columns.adjust().draw();
+                //resets the input form
                 $(':input', '#addCustomerForm')
                     .not(':button, :submit, :reset, :hidden')
                     .val('')
@@ -140,3 +160,4 @@ function initializeCustomerListeners(csrf_token) {
         $('#addCustomer').modal('toggle');
     });
 }
+//******************************        CUSTOMER END       **************************

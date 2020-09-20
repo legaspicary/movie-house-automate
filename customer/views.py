@@ -9,6 +9,7 @@ from .models import Customer
 def landing_page(request):
     return render(request, 'customer/landing-page.html')
 
+#Formats date to MM dd YYYY (e.g. September 20, 2020)
 def format_date(customers):
     for customer in customers:
         customer['date_registered'] = customer['date_registered'].strftime("%B %d, %Y")
@@ -17,7 +18,8 @@ def format_date(customers):
 class CustomerView(View):
     def get(self, request):
         if request.is_ajax():
-            arr = list(Customer.objects.values())
+            #does not include deleted customer
+            arr = list(Customer.objects.filter(is_deleted=False).values())
             format_date(arr)
             json = {'data':arr}
             return JsonResponse(json)
@@ -32,9 +34,9 @@ class CustomerView(View):
             if form.is_valid():
                 #print(form.cleaned_data['city'])
                 form.save()
-                arr = list(Customer.objects.values())
-                format_date(arr)
-                json = {'data':arr,'status':'Saved from the database, passing new data'}
-                return JsonResponse(json)
+            arr = list(Customer.objects.filter(is_deleted=False).values())
+            format_date(arr)
+            json = {'data':arr,'status':'Saved from the database, passing new data'}
+            return JsonResponse(json)
         else:
             return render(request,'customer/dashboard.html')
