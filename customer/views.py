@@ -9,13 +9,20 @@ from .models import Customer
 def landing_page(request):
     return render(request, 'customer/landing-page.html')
 
+def format_date(customers):
+    for customer in customers:
+        customer['date_registered'] = customer['date_registered'].strftime("%B %d, %Y")
+        customer['birthdate'] = customer['birthdate'].strftime("%B %d, %Y")
 
 class CustomerView(View):
     def get(self, request):
-        print(Customer.objects.all())
+        if request.is_ajax():
+            arr = list(Customer.objects.values())
+            format_date(arr)
+            json = {'data':arr}
+            return JsonResponse(json)
         context = {
-            'title': 'Customer Dashboard',
-            'customers': Customer.objects.values(),
+            'title': 'Customer Dashboard'
         }
         return render(request, 'customer/dashboard.html', context)
     def post(self,request):
@@ -25,6 +32,9 @@ class CustomerView(View):
             if form.is_valid():
                 #print(form.cleaned_data['city'])
                 form.save()
-                return JsonResponse({'return_text': 'returned from server views.py'})
+                arr = list(Customer.objects.values())
+                format_date(arr)
+                json = {'data':arr,'status':'Saved from the database, passing new data'}
+                return JsonResponse(json)
         else:
             return render(request,'customer/dashboard.html')

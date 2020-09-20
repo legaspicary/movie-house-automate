@@ -84,27 +84,7 @@
               <th data-sort="false"></th>
             </tr>
           </thead>
-          <tbody>
-              {% for customer in customers %}
-                <tr>
-                  <td>{{customer.date_registered}}</td>
-                  <td>{{customer.firstname}}</td>
-                  <td>{{customer.lastname}}</td>
-                  <td>{{customer.birthdate}}</td>
-                  <td>{{customer.city}}</td>
-                  <td class="text-center">
-                    <div class="button-container">
-                        <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-view" data-toggle="modal" data-target="#viewCustomer">
-                            <i class="far fa-eye"></i>
-                        </button>
-                        <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-delete" data-toggle="modal" data-target="#deleteRow">
-                            <i class="far fa-trash-alt"></i>
-                        </button>
-                    </div>
-                  </td>
-                </tr>
-              {% endfor%}
-          </tbody>
+          <!-- DATA TO BE RENDERED THRU AJAX CALL -->
           <tfoot>
             <tr>
               <th></th>
@@ -133,7 +113,7 @@
       <!-- Modal body -->
       <div class="modal-body">
         <!-- Add Customer Form -->
-        <form id="addCustomerForm" action="" method="POST" class="needs-validation" aria-autocomplete="off" autocomplete="off">
+        <form id="addCustomerForm" enctype="multipart/form-data" name="addCustomerForm" action="" method="POST" class="needs-validation" aria-autocomplete="off" autocomplete="off">
           <!-- Full name -->
           <h6>Name</h6>
           <div class="form-row">
@@ -468,37 +448,63 @@
                 >   
             >
         >`,
-        "columnDefs": [
-          { "orderable": false, "targets": 5 }
-        ],
-        initComplete: function(){
-            this.api().columns().every( function() {
-                var column = this;
-                var select = $('<select class="form-control"><option value="">Filter None</option></select>')
-                .appendTo( $(column.footer()).empty() )
-                .on( 'change', function () {
-                    let val = $.fn.dataTable.util.escapeRegex(
-                    $(this).val()
-                    );
-                    column
-                    .search( val ? '^'+val+'$' : '', true, false )
-                    .draw();
-                });
-                column.data().unique().sort().each( function ( d, j ) {
-                select.append( '<option value="'+d+'">'+d+'</option>' );
-                });
-            });
+      columnDefs: [
+        { "orderable": false, "targets": -1 },
+        {
+        "targets": -1,
+        "data": null,
+        "defaultContent": `<div class="button-container">
+                      <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-view" data-toggle="modal" data-target="#viewCustomer">
+                          <i class="far fa-eye"></i>
+                      </button>
+                      <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-delete" data-toggle="modal" data-target="#deleteRow">
+                          <i class="far fa-trash-alt"></i>
+                      </button>
+                  </div>`
         }
+      ],
+      //ajax: "{% url 'customer:customer_dashboard' %}",
+      ajax: {
+        url: "{% url 'customer:customer_dashboard' %}",
+        dataSrc: "data"
+      },
+      "columns": [
+        { "data": 'date_registered' },
+        { "data": 'firstname' },
+        { "data": 'lastname' },
+        { "data": 'birthdate' },
+        { "data": 'city' }
+      ],
+      initComplete: function(){
+          this.api().columns().every( function() {
+              var column = this;
+              var select = $('<select class="form-control"><option value="">Filter None</option></select>')
+              .appendTo( $(column.footer()).empty() )
+              .on( 'change', function () {
+                  let val = $.fn.dataTable.util.escapeRegex(
+                  $(this).val()
+                  );
+                  column
+                  .search( val ? '^'+val+'$' : '', true, false )
+                  .draw();
+              });
+              column.data().unique().sort().each( function ( d, j ) {
+              select.append( '<option value="'+d+'">'+d+'</option>' );
+              });
+          });
+      },
+        
     }
     let table = $('#customerTable').DataTable(initialTableSettings);
     $("input[type=date][name$=min]").val(new Date(0).toISOString().slice(0,10));
     $("input[type=date][name$=max]").val(new Date().toISOString().slice(0,10));
     let dateRangeFunc = function (settings, data, dataIndex) {
-      console.log("RANGE FUNCTION")
       let min = new Date($('#min').val()).getTime();
       let max = new Date($('#max').val()).getTime();
       let date = new Date(data[0]).getTime();
+      //console.log('DATE IS FROM TIME is:' + date+'\nWhile min and max is:' +min+'<>'+max);
       if (min <= date && date <= max) {
+        console.log('THE DATA IS WITHIN RANGE');
         return true;
       }
       return false;
@@ -513,12 +519,12 @@
       $("input[type=date][name$=min]").val(new Date(0).toISOString().slice(0,10));
       $("input[type=date][name$=max]").val(new Date().toISOString().slice(0,10));
       table.draw();
-    });
+    }); 
 
     //ajax form for add customer
+    let form = document.getElementById('addCustomerForm');
     $('#addCustomerBtn').click(function(){
-          
-          //console.log($('#addCustomerForm').serialize()+'{{ csrf_token }}');
+          let formData = new FormData(form);
           $.ajax({
               url: '',
               type: 'post',
@@ -526,11 +532,15 @@
                   "X-CSRFToken": '{{ csrf_token }}'
               },
               //data to be passed to django view
-              data: $('#addCustomerForm').serialize(),
-              //when successful
+              data: formData,
+              contentType: false,
+              processData: false,
+              //when successful, the customer is in json response
               success: function(response){
-                  console.log(response.return_text);
-                  //Resetting the form
+                  console.log(response.status);
+                  table.clear().draw();
+                  table.rows.add(response.data);
+                  table.columns.adjust().draw();
                   $(':input','#addCustomerForm')
                   .not(':button, :submit, :reset, :hidden')
                   .val('')
@@ -538,9 +548,11 @@
                   .prop('selected', false);
               }
           });
+          
           //closes the modal
           $('#addCustomer').modal('toggle');
       });
+      //END OF DOCUMENT LOAD
   });
 </script>
 {% endblock scriptContent %}
