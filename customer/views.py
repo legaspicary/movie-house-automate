@@ -13,7 +13,8 @@ def landing_page(request):
 def format_date(customers):
     for customer in customers:
         customer['date_registered'] = customer['date_registered'].strftime("%B %d, %Y")
-        customer['birthdate'] = customer['birthdate'].strftime("%B %d, %Y")
+        if customer['birthdate']:
+            customer['birthdate'] = customer['birthdate'].strftime("%B %d, %Y")
 
 class CustomerView(View):
     def get(self, request):
@@ -31,9 +32,14 @@ class CustomerView(View):
         if request.is_ajax():
             form = CustomerForm(request.POST)
             print("is form valid?"+str(form.is_valid()))
+            print(request.POST.get('gender'))
+            print(request.POST.get('status'))
             if form.is_valid():
                 #print(form.cleaned_data['city'])
-                form.save()
+                customer = form.save()
+                print('customer after save:')
+                print(customer.gender)
+                print(customer.status)
             arr = list(Customer.objects.filter(is_deleted=False).values())
             format_date(arr)
             json = {'data':arr,'status':'Saved from the database, passing new data'}

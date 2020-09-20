@@ -65,8 +65,8 @@ function loadCustomerTable() {
             { "data": 'date_registered' },
             { "data": 'firstname' },
             { "data": 'lastname' },
-            { "data": 'birthdate' },
-            { "data": 'city' ,"defaultContent": "<i>Not Set</i>"},
+            { "data": 'birthdate', "defaultContent": "<i>Not Set</i>"},
+            { "data": 'city', "defaultContent": "<i>Not Set</i>"},
         ],
         //Adds data-id attribute to each row
         createdRow: function (row, data, dataIndex) {
@@ -149,11 +149,7 @@ function initializeCustomerListeners(csrf_token) {
                 customer_table.rows.add(response.data);
                 customer_table.columns.adjust().draw();
                 //resets the input form
-                $(':input', '#addCustomerForm')
-                    .not(':button, :submit, :reset, :hidden')
-                    .val('')
-                    .prop('checked', false)
-                    .prop('selected', false);
+                form.reset();
             }
         });
         //closes the modal

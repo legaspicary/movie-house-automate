@@ -22,11 +22,11 @@ class Person(models.Model):
     # gender, to be replaced by TextChoices in Django
     gender = models.CharField(max_length=6,blank=True,null=True)
     # birthdate
-    birthdate = models.DateField(default=datetime.now())
+    birthdate = models.DateField(blank=True,null=True)
     # family info
-    status = models.CharField(max_length=20,default='Single')
-    spouse_name = models.CharField(max_length=100,default='N/A')
-    spouse_occupation = models.CharField(max_length=100,default='N/A')
+    status = models.CharField(max_length=20,blank=True,null=True)
+    spouse_name = models.CharField(max_length=100,blank=True,null=True)
+    spouse_occupation = models.CharField(max_length=100,blank=True,null=True)
     no_of_children = models.IntegerField(default=0)
     # deleted identifier
     is_deleted = models.BooleanField(default=False)

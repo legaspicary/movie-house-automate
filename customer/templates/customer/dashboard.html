@@ -170,28 +170,28 @@
             <div class="form-check-inline">
               <label class="form-check-label radio-container">
                 Single
-                <input type="radio" class="form-check-input" name="statusRadio" >
+                <input type="radio" class="form-check-input" name="status" value="Single">
                 <span class="checkmark"></span>
               </label>
             </div>
             <div class="form-check-inline">
               <label class="form-check-label radio-container">
                 Married
-                <input type="radio" class="form-check-input" name="statusRadio" >
+                <input type="radio" class="form-check-input" name="status" value="Married">
                 <span class="checkmark"></span>
               </label>
             </div>
             <div class="form-check-inline">
               <label class="form-check-label radio-container">
                 Widow
-                <input type="radio" class="form-check-input" name="statusRadio" >/er
+                <input type="radio" class="form-check-input" name="status" value="Widowed">/er
                 <span class="checkmark"></span>
               </label>
             </div>
             <div class="form-check-inline ">
               <label class="form-check-label radio-container">
                 Divorced
-                <input type="radio" class="form-check-input" name="statusRadio" >
+                <input type="radio" class="form-check-input" name="status" value="Divorced">
                 <span class="checkmark"></span>
               </label>
             </div>
@@ -202,14 +202,14 @@
             <div class="form-check-inline">
               <label class="form-check-label radio-container pr-2">
                 Male
-                <input type="radio" class="form-check-input" name="genderRadio" >
+                <input type="radio" class="form-check-input" name="gender" value="Male">
                 <span class="checkmark"></span>
               </label>
             </div>
             <div class="form-check-inline">
               <label class="form-check-label radio-container">
                 Female
-                <input type="radio" class="form-check-input" name="genderRadio" >
+                <input type="radio" class="form-check-input" name="gender" value="Female">
                 <span class="checkmark"></span>
               </label>
             </div>
@@ -219,19 +219,19 @@
           <div class="form-row spouse">
             <div class="form-group col-md-12">
               <label for="addSpouseName" class="sr-only">Spouse</label>
-              <input type="text" class="form-control" id="addSpouseName" name="spouseName" placeholder="Spouse's Name">
+              <input type="text" class="form-control" id="addSpouseName" name="spouse_name" placeholder="Spouse's Name">
             </div>
 
             <div class="form-group col-md-12">
               <label for="addSpouseOccupation" class="sr-only">Spouse Occupation</label>
-              <input type="text" class="form-control" id="addSpouseOccupation" name="spouseOccupation" placeholder="Spouse's Occupation">
+              <input type="text" class="form-control" id="addSpouseOccupation" name="spouse_occupation" placeholder="Spouse's Occupation">
             </div>
           </div>
           <!-- No of Children -->
           <h6>Number of Children</h6>
           <div class="form-row">
             <div class="form-group col-lg-12" id="addNoOfChildren">
-              <input type="number" name="noOfChildren" class="form-control" min="0" value="0" oninput="this.value = Math.abs(this.value)">
+              <input type="number" name="no_of_children" class="form-control" min="0" value="0" oninput="this.value = Math.abs(this.value)">
             </div>
           </div>
           <!-- Profile pic -->
@@ -239,7 +239,7 @@
           <div class="form-row ml-1">
             <div class="form-group">
               <label for="addPicture" class="sr-only">Profile picture</label>
-              <input type="file" accept="image/*" class="form-control-file" id="addPicture" name="picture">
+              <input type="file" accept="image/*" class="form-control-file" id="addPicture" name="profile_picture">
             </div>
           </div>
           <button id="addCustomerBtn" type="button" class="btn btn-primary mt-3 float-right btn-md">Add</button>
