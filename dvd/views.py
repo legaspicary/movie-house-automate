@@ -1,44 +1,54 @@
 from django.shortcuts import render
 from django.views.generic import View
-from django.http import HttpResponse
+from django.http import JsonResponse, HttpResponse
 from .forms import DVDForm
 from .models import DVD
 
 # Create your views here.
 
-# Unused data / save for later
-# dvds = [
-#     {'dateRegistered': 'August 12, 2020', 'genre': 'Romance', 'title': 'Kaguya-sama Love is War?', 'releaseDate': 'August 21, 2021', 'price': 1100,'numOfItems':12},
-#     {'dateRegistered': 'August 13, 2020', 'genre': 'Comedy', 'title': 'Gintama', 'releaseDate': 'August 4, 2021', 'price': 441,'numOfItems':22},
-#     {'dateRegistered': 'August 16, 2020', 'genre': 'Action', 'title': 'Shingeki no Kyojin', 'releaseDate': 'August 14, 2021', 'price': 771,'numOfItems':17},
-#     {'dateRegistered': 'August 6, 2020', 'genre': 'Fantasy', 'title': 'Re: Zero', 'releaseDate': 'August 3, 2021', 'price': 512,'numOfItems':52},
-# ]
+#Formats date to MM dd YYYY (e.g. September 20, 2020)
+def format_date(dvds):
+    for dvd in dvds:
+        dvd['date_registered'] = dvd['date_registered'].strftime("%B %d, %Y")
+        dvd['release_date'] = dvd['release_date'].strftime("%B %d, %Y")
+
 class DvdView(View):
-	def get(self,request):
-		context = {
-			'dvds': DVD.objects.all(),
-			'title':'DVD Dashboard'
-		}
-		return render(request, 'dvd/dashboard.html',context)
+  def get(self,request):
+        if request.is_ajax():
+            arr=list(DVD.objects.filter(is_deleted=False).values())
+            format_date(arr)
+            json = {'data':arr}
+            return JsonResponse(json)
+        context = {
+            'title':'DVD Dashboard'
+        }   
+        return render(request, 'dvd/dashboard.html',context)
 
-	def post(self, request):
-		form = DVDForm(request.POST)
-		# if form.is_valid():
-		title = request.POST.get('add-title')
-		director = request.POST.get('add-director')
-		genre = request.POST.get('add-genre')
-		release_date = request.POST.get('add-release_date')
-		casts = request.POST.get('add-casts')
-		price = request.POST.get('add-price')
-		number_of_items = request.POST.get('add-number_of_items')
-		picture = request.POST.get('add-picture')
-		form = DVD(title = title, director = director, genre = genre, release_date = release_date,
-								casts = casts, price = price, number_of_items = number_of_items, picture = picture)
-		form.save()
-
-		return HttpResponse('DVD recorded successfully')
-		# else:
-		# 	print(form.errors)
-		# 	print(request.POST.get('add-picture'))
-		# 	# raise Http404
-		# 	return HttpResponse('not valid')
+  def post(self, request):
+    print("is request ajax?"+str(request.is_ajax()))
+    if request.is_ajax():
+        form = DVDForm(request.POST)
+        print("is form valid?"+str(form.is_valid()))
+        print(request.POST.get('add-title'))
+        if form.is_valid():
+            title = request.POST.get('add-title')
+            director = request.POST.get('add-director')
+            genre = request.POST.get('add-genre')
+            release_date = request.POST.get('add-release_date')
+            casts = request.POST.get('add-casts')
+            price = request.POST.get('add-price')
+            number_of_items = request.POST.get('add-number_of_items')
+            picture = request.POST.get('add-picture')
+            form = DVD(title = title, director = director, genre = genre, release_date = release_date,
+                                    casts = casts, price = price, number_of_items = number_of_items, picture = picture)
+            form.save()
+            # return HttpResponse('success')
+            arr = list(DVD.objects.filter(is_deleted=False).values())
+            format_date(arr)
+            json = {'data':arr,'status':'Saved from the database, passing new data'}
+            return JsonResponse(json)
+        else:
+            print(form.errors)
+            return render(request,'dvd/dashboard.html')
+    else:
+        return render(request,'dvd/dashboard.html')

@@ -1,6 +1,6 @@
 {% extends "customer/base.html" %} {% block dependencies %}
 <!-- Script Files -->
-<script src="/static/scripts/dashboard.js"></script>
+<!-- <script src="/static/scripts/dashboard.js"></script> -->
 
 <!-- Data Tables CSS with Extension features -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.21/b-1.6.3/b-html5-1.6.3/datatables.min.css" /> {% endblock dependencies %} {% block content %}
@@ -74,28 +74,6 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {% for dvd in dvds %}
-                        <tr>
-                            <td>{{dvd.date_registered}}</td>
-                            <td>{{dvd.genre}}</td>
-                            <td>{{dvd.title}}</td>
-                            <td>{{dvd.release_date}}</td>
-                            <td>PHP {{dvd.price}}</td>
-                            <td>{{dvd.number_of_items}}</td>
-                            <td class="text-center">
-                                <div class="button-container">
-                                    <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-view" data-toggle="modal" data-target="#viewDVD">
-                                        <i class="far fa-eye"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-delete" data-toggle="modal" data-target="#deleteRow">
-                                        <i class="far fa-trash-alt"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        {% endfor%}
-                    </tbody>
                     <tfoot>
                         <tr>
                             <th></th>
@@ -124,21 +102,21 @@
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-                <form class="needs-validation" method="post">
+                <form id="addDvdForm" class="needs-validation" method="POST" aria-autocomplete="off" autocomplete="off" action="">
                     {% csrf_token %}
                     <!-- DVD Title, Director, Genre -->
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="title" class="">DVD Title</label>
-                            <input type="text" class="form-control" id="add-title" name="add-title" placeholder="Kaguya-sama Love is War?" required>
+                            <input type="text" class="form-control" id="title" name="add-title" placeholder="Kaguya-sama Love is War?" value="testing title" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="director" class="">Director</label>
-                            <input type="text" class="form-control" id="add-director" name="add-director" placeholder="Shinichi Omata" required>
+                            <input type="text" class="form-control" id="add-director" name="add-director" placeholder="Shinichi Omata" value="testing" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="Genre" class="">Genre</label>
-                            <input type="text" class="form-control" id="add-genre" name="add-genre" placeholder="RomCom" required>
+                            <input type="text" class="form-control" id="add-genre" name="add-genre" placeholder="RomCom" value="testing" required>
                         </div>
                     </div>
                     <!-- Release Date -->
@@ -152,7 +130,7 @@
                     <div class="form-group">
                         <label for="casts">Casts</label>
                         <div class="input-group" id="casts">
-                            <input type="text" class="form-control" id="add-casts" name="add-casts" placeholder="Last Name, First Name" aria-label="Cast's Full Name" aria-describedby="basic-addon2" required>
+                            <input type="text" class="form-control" id="add-casts" name="add-casts" placeholder="Last Name, First Name" aria-label="Cast's Full Name" aria-describedby="basic-addon2" value="testing" required>
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary" type="button">Add</button>
                             </div>
@@ -170,7 +148,7 @@
                     </div>
                     <!-- No of Items -->
                     <div class="form-group">
-                        <label for="noOfItems">Number of Items</label>
+                        <label for="number_of_items">Number of Items</label>
                         <input type="number" class="form-control" id="add-number_of_items" name="add-number_of_items" min="0" value="0" oninput="this.value = Math.abs(this.value)">
                     </div>
                     <!-- Images -->
@@ -178,7 +156,7 @@
                         <label for="picture">Images</label>
                         <input type="file" class="form-control-file" id="add-picture" name="add-picture" required multiple>
                     </div>
-                    <button type="submit" class="btn btn-primary mt-3 float-right btn-md">Add</button>
+                    <button id="addDvdBtn" type="submit" class="btn btn-primary mt-3 float-right btn-md">Add</button>
                 </form>
             </div>
         </div>
@@ -186,7 +164,7 @@
 </div>
 
 <!-- View DVD Modal -->
-<div class="modal fade" id="viewDVD">
+<div class="modal fade" id="viewRow">
     <div class="modal-dialog modal-l">
         <div class="modal-content">
             <!-- Modal Header -->
@@ -314,10 +292,50 @@
                 >   
             >
         >`,
-            "columnDefs": [{
-                "orderable": false,
-                "targets": 6
-            }],
+            columnDefs: [
+                //removes the sort buttons in the buttons column
+                {
+                    orderable: false,
+                    "targets": 6
+                },
+                //Adds View Delete buttons to every row in the datatable
+                {
+                    targets: 6,
+                    data: null,
+                    defaultContent: `<div class="button-container">
+                        <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-view" data-toggle="modal" data-target="#viewRow">
+                            <i class="far fa-eye"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-delete" data-toggle="modal" data-target="#deleteRow">
+                            <i class="far fa-trash-alt"></i>
+                        </button>
+                    </div>`
+                }
+            ],
+            //alternatively you can use the syntax-->>>  ajax: "{% url 'customer:customer_dashboard' %}",
+            ajax: {
+                //empty means this will just redirect to the current url of the page
+                url: '',
+                dataSrc: "data"
+            },
+            //matches the data to appropriate column
+            columns: [{
+                "data": 'date_registered'
+            }, {
+                "data": 'genre'
+            }, {
+                "data": 'title'
+            }, {
+                "data": 'release_date'
+            }, {
+                "data": 'price'
+            }, {
+                "data": 'number_of_items'
+            }, ],
+            //Adds data-id attribute to each row
+            createdRow: function(row, data, dataIndex) {
+                $(row).attr('data-id', data.id);
+            },
             initComplete: function() {
                 this.api().columns().every(function() {
                     var column = this;
@@ -341,7 +359,6 @@
         $("input[type=date][name$=min]").val(new Date(0).toISOString().slice(0, 10));
         $("input[type=date][name$=max]").val(new Date().toISOString().slice(0, 10));
         let dateRangeFunc = function(settings, data, dataIndex) {
-            console.log("RANGE FUNCTION")
             let min = new Date($('#min').val()).getTime();
             let max = new Date($('#max').val()).getTime();
             let date = new Date(data[0]).getTime();
@@ -361,20 +378,34 @@
             $("input[type=date][name$=max]").val(new Date().toISOString().slice(0, 10));
             table.draw();
         });
-        // $('#addDVD').on('submit', function(e) {
-        //     e.preventDefault();
-        //     console.log('prevent refresh');
-
-        //     $.ajax({
-        //         type: 'POST',
-        //         data: {
-        //             addtitle: $('#add-title').val,
-        //         },
-        //         success: function() {
-        //             // $('#addDVD').modal('hide');
-        //         }
-        //     })
-        // });
+        //ajax form for add dvd
+        let form = document.getElementById('addDvdForm');
+        $('#addDvdBtn').click(function() {
+            console.log('addDvdbutton')
+            let formData = new FormData(form);
+            $.ajax({
+                url: '',
+                type: 'post',
+                headers: {
+                    "X-CSRFToken": '{% csrf_token %}'
+                },
+                //data to be passed to django view
+                data: formData,
+                contentType: false,
+                processData: false,
+                //when successful, change the data in table with new data from server
+                success: function() {
+                    console.log('success');
+                    //resets the input form
+                    form.reset();
+                },
+                error: function() {
+                    console.log('failed')
+                }
+            });
+            //closes the modal
+            $('#addDvd').modal('toggle');
+        });
     });
 </script>
 {% endblock scriptContent %}
