@@ -32,7 +32,7 @@ class CustomerView(View):
         if request.is_ajax():
             form = CustomerForm(request.POST)
             print("is form valid?"+str(form.is_valid()))
-            print(request.POST.get('gender'))
+            print(request.POST.get('zip'))
             print(request.POST.get('status'))
             if form.is_valid():
                 #print(form.cleaned_data['city'])
