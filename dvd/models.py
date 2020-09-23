@@ -12,7 +12,7 @@ class DVD(models.Model):
 	casts = models.CharField(max_length=500, blank=True)
 	price = models.FloatField(default=0)
 	number_of_items = models.IntegerField(default=0)
-	picture = models.TextField(blank=True, null=True)
+	picture = models.FileField(upload_to='dvd_images/')
 	is_deleted = models.BooleanField(default=False)
 	
 	# to show title in admin dashboard

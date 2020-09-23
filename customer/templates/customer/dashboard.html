@@ -1,437 +1,424 @@
-{% extends "customer/base.html" %}
-{% load static %}
-{% block dependencies %}
+{% extends "customer/base.html" %} {% load static %} {% block dependencies %}
 <!-- Script Files -->
 <script src='{% static "scripts/main.js" %}'></script>
 
 <!-- Data Tables CSS with Extension features -->
-<link rel="stylesheet" type="text/css"
-  href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.21/b-1.6.3/b-html5-1.6.3/datatables.min.css" />
-{% endblock dependencies %}
-
-{% block content %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.21/b-1.6.3/b-html5-1.6.3/datatables.min.css" /> {% endblock dependencies %} {% block content %}
 <!-- Navigation -->
 <nav class="navbar static-top nav-custom">
-  <div class="container">
-    <a class="navbar-brand" href="{% url 'customer:customer_landing_page' %}">Condor WatchBox</a>
-    <a class="btn btn-primary" data-toggle="modal" data-target="#signout" href="#">Sign Out</a>
-  </div>
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'customer:customer_landing_page' %}">Condor WatchBox</a>
+        <a class="btn btn-primary" data-toggle="modal" data-target="#signout" href="#">Sign Out</a>
+    </div>
 </nav>
 
 <!-- Sign Out Modal -->
 <div class="modal fade" id="signout">
-  <div class="modal-dialog modal-l">
-    <div class="modal-content">
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Do you want to leave us?</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <!-- Modal body -->
-      <div class="modal-body">
-        <div class="">
-          <p>&emsp; Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laborum magni magnam
-            consequuntur eum nesciunt odio asperiores at soluta repudiandae ex corrupti ratione
-            quia explicabo vitae quis quos amet, aliquid molestiae?</p>
-        </div>
-        <button type="submit" class="btn btn-secondary mt-3 float-right btn-md ml-3" data-dismiss="modal">No, I want to
+    <div class="modal-dialog modal-l">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Do you want to leave us?</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="">
+                    <p>&emsp; Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laborum magni magnam consequuntur eum nesciunt odio asperiores at soluta repudiandae ex corrupti ratione quia explicabo vitae quis quos amet, aliquid molestiae?</p>
+                </div>
+                <button type="submit" class="btn btn-secondary mt-3 float-right btn-md ml-3" data-dismiss="modal">No, I want to
           stay</button>
-        <button type="submit" class="btn btn-danger mt-3 float-right btn-md">Sign out</button>
-      </div>
+                <button type="submit" class="btn btn-danger mt-3 float-right btn-md">Sign out</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <!-- Table -->
 <div class="container-fluid">
-  <div class="jumbotron">
-    <div class="card">
-      <div class="card-header row d-flex">
-          <div class="col float-left align-items-center">
-            <h4>Customer Dashboard</h4>
-          </div>
-          <div class="col float-right align-items-center">
-            <a class="btn-primary p-2 float-right" href="{% url 'customer:dvd_dashboard' %}">Go to DVD Dashboard</a>
-          </div>
-      </div>
-      <!-- Customer Report Summary Table -->
-      <!-- Card Title -->
-      <div class="card-title ml-4 mr-4 mt-3 mb-0 row d-flex">
-        <!-- <h5 class="d-inline align-middle">Customer Report Summary</h5> -->
-        <div class="col-6 float-left d-flex float-left align-items-center py-3 px-0">
-          <p class="mr-3">FROM</p>
-          <input id="min" name="min" type="date" class="mr-3">
-          <p class="mr-3">TO</p>
-          <input id="max" name="max" type="date" class="mr-3">
-          <button id="resetDateRange" name="resetDateRange" class="btn-primary" class="mr-3">Reset</button>
-        </div>
-        <div class="col-6 float-right ">
-          <button type="button" class="btn btn-primary float-right btn-md mt-3" data-toggle="modal"
-          data-target="#addCustomer">
+    <div class="jumbotron">
+        <div class="card">
+            <div class="card-header row d-flex">
+                <div class="col float-left align-items-center">
+                    <h4>Customer Dashboard</h4>
+                </div>
+                <div class="col float-right align-items-center">
+                    <a class="btn-primary p-2 float-right" href="{% url 'customer:dvd_dashboard' %}">Go to DVD Dashboard</a>
+                </div>
+            </div>
+            <!-- Customer Report Summary Table -->
+            <!-- Card Title -->
+            <div class="card-title ml-4 mr-4 mt-3 mb-0 row d-flex">
+                <!-- <h5 class="d-inline align-middle">Customer Report Summary</h5> -->
+                <div class="col-6 float-left d-flex float-left align-items-center py-3 px-0">
+                    <p class="mr-3">FROM</p>
+                    <input id="min" name="min" type="date" class="mr-3">
+                    <p class="mr-3">TO</p>
+                    <input id="max" name="max" type="date" class="mr-3">
+                    <button id="resetDateRange" name="resetDateRange" class="btn-primary" class="mr-3">Reset</button>
+                </div>
+                <div class="col-6 float-right ">
+                    <button type="button" class="btn btn-primary float-right btn-md mt-3" data-toggle="modal" data-target="#addCustomer">
           Add Customer</button>
+                </div>
+
+            </div>
+
+            <div class="card-body mt-0">
+                <table id="customerTable" class="table table-responsive-md customDataTable table-custom-bg table-hover w-100">
+                    <thead>
+                        <tr>
+                            <th>Date Registered</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Birthdate</th>
+                            <th>City</th>
+                            <th data-sort="false"></th>
+                        </tr>
+                    </thead>
+                    <!-- DATA TO BE RENDERED THRU AJAX CALL -->
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
-        
-      </div>
-      
-      <div class="card-body mt-0">
-        <table id="customerTable" class="table table-responsive-md customDataTable table-custom-bg table-hover w-100">
-          <thead>
-            <tr>
-              <th >Date Registered</th>
-              <th >First Name</th>
-              <th >Last Name</th>
-              <th >Birthdate</th>
-              <th  >City</th>
-              <th data-sort="false"></th>
-            </tr>
-          </thead>
-          <!-- DATA TO BE RENDERED THRU AJAX CALL -->
-          <tfoot>
-            <tr>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th></th>
-              
-            </tr>
-          </tfoot>
-        </table>
-      </div>
     </div>
-  </div>
 </div>
 </div>
 
 <!-- Add Customer Modal -->
 <div class="modal fade" id="addCustomer" data-backdrop="static">
-  <div class="modal-dialog modal-l">
-    <div class="modal-content p-2">
-      <!-- Modal Header -->
-      <div class="modal-header text-left">
-        <h3 class="modal-title">Add Customer</h3>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <!-- Modal body -->
-      <div class="modal-body">
-        <!-- Add Customer Form -->
-        <form id="addCustomerForm" enctype="multipart/form-data" name="addCustomerForm" action="" method="POST" class="needs-validation" aria-autocomplete="off" autocomplete="off">{% csrf_token %}
-          <!-- Full name -->
-          <h6>Name</h6>
-          <div class="form-row">
-            <div class="form-group col-md-4">
-              <label for="addFirstName" class="sr-only">First</label>
-              <input type="text" class="form-control" id="addFirstName" name="firstname" placeholder="First Name" required>
+    <div class="modal-dialog modal-l">
+        <div class="modal-content p-2">
+            <!-- Modal Header -->
+            <div class="modal-header text-left">
+                <h3 class="modal-title">Add Customer</h3>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-            <div class="form-group col-md-4">
-              <label for="addMiddleName" class="sr-only">Middle</label>
-              <input type="text" class="form-control" id="addMiddleName" name="middlename" placeholder="Middle name" >
-            </div>
-            <div class="form-group col-md-4">
-              <label for="addLastName" class="sr-only">Last</label>
-              <input type="text" class="form-control" id="addLastName" name="lastname" placeholder="Last Name" required>
-            </div>
-          </div>
-          <!-- Address -->
-          <h6>Address</h6>
-          <div class="form-row">
-            <div class="form-group col-md-8">
-              <label for="addStreet" class="sr-only">Street</label>
-              <input type="text" class="form-control" id="addStreet" name="street" placeholder="123 Main Street" >
-            </div>
-            <div class="form-group col-md-4">
-              <label for="addBrgy" class="sr-only">Barangay</label>
-              <input type="text" class="form-control" id="addBrgy" name="brgy" placeholder="Barangay" >
-            </div>
-            <div class="form-group col-md-6">
-              <label for="addCity" class="sr-only">City</label>
-              <input type="text" class="form-control" id="addCity" name="city" placeholder="City" >
-            </div>
-            <div class="form-group col-md-4">
-              <label for="addState" class="sr-only">State</label>
-              <input type="text" class="form-control" id="addState" name="state" placeholder="State" >
-            </div>
-            <div class="form-group col-md-2">
-              <label for="addZip" class="sr-only">Zip</label>
-              <input type="text" class="form-control" id="addZip" name="zip" placeholder="Zip" >
-            </div>
-            
-          </div>
-          <!-- Birthdate -->
-          <h6>Birthdate</h6>
-          <div class="form-row">
-            <div class="form-group col-md-12">
-              <label for="addBdate" class="sr-only">Birthdate</label>
-              <input type="date" class="form-control" id="addBdate" name="birthdate"  >
-            </div>
-          </div>
-          <!-- Status -->
-          <h6>Status</h6>
-          <div class="form-row ml-3 statusRadio">
-            <div class="form-check-inline">
-              <label class="form-check-label radio-container">
+            <!-- Modal body -->
+            <div class="modal-body">
+                <!-- Add Customer Form -->
+                <form id="addCustomerForm" enctype="multipart/form-data" name="addCustomerForm" action="" method="POST" class="needs-validation" aria-autocomplete="off" autocomplete="off">{% csrf_token %}
+                    <!-- Full name -->
+                    <h6>Name</h6>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="addFirstName" class="sr-only">First</label>
+                            <input type="text" class="form-control" id="addFirstName" name="firstname" placeholder="First Name" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="addMiddleName" class="sr-only">Middle</label>
+                            <input type="text" class="form-control" id="addMiddleName" name="middlename" placeholder="Middle name">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="addLastName" class="sr-only">Last</label>
+                            <input type="text" class="form-control" id="addLastName" name="lastname" placeholder="Last Name" required>
+                        </div>
+                    </div>
+                    <!-- Address -->
+                    <h6>Address</h6>
+                    <div class="form-row">
+                        <div class="form-group col-md-8">
+                            <label for="addStreet" class="sr-only">Street</label>
+                            <input type="text" class="form-control" id="addStreet" name="street" placeholder="123 Main Street">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="addBrgy" class="sr-only">Barangay</label>
+                            <input type="text" class="form-control" id="addBrgy" name="brgy" placeholder="Barangay">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="addCity" class="sr-only">City</label>
+                            <input type="text" class="form-control" id="addCity" name="city" placeholder="City">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="addState" class="sr-only">State</label>
+                            <input type="text" class="form-control" id="addState" name="state" placeholder="State">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="addZip" class="sr-only">Zip</label>
+                            <input type="text" class="form-control" id="addZip" name="zip" placeholder="Zip">
+                        </div>
+
+                    </div>
+                    <!-- Birthdate -->
+                    <h6>Birthdate</h6>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="addBdate" class="sr-only">Birthdate</label>
+                            <input type="date" class="form-control" id="addBdate" name="birthdate">
+                        </div>
+                    </div>
+                    <!-- Status -->
+                    <h6>Status</h6>
+                    <div class="form-row ml-3 statusRadio">
+                        <div class="form-check-inline">
+                            <label class="form-check-label radio-container">
                 Single
                 <input type="radio" class="form-check-input" name="status" value="Single">
                 <span class="checkmark"></span>
               </label>
-            </div>
-            <div class="form-check-inline">
-              <label class="form-check-label radio-container">
+                        </div>
+                        <div class="form-check-inline">
+                            <label class="form-check-label radio-container">
                 Married
                 <input type="radio" class="form-check-input" name="status" value="Married">
                 <span class="checkmark"></span>
               </label>
-            </div>
-            <div class="form-check-inline">
-              <label class="form-check-label radio-container">
+                        </div>
+                        <div class="form-check-inline">
+                            <label class="form-check-label radio-container">
                 Widow
                 <input type="radio" class="form-check-input" name="status" value="Widowed">/er
                 <span class="checkmark"></span>
               </label>
-            </div>
-            <div class="form-check-inline ">
-              <label class="form-check-label radio-container">
+                        </div>
+                        <div class="form-check-inline ">
+                            <label class="form-check-label radio-container">
                 Divorced
                 <input type="radio" class="form-check-input" name="status" value="Divorced">
                 <span class="checkmark"></span>
               </label>
-            </div>
-          </div>
-          <!-- Gender -->
-          <h6>Gender</h6>
-          <div class="form-row ml-3 status">
-            <div class="form-check-inline">
-              <label class="form-check-label radio-container pr-2">
+                        </div>
+                    </div>
+                    <!-- Gender -->
+                    <h6>Gender</h6>
+                    <div class="form-row ml-3 status">
+                        <div class="form-check-inline">
+                            <label class="form-check-label radio-container pr-2">
                 Male
                 <input type="radio" class="form-check-input" name="gender" value="Male">
                 <span class="checkmark"></span>
               </label>
-            </div>
-            <div class="form-check-inline">
-              <label class="form-check-label radio-container">
+                        </div>
+                        <div class="form-check-inline">
+                            <label class="form-check-label radio-container">
                 Female
                 <input type="radio" class="form-check-input" name="gender" value="Female">
                 <span class="checkmark"></span>
               </label>
-            </div>
-          </div>
-          <!-- Spouse -->
-          <h6>Spouse</h6>
-          <div class="form-row spouse">
-            <div class="form-group col-md-12">
-              <label for="addSpouseName" class="sr-only">Spouse</label>
-              <input type="text" class="form-control" id="addSpouseName" name="spouse_name" placeholder="Spouse's Name">
-            </div>
+                        </div>
+                    </div>
+                    <!-- Spouse -->
+                    <h6>Spouse</h6>
+                    <div class="form-row spouse">
+                        <div class="form-group col-md-12">
+                            <label for="addSpouseName" class="sr-only">Spouse</label>
+                            <input type="text" class="form-control" id="addSpouseName" name="spouse_name" placeholder="Spouse's Name">
+                        </div>
 
-            <div class="form-group col-md-12">
-              <label for="addSpouseOccupation" class="sr-only">Spouse Occupation</label>
-              <input type="text" class="form-control" id="addSpouseOccupation" name="spouse_occupation" placeholder="Spouse's Occupation">
+                        <div class="form-group col-md-12">
+                            <label for="addSpouseOccupation" class="sr-only">Spouse Occupation</label>
+                            <input type="text" class="form-control" id="addSpouseOccupation" name="spouse_occupation" placeholder="Spouse's Occupation">
+                        </div>
+                    </div>
+                    <!-- No of Children -->
+                    <h6>Number of Children</h6>
+                    <div class="form-row">
+                        <div class="form-group col-lg-12" id="addNoOfChildren">
+                            <input type="number" name="no_of_children" class="form-control" min="0" value="0" oninput="this.value = Math.abs(this.value)">
+                        </div>
+                    </div>
+                    <!-- Profile pic -->
+                    <h6>Profile Picture</h6>
+                    <div class="form-row ml-1">
+                        <div class="form-group">
+                            <label for="addPicture" class="sr-only">Profile picture</label>
+                            <input type="file" accept="image/*" class="form-control-file" id="addPicture" name="profile_picture">
+                        </div>
+                    </div>
+                    <button id="addCustomerBtn" type="button" class="btn btn-primary mt-3 float-right btn-md">Add</button>
+                </form>
             </div>
-          </div>
-          <!-- No of Children -->
-          <h6>Number of Children</h6>
-          <div class="form-row">
-            <div class="form-group col-lg-12" id="addNoOfChildren">
-              <input type="number" name="no_of_children" class="form-control" min="0" value="0" oninput="this.value = Math.abs(this.value)">
-            </div>
-          </div>
-          <!-- Profile pic -->
-          <h6>Profile Picture</h6>
-          <div class="form-row ml-1">
-            <div class="form-group">
-              <label for="addPicture" class="sr-only">Profile picture</label>
-              <input type="file" accept="image/*" class="form-control-file" id="addPicture" name="profile_picture">
-            </div>
-          </div>
-          <button id="addCustomerBtn" type="button" class="btn btn-primary mt-3 float-right btn-md">Add</button>
-        </form>
-      </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <!-- View Customer Modal -->
 <div class="modal fade" id="viewCustomer">
-  <div class="modal-dialog modal-l">
-    <div class="modal-content p-2">
-      <!-- Modal Header -->
-      <div class="modal-header text-left">
-        <h3 class="modal-title">View Customer</h3>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <!-- Modal body -->
-      <div class="modal-body">
-        <form id="viewCustomerForm" class="needs-validation" aria-autocomplete="off" autocomplete="off">
-          <!-- Full name -->
-          <h6>Name</h6>
-          <div class="form-row">
-            <div class="form-group col-md-4">
-              <label for="firstName" class="sr-only">First</label>
-              <input type="text" class="form-control" id="firstName" name="firstname" placeholder="First Name" required>
+    <div class="modal-dialog modal-l">
+        <div class="modal-content p-2">
+            <!-- Modal Header -->
+            <div class="modal-header text-left">
+                <h3 class="modal-title">View Customer</h3>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-            <div class="form-group col-md-4">
-              <label for="middleName" class="sr-only">Middle</label>
-              <input type="text" class="form-control" id="middleName" name="middlename" placeholder="Middle name" >
-            </div>
-            <div class="form-group col-md-4">
-              <label for="lastName" class="sr-only">Last</label>
-              <input type="text" class="form-control" id="lastName" name="lastname" placeholder="Last Name" required>
-            </div>
-          </div>
-          <!-- Address -->
-          <h6>Address</h6>
-          <div class="form-row">
-            <div class="form-group col-md-8">
-              <label for="street" class="sr-only">Street</label>
-              <input type="text" class="form-control" id="street" name="street" placeholder="123 Main Street" >
-            </div>
-            <div class="form-group col-md-4">
-              <label for="brgy" class="sr-only">Barangay</label>
-              <input type="text" class="form-control" id="brgy" name="brgy" placeholder="Barangay" >
-            </div>
-            <div class="form-group col-md-6">
-              <label for="city" class="sr-only">City</label>
-              <input type="text" class="form-control" id="city" name="city" placeholder="City" >
-            </div>
-            <div class="form-group col-md-4">
-              <label for="state" class="sr-only">State</label>
-              <input type="text" class="form-control" id="state" name="state" placeholder="State" >
-            </div>
-            <div class="form-group col-md-2">
-              <label for="zip" class="sr-only">Zip</label>
-              <input type="text" class="form-control" id="zip" name="zip" placeholder="Zip" >
-            </div>
-          </div>
-          <!-- Birthdate -->
-          <h6>Birthdate</h6>
-          <div class="form-row">
-            <div class="form-group col-md-12">
-              <label for="bdate" class="sr-only">Birthdate</label>
-              <input type="date" class="form-control" id="bdate" name="birthdate" >
-            </div>
-          </div>
-          <!-- Status -->
-          <h6>Status</h6>
-          <div class="form-row ml-3 statusRadio">
-            <div class="form-check-inline">
-              <label class="form-check-label radio-container">
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="viewCustomerForm" class="needs-validation" aria-autocomplete="off" autocomplete="off">
+                    <!-- Full name -->
+                    <h6>Name</h6>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="firstName" class="sr-only">First</label>
+                            <input type="text" class="form-control" id="firstName" name="firstname" placeholder="First Name" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="middleName" class="sr-only">Middle</label>
+                            <input type="text" class="form-control" id="middleName" name="middlename" placeholder="Middle name">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="lastName" class="sr-only">Last</label>
+                            <input type="text" class="form-control" id="lastName" name="lastname" placeholder="Last Name" required>
+                        </div>
+                    </div>
+                    <!-- Address -->
+                    <h6>Address</h6>
+                    <div class="form-row">
+                        <div class="form-group col-md-8">
+                            <label for="street" class="sr-only">Street</label>
+                            <input type="text" class="form-control" id="street" name="street" placeholder="123 Main Street">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="brgy" class="sr-only">Barangay</label>
+                            <input type="text" class="form-control" id="brgy" name="brgy" placeholder="Barangay">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="city" class="sr-only">City</label>
+                            <input type="text" class="form-control" id="city" name="city" placeholder="City">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="state" class="sr-only">State</label>
+                            <input type="text" class="form-control" id="state" name="state" placeholder="State">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="zip" class="sr-only">Zip</label>
+                            <input type="text" class="form-control" id="zip" name="zip" placeholder="Zip">
+                        </div>
+                    </div>
+                    <!-- Birthdate -->
+                    <h6>Birthdate</h6>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="bdate" class="sr-only">Birthdate</label>
+                            <input type="date" class="form-control" id="bdate" name="birthdate">
+                        </div>
+                    </div>
+                    <!-- Status -->
+                    <h6>Status</h6>
+                    <div class="form-row ml-3 statusRadio">
+                        <div class="form-check-inline">
+                            <label class="form-check-label radio-container">
                 Single
                 <input type="radio" class="form-check-input" name="status" value="Single">
                 <span class="checkmark"></span>
               </label>
-            </div>
-            <div class="form-check-inline">
-              <label class="form-check-label radio-container">
+                        </div>
+                        <div class="form-check-inline">
+                            <label class="form-check-label radio-container">
                 Married
                 <input type="radio" class="form-check-input" name="status" value="Married">
                 <span class="checkmark"></span>
               </label>
-            </div>
-            <div class="form-check-inline">
-              <label class="form-check-label radio-container">
+                        </div>
+                        <div class="form-check-inline">
+                            <label class="form-check-label radio-container">
                 Widow
                 <input type="radio" class="form-check-input" name="status" value="Widowed">/er
                 <span class="checkmark"></span>
               </label>
-            </div>
-            <div class="form-check-inline ">
-              <label class="form-check-label radio-container">
+                        </div>
+                        <div class="form-check-inline ">
+                            <label class="form-check-label radio-container">
                 Divorced
                 <input type="radio" class="form-check-input" name="status" value="Divorced">
                 <span class="checkmark"></span>
               </label>
-            </div>
-          </div>
-          <!-- Gender -->
-          <h6>Gender</h6>
-          <div class="form-row ml-3 status">
-            <div class="form-check-inline">
-              <label class="form-check-label radio-container pr-2">
+                        </div>
+                    </div>
+                    <!-- Gender -->
+                    <h6>Gender</h6>
+                    <div class="form-row ml-3 status">
+                        <div class="form-check-inline">
+                            <label class="form-check-label radio-container pr-2">
                 Male
                 <input type="radio" class="form-check-input" name="gender" value="Male">
                 <span class="checkmark"></span>
               </label>
-            </div>
-            <div class="form-check-inline">
-              <label class="form-check-label radio-container">
+                        </div>
+                        <div class="form-check-inline">
+                            <label class="form-check-label radio-container">
                 Female
                 <input type="radio" class="form-check-input" name="gender" value="Female">
                 <span class="checkmark"></span>
               </label>
-            </div>
-          </div>
-          <!-- Spouse -->
-          <h6>Spouse</h6>
-          <div class="form-row spouse">
-            <div class="form-group col-md-12">
-              <label for="spouseName" class="sr-only">Spouse</label>
-              <input type="text" class="form-control" id="spouseName" name="spouse_name" placeholder="Spouse's Name">
-            </div>
+                        </div>
+                    </div>
+                    <!-- Spouse -->
+                    <h6>Spouse</h6>
+                    <div class="form-row spouse">
+                        <div class="form-group col-md-12">
+                            <label for="spouseName" class="sr-only">Spouse</label>
+                            <input type="text" class="form-control" id="spouseName" name="spouse_name" placeholder="Spouse's Name">
+                        </div>
 
-            <div class="form-group col-md-12">
-              <label for="spouseOccupation" class="sr-only">Spouse Occupation</label>
-              <input type="text" class="form-control" id="spouseOccupation" name="spouse_occupation" placeholder="Spouse's Occupation">
+                        <div class="form-group col-md-12">
+                            <label for="spouseOccupation" class="sr-only">Spouse Occupation</label>
+                            <input type="text" class="form-control" id="spouseOccupation" name="spouse_occupation" placeholder="Spouse's Occupation">
+                        </div>
+                    </div>
+                    <!-- No of Children -->
+                    <h6>Number of Children</h6>
+                    <div class="form-row">
+                        <div class="form-group col-lg-12" id="noOfChildren">
+                            <input type="number" class="form-control" name="no_of_children" min="0" value="0" oninput="this.value = Math.abs(this.value)">
+                        </div>
+                    </div>
+                    <!-- Profile pic -->
+                    <h6>Profile Picture</h6>
+                    <div class="form-row ml-1">
+                        <div class="form-group">
+                            <label for="picture" class="sr-only">Profile picture</label>
+                            <input type="file" accept="image/*" name="profile_picture" class="form-control-file" id="picture">
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary mt-3 float-right btn-md ml-3" data-dismiss="modal">Cancel</button>
+                    <button id="updateCustomerBtn" type="submit" class="btn btn-success mt-3 float-right btn-md">Update</button>
+                </form>
             </div>
-          </div>
-          <!-- No of Children -->
-          <h6>Number of Children</h6>
-          <div class="form-row">
-            <div class="form-group col-lg-12" id="noOfChildren">
-              <input type="number" class="form-control" name="no_of_children" min="0" value="0" oninput="this.value = Math.abs(this.value)">
-            </div>
-          </div>
-          <!-- Profile pic -->
-          <h6>Profile Picture</h6>
-          <div class="form-row ml-1">
-            <div class="form-group">
-              <label for="picture" class="sr-only">Profile picture</label>
-              <input type="file" accept="image/*" name="profile_picture" class="form-control-file" id="picture" >
-            </div>
-          </div>
-          <button type="button" class="btn btn-secondary mt-3 float-right btn-md ml-3"
-            data-dismiss="modal">Cancel</button>
-          <button id="updateCustomerBtn" type="submit" class="btn btn-success mt-3 float-right btn-md">Update</button>
-        </form>
-      </div>
+        </div>
     </div>
-  </div>
 </div>
 <!-- Delete Modal -->
 <div class="modal fade" id="deleteRow">
-  <div class="modal-dialog modal-l">
-    <div class="modal-content">
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Delete Record</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <!-- Modal body -->
-      <div class="modal-body">
-        <form class="needs-validation" action="dashboard.html">
-          <!-- Question  -->
-          <h6>Are you sure you want to delete this record?</h6>
-          <button type="button" class="btn btn-secondary mt-3 float-right btn-md ml-3" data-dismiss="modal">No</button>
-          <button type="submit" class="btn btn-danger mt-3 float-right btn-md">Yes</button>
-        </form>
-      </div>
+    <div class="modal-dialog modal-l">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Record</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form class="needs-validation" action="dashboard.html">
+                    <!-- Question  -->
+                    <h6>Are you sure you want to delete this record?</h6>
+                    <button type="button" class="btn btn-secondary mt-3 float-right btn-md ml-3" data-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-danger mt-3 float-right btn-md">Yes</button>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
-{% endblock content %}
-
-{% block scriptContent %}
+{% endblock content %} {% block scriptContent %}
 <!-- DataTables js with extensions for print copy pdf-->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-<script type="text/javascript"
-  src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.21/b-1.6.3/b-flash-1.6.3/b-html5-1.6.3/b-print-1.6.3/datatables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.21/b-1.6.3/b-flash-1.6.3/b-html5-1.6.3/b-print-1.6.3/datatables.min.js"></script>
 <!-- Initialization -->
 <script>
-  $(document).ready(function () {
-    let csrf_token = '{{ csrf_token }}';
-    console.log("AFWWAFAWFAWFAW");
-    loadCustomerTable(csrf_token);
-    initializeCustomerListeners();
-  });
+    $(document).ready(function() {
+        let csrf_token = '{{ csrf_token }}';
+        console.log("AFWWAFAWFAWFAW");
+        loadCustomerTable(csrf_token);
+        initializeCustomerListeners();
+    });
 </script>
 {% endblock scriptContent %}

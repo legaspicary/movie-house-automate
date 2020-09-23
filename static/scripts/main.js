@@ -113,99 +113,99 @@ function loadCustomerTable() {
     $("input[type=date][name$=max]").val(new Date().toISOString().slice(0, 10));
     //function for filtering data according to date range
     let dateRangeFunc = function(settings, data, dataIndex) {
-            let min = new Date($('#min').val()).getTime();
-            let max = new Date($('#max').val()).getTime();
-            let date = new Date(data[0]).getTime();
-            //console.log('DATE IS FROM TIME is:' + date+'\nWhile min and max is:' +min+'<>'+max);
-            if (min <= date && date <= max) {
-                //console.log('THE DATA IS WITHIN RANGE');
-                return true;
-            }
-            //adds the date range filter to the data table
-            $.fn.dataTable.ext.search.push(dateRangeFunc);
-            //redraws the table so that the filter will be in effect
-            $('#min, #max').change(function() {
-                table.draw();
-            });
-            //resets the date range and table
-            $('#resetDateRange').click(function() {
-                $("input[type=date][name$=min]").val(new Date(0).toISOString().slice(0, 10));
-                $("input[type=date][name$=max]").val(new Date().toISOString().slice(0, 10));
-                table.draw();
-            });
+        let min = new Date($('#min').val()).getTime();
+        let max = new Date($('#max').val()).getTime();
+        let date = new Date(data[0]).getTime();
+        //console.log('DATE IS FROM TIME is:' + date+'\nWhile min and max is:' +min+'<>'+max);
+        if (min <= date && date <= max) {
+            //console.log('THE DATA IS WITHIN RANGE');
+            return true;
         }
-        //Listeners unrelated to table are placed here
-    function initializeCustomerListeners(csrf_token) {
-        //ajax form for add customer
-        let form = document.getElementById('addCustomerForm');
-        $('#addCustomerBtn').click(function() {
-            let formData = new FormData(form);
-            $.ajax({
-                url: '',
-                type: 'post',
-                headers: {
-                    //csrf token passed from the dashboard.html template under $(document).ready function
-                    "X-CSRFToken": csrf_token
-                },
-                //data to be passed to django view
-                data: formData,
-                contentType: false,
-                processData: false,
-                //when successful, change the data in table with new data from server
-                success: function(response) {
-                    //update data
-                    data = response.data;
-                    console.log(response.status);
-                    customer_table.clear().draw();
-                    customer_table.rows.add(response.data);
-                    customer_table.columns.adjust().draw();
-                    //resets the input form
-                    form.reset();
-                }
-            });
-            //closes the modal
-            $('#addCustomer').modal('toggle');
+        //adds the date range filter to the data table
+        $.fn.dataTable.ext.search.push(dateRangeFunc);
+        //redraws the table so that the filter will be in effect
+        $('#min, #max').change(function() {
+            table.draw();
+        });
+        //resets the date range and table
+        $('#resetDateRange').click(function() {
+            $("input[type=date][name$=min]").val(new Date(0).toISOString().slice(0, 10));
+            $("input[type=date][name$=max]").val(new Date().toISOString().slice(0, 10));
+            table.draw();
         });
     }
-    //for the view button
+}
+//Listeners unrelated to table are placed here
+function initializeCustomerListeners(csrf_token) {
+    //ajax form for add customer
+    let form = document.getElementById('addCustomerForm');
+    $('#addCustomerBtn').click(function() {
+        let formData = new FormData(form);
+        $.ajax({
+            url: '',
+            type: 'post',
+            headers: {
+                //csrf token passed from the dashboard.html template under $(document).ready function
+                "X-CSRFToken": csrf_token
+            },
+            //data to be passed to django view
+            data: formData,
+            contentType: false,
+            processData: false,
+            //when successful, change the data in table with new data from server
+            success: function(response) {
+                //update data
+                data = response.data;
+                console.log(response.status);
+                customer_table.clear().draw();
+                customer_table.rows.add(response.data);
+                customer_table.columns.adjust().draw();
+                //resets the input form
+                form.reset();
+            }
+        });
+        //closes the modal
+        $('#addCustomer').modal('toggle');
+    });
+}
+//for the view button
 
-    function viewCustomer(button) {
-        //get id
-        let id = button.parentNode.parentNode.parentNode.getAttribute("data-id");
-        //console.log('ID is '+ id);
-        let customer = null;
-        for (let i = 0; i < data.length; i++) {
-            if (data[i].id == id) {
-                customer = data[i];
-                //console.log('found you! '+ JSON.stringify(customer));
-                break;
-            }
-        }
-        //get input elements
-        let inputElements = document.getElementById('viewCustomerForm').querySelectorAll("input");
-        //for looping and assigning values rather than manually assigning values to each input
-        let inputName;
-        for (let i = 0; i < inputElements.length; i++) {
-            inputName = inputElements[i].getAttribute("name");
-            //for radio buttons
-            if (inputName == 'status' || inputName == 'gender') {
-                if (inputElements[i].value == customer[inputName]) {
-                    //console.log('Checking '+ customer[inputName]);
-                    inputElements[i].checked = true;
-                }
-            }
-            //for date types
-            else if (inputName == 'birthdate' && customer[inputName] != null) {
-                inputElements[i].value = new Date(customer[inputName]).toISOString().slice(0, 10);
-            }
-            //TBD
-            else if (inputName == 'profile_picture') {
-
-            } else {
-                console.log(inputName);
-                inputElements[i].value = customer[inputName];
-            }
+function viewCustomer(button) {
+    //get id
+    let id = button.parentNode.parentNode.parentNode.getAttribute("data-id");
+    //console.log('ID is '+ id);
+    let customer = null;
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].id == id) {
+            customer = data[i];
+            //console.log('found you! '+ JSON.stringify(customer));
+            break;
         }
     }
-    // ******************************        CUSTOMER END       **************************
+    //get input elements
+    let inputElements = document.getElementById('viewCustomerForm').querySelectorAll("input");
+    //for looping and assigning values rather than manually assigning values to each input
+    let inputName;
+    for (let i = 0; i < inputElements.length; i++) {
+        inputName = inputElements[i].getAttribute("name");
+        //for radio buttons
+        if (inputName == 'status' || inputName == 'gender') {
+            if (inputElements[i].value == customer[inputName]) {
+                //console.log('Checking '+ customer[inputName]);
+                inputElements[i].checked = true;
+            }
+        }
+        //for date types
+        else if (inputName == 'birthdate' && customer[inputName] != null) {
+            inputElements[i].value = new Date(customer[inputName]).toISOString().slice(0, 10);
+        }
+        //TBD
+        else if (inputName == 'profile_picture') {
+
+        } else {
+            console.log(inputName);
+            inputElements[i].value = customer[inputName];
+        }
+    }
 }
+// ******************************        CUSTOMER END       **************************
