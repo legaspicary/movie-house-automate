@@ -8,11 +8,11 @@ class DVD(models.Model):
 	date_registered = models.DateField(default=datetime.now)
 	director = models.CharField(max_length=50, blank=True)
 	genre = models.CharField(max_length=100, blank=True)
-	release_date = models.DateField(default=datetime.now, blank=True)
+	release_date = models.DateField(blank=True)
 	casts = models.CharField(max_length=500, blank=True)
 	price = models.FloatField(default=0)
 	number_of_items = models.IntegerField(default=0)
-	picture = models.TextField(blank=True)
+	picture = models.FileField(upload_to='dvd_images/')
 	is_deleted = models.BooleanField(default=False)
 	
 	# to show title in admin dashboard

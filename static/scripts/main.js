@@ -9,6 +9,7 @@
 let customer_table = null;
 //data variable to be used for view listener
 let data = null;
+
 function loadCustomerTable() {
     //to be passed to DataTable constructor
     let initialTableSettings = {
@@ -19,10 +20,15 @@ function loadCustomerTable() {
             'print', 'copy', 'pdf', 'excel'
         ],
         //orders the first column as desc by default
-        order: [[0, 'desc']],
+        order: [
+            [0, 'desc']
+        ],
         pagingType: 'full_numbers',
         //the choices for numbers of entries to be shown
-        lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, 'All']],
+        lengthMenu: [
+            [5, 10, 25, 50, -1],
+            [5, 10, 25, 50, 'All']
+        ],
         //positions the table, buttons etc. according to the html code
         dom: `<
                 <"d-flex float-left mb-2"
@@ -67,22 +73,22 @@ function loadCustomerTable() {
             { "data": 'date_registered' },
             { "data": 'firstname' },
             { "data": 'lastname' },
-            { "data": 'birthdate', "defaultContent": "<i>Not Set</i>"},
-            { "data": 'city', "defaultContent": "<i>Not Set</i>"},
+            { "data": 'birthdate', "defaultContent": "<i>Not Set</i>" },
+            { "data": 'city', "defaultContent": "<i>Not Set</i>" },
         ],
         //Adds data-id attribute to each row
-        createdRow: function (row, data, dataIndex) {
+        createdRow: function(row, data, dataIndex) {
             $(row).attr('data-id', data.id);
         },
         //Adds filter function at footer after the datatable has been initialized
-        initComplete: function () {
+        initComplete: function() {
             //get data for view listener
             data = customer_table.ajax.json().data;
-            this.api().columns().every(function () {
+            this.api().columns().every(function() {
                 var column = this;
                 var select = $('<select class="form-control"><option value="">Filter None</option></select>')
                     .appendTo($(column.footer()).empty())
-                    .on('change', function () {
+                    .on('change', function() {
                         let val = $.fn.dataTable.util.escapeRegex(
                             $(this).val()
                         );
@@ -90,7 +96,7 @@ function loadCustomerTable() {
                             .search(val ? '^' + val + '$' : '', true, false)
                             .draw();
                     });
-                column.data().unique().sort().each(function (d, j) {
+                column.data().unique().sort().each(function(d, j) {
                     select.append('<option value="' + d + '">' + d + '</option>');
                 });
             });
@@ -105,7 +111,7 @@ function loadCustomerTable() {
     //sets the maximum default value for the date range
     $("input[type=date][name$=max]").val(new Date().toISOString().slice(0, 10));
     //function for filtering data according to date range
-    let dateRangeFunc = function (settings, data, dataIndex) {
+    let dateRangeFunc = function(settings, data, dataIndex) {
         let min = new Date($('#min').val()).getTime();
         let max = new Date($('#max').val()).getTime();
         let date = new Date(data[0]).getTime();
@@ -114,20 +120,19 @@ function loadCustomerTable() {
             //console.log('THE DATA IS WITHIN RANGE');
             return true;
         }
-        return false;
+        //adds the date range filter to the data table
+        $.fn.dataTable.ext.search.push(dateRangeFunc);
+        //redraws the table so that the filter will be in effect
+        $('#min, #max').change(function() {
+            table.draw();
+        });
+        //resets the date range and table
+        $('#resetDateRange').click(function() {
+            $("input[type=date][name$=min]").val(new Date(0).toISOString().slice(0, 10));
+            $("input[type=date][name$=max]").val(new Date().toISOString().slice(0, 10));
+            table.draw();
+        });
     }
-    //adds the date range filter to the data table
-    $.fn.dataTable.ext.search.push(dateRangeFunc);
-    //redraws the table so that the filter will be in effect
-    $('#min, #max').change(function () {
-        table.draw();
-    });
-    //resets the date range and table
-    $('#resetDateRange').click(function () {
-        $("input[type=date][name$=min]").val(new Date(0).toISOString().slice(0, 10));
-        $("input[type=date][name$=max]").val(new Date().toISOString().slice(0, 10));
-        table.draw();
-    });
 }
 //adding customer
 let addCustomerListener = function(csrf_token,form){
@@ -204,18 +209,94 @@ let updateCustomerListener = function (csrf_token,form) {
 function initializeCustomerListeners(csrf_token) {
     //ajax form for add customer
     let form = document.getElementById('addCustomerForm');
+<<<<<<< HEAD
     form.addEventListener('submit',function(e){e.preventDefault();});
     $('#addCustomerBtn').click(addCustomerListener(csrf_token,form));
+||||||| a9c59b2
+    $('#addCustomerBtn').click(function () {
+        let formData = new FormData(form);
+        $.ajax({
+            url: '',
+            type: 'post',
+            headers: {
+                //csrf token passed from the dashboard.html template under $(document).ready function
+                "X-CSRFToken": csrf_token
+            },
+            //data to be passed to django view
+            data: formData,
+            contentType: false,
+            processData: false,
+            //when successful, change the data in table with new data from server
+            success: function (response) {
+                //update data
+                data = response.data;
+                console.log(response.status);
+                customer_table.clear().draw();
+                customer_table.rows.add(response.data);
+                customer_table.columns.adjust().draw();
+                //resets the input form
+                form.reset();
+            }
+        });
+        //closes the modal
+        $('#addCustomer').modal('toggle');
+    });
+=======
+    $('#addCustomerBtn').click(function() {
+        let formData = new FormData(form);
+        $.ajax({
+            url: '',
+            type: 'post',
+            headers: {
+                //csrf token passed from the dashboard.html template under $(document).ready function
+                "X-CSRFToken": csrf_token
+            },
+            //data to be passed to django view
+            data: formData,
+            contentType: false,
+            processData: false,
+            //when successful, change the data in table with new data from server
+            success: function(response) {
+                //update data
+                data = response.data;
+                console.log(response.status);
+                customer_table.clear().draw();
+                customer_table.rows.add(response.data);
+                customer_table.columns.adjust().draw();
+                //resets the input form
+                form.reset();
+            }
+        });
+        //closes the modal
+        $('#addCustomer').modal('toggle');
+    });
+>>>>>>> 6fa5f88dc437bdc17613e3af103d3b050eb3ca9c
 }
 //for the view button
+<<<<<<< HEAD
 function viewCustomer(button){
+||||||| a9c59b2
+
+function viewCustomer(button){
+=======
+
+function viewCustomer(button) {
+>>>>>>> 6fa5f88dc437bdc17613e3af103d3b050eb3ca9c
     //get id
     let id = button.parentNode.parentNode.parentNode.getAttribute("data-id");
     //console.log('ID is '+ id);
     let customer = null;
+<<<<<<< HEAD
     for(let i = 0; i < data.length; i++){
         //data here is the latest json from ajax call
         if(data[i].id == id){
+||||||| a9c59b2
+    for(let i = 0; i < data.length; i++){
+        if(data[i].id == id){
+=======
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].id == id) {
+>>>>>>> 6fa5f88dc437bdc17613e3af103d3b050eb3ca9c
             customer = data[i];
             //console.log('found you! '+ JSON.stringify(customer));
             break;
@@ -225,27 +306,26 @@ function viewCustomer(button){
     let inputElements = document.getElementById('viewCustomerForm').querySelectorAll("input");
     //for looping and assigning values rather than manually assigning values to each input
     let inputName;
-    for(let i = 0; i < inputElements.length; i++){
+    for (let i = 0; i < inputElements.length; i++) {
         inputName = inputElements[i].getAttribute("name");
         //for radio buttons
-        if(inputName == 'status' || inputName == 'gender'){
-            if(inputElements[i].value == customer[inputName]){
+        if (inputName == 'status' || inputName == 'gender') {
+            if (inputElements[i].value == customer[inputName]) {
                 //console.log('Checking '+ customer[inputName]);
                 inputElements[i].checked = true;
             }
         }
         //for date types
-        else if(inputName == 'birthdate' && customer[inputName] != null){
+        else if (inputName == 'birthdate' && customer[inputName] != null) {
             inputElements[i].value = new Date(customer[inputName]).toISOString().slice(0, 10);
         }
         //TBD
-        else if(inputName == 'profile_picture'){
+        else if (inputName == 'profile_picture') {
 
-        }
-        else{
+        } else {
             console.log(inputName);
             inputElements[i].value = customer[inputName];
         }
     }
 }
-//******************************        CUSTOMER END       **************************
+// ******************************        CUSTOMER END       **************************

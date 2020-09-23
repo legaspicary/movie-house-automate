@@ -1,6 +1,6 @@
 {% extends "customer/base.html" %} {% block dependencies %}
 <!-- Script Files -->
-<script src="/static/scripts/dashboard.js"></script>
+<!-- <script src="/static/scripts/dashboard.js"></script> -->
 
 <!-- Data Tables CSS with Extension features -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.21/b-1.6.3/b-html5-1.6.3/datatables.min.css" /> {% endblock dependencies %} {% block content %}
@@ -74,28 +74,6 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {% for dvd in dvds %}
-                        <tr>
-                            <td>{{dvd.date_registered}}</td>
-                            <td>{{dvd.genre}}</td>
-                            <td>{{dvd.title}}</td>
-                            <td>{{dvd.release_date}}</td>
-                            <td>PHP {{dvd.price}}</td>
-                            <td>{{dvd.number_of_items}}</td>
-                            <td class="text-center">
-                                <div class="button-container">
-                                    <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-view" data-toggle="modal" data-target="#viewDVD">
-                                        <i class="far fa-eye"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-delete" data-toggle="modal" data-target="#deleteRow">
-                                        <i class="far fa-trash-alt"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        {% endfor%}
-                    </tbody>
                     <tfoot>
                         <tr>
                             <th></th>
@@ -115,7 +93,7 @@
 
 <!-- Add DVD Modal -->
 <div class="modal fade" id="addDVD" data-backdrop="static">
-    <div class="modal-dialog modal-l">
+    <div class="modal-dialog">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
@@ -124,21 +102,21 @@
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-                <form class="needs-validation" method="post">
+                <form id="addDvdForm" class="needs-validation" method="POST" aria-autocomplete="off" autocomplete="off" action="" enctype="multipart/form-data">
                     {% csrf_token %}
                     <!-- DVD Title, Director, Genre -->
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="title" class="">DVD Title</label>
-                            <input type="text" class="form-control" id="add-title" name="add-title" placeholder="Kaguya-sama Love is War?" required>
+                            <input type="text" class="form-control" id="add-title" name="add-title" placeholder="Kaguya-sama Love is War?" value="testing title" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="director" class="">Director</label>
-                            <input type="text" class="form-control" id="add-director" name="add-director" placeholder="Shinichi Omata" required>
+                            <input type="text" class="form-control" id="add-director" name="add-director" placeholder="Shinichi Omata" value="testing" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="Genre" class="">Genre</label>
-                            <input type="text" class="form-control" id="add-genre" name="add-genre" placeholder="RomCom" required>
+                            <input type="text" class="form-control" id="add-genre" name="add-genre" placeholder="RomCom" value="testing" required>
                         </div>
                     </div>
                     <!-- Release Date -->
@@ -152,7 +130,7 @@
                     <div class="form-group">
                         <label for="casts">Casts</label>
                         <div class="input-group" id="casts">
-                            <input type="text" class="form-control" id="add-casts" name="add-casts" placeholder="Last Name, First Name" aria-label="Cast's Full Name" aria-describedby="basic-addon2" required>
+                            <input type="text" class="form-control" id="add-casts" name="add-casts" placeholder="Last Name, First Name" aria-label="Cast's Full Name" aria-describedby="basic-addon2" value="testing" required>
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary" type="button">Add</button>
                             </div>
@@ -165,20 +143,20 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Php</span>
                             </div>
-                            <input type="number" value="1000" min="0" step="50" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" id="add-price" name="add-price" oninput="this.value = Math.abs(this.value)" />
+                            <input type="number" value="1000" min="0" max="50000" step="50" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" id="add-price" name="add-price" oninput="this.value = Math.abs(this.value)" />
                         </div>
                     </div>
                     <!-- No of Items -->
                     <div class="form-group">
-                        <label for="noOfItems">Number of Items</label>
-                        <input type="number" class="form-control" id="add-number_of_items" name="add-number_of_items" min="0" value="0" oninput="this.value = Math.abs(this.value)">
+                        <label for="number_of_items">Number of Items</label>
+                        <input type="number" class="form-control" id="add-number_of_items" name="add-number_of_items" min="0" max="500" value="0" oninput="this.value = Math.abs(this.value)">
                     </div>
                     <!-- Images -->
                     <div class="form-group">
                         <label for="picture">Images</label>
                         <input type="file" class="form-control-file" id="add-picture" name="add-picture" required multiple>
                     </div>
-                    <button type="submit" class="btn btn-primary mt-3 float-right btn-md">Add</button>
+                    <button id="addDvdBtn" type="submit" class="btn btn-primary mt-3 float-right btn-md">Add</button>
                 </form>
             </div>
         </div>
@@ -186,8 +164,8 @@
 </div>
 
 <!-- View DVD Modal -->
-<div class="modal fade" id="viewDVD">
-    <div class="modal-dialog modal-l">
+<div class="modal fade" id="viewDvd">
+    <div class="modal-dialog">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
@@ -196,35 +174,34 @@
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-                <form class="needs-validation">
-                    {% csrf_token %}
+                <form id="viewDvdForm" class="needs-validation">
                     <!-- DVD Title, Director, Genre -->
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="title" class="">DVD Title</label>
-                            <input type="text" class="form-control" id="view-title" name="view-title" placeholder="Kaguya-sama Love is War?" required>
+                            <input type="text" class="form-control" id="title" name="title" placeholder="Kaguya-sama Love is War?" minlength="0" maxlength="50" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="director" class="">Director</label>
-                            <input type="text" class="form-control" id="view-director" name="view-director" placeholder="Shinichi Omata" required>
+                            <input type="text" class="form-control" id="director" name="director" placeholder="Shinichi Omata" minlength="0" maxlength="50" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="Genre" class="">Genre</label>
-                            <input type="text" class="form-control" id="view-lastName" name="view-genre" placeholder="RomCom" required>
+                            <input type="text" class="form-control" id="lastName" name="genre" placeholder="RomCom" minlength="0" maxlength="50" required>
                         </div>
                     </div>
                     <!-- Release Date -->
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="bdate" class="">Release Date</label>
-                            <input type="date" class="form-control" id="view-releasedate" name="view-releasedate" required>
+                            <input type="date" class="form-control" id="release_date" name="release_date" required>
                         </div>
                     </div>
                     <!-- Casts -->
                     <div class="form-group">
                         <label for="casts">Casts</label>
                         <div class="input-group" id="casts">
-                            <input type="text" class="form-control" id="view-casts" name="view-casts" placeholder="Last Name, First Name" aria-label="Cast's Full Name" aria-describedby="basic-addon2" required>
+                            <input type="text" class="form-control" id="casts" name="casts" placeholder="Last Name, First Name" aria-label="Cast's Full Name" aria-describedby="basic-addon2" minlength="0" maxlength="100" required>
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary" type="button">Add</button>
                             </div>
@@ -237,18 +214,18 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Php</span>
                             </div>
-                            <input type="number" value="1000" min="0" step="50" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" id="view-price" name="view-price" oninput="this.value = Math.abs(this.value)" />
+                            <input type="number" value="1000" min="0" step="50" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" id="price" name="price" oninput="this.value = Math.abs(this.value)" />
                         </div>
                     </div>
                     <!-- No of Items -->
                     <div class="form-group">
                         <label for="noOfItems">Number of Items</label>
-                        <input type="number" class="form-control" id="view-noOfItems" name="view-noOfItems" min="0" value="0" oninput="this.value = Math.abs(this.value)">
+                        <input type="number" class="form-control" id="number_of_items" name="number_of_items" min="0" value="0" oninput="this.value = Math.abs(this.value)">
                     </div>
                     <!-- Images -->
                     <div class="form-group">
                         <label for="picture">Images</label>
-                        <input type="file" class="form-control-file" id="view-picture" name="view-picture" required multiple>
+                        <input type="file" class="form-control-file" id="picture" name="picture" required multiple>
                     </div>
                     <button type="button" class="btn btn-secondary mt-3 float-right btn-md ml-3" data-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-success mt-3 float-right btn-md">Update</button>
@@ -285,6 +262,22 @@
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.21/b-1.6.3/b-flash-1.6.3/b-html5-1.6.3/b-print-1.6.3/datatables.min.js"></script>
 <!-- Initialization -->
 <script>
+    token = '{{ csrf_token }}';
+    initializedDvdListeners(token);
+    let dvd_table = null;
+    let data = null;
+    $(document).keydown(function(event) {
+        if (event.keyCode == 27) {
+            if ($('.modal.show').length) {
+                // $('#addDVD').hide();
+                // $('#addDVD').fadeOut(500);
+                // window.close();
+                jQuery("#addDVD").modal('toggle');
+                jQuery("#viewDVD").modal('toggle');
+                // console.log($('#myModal').is(':visible'));
+            }
+        }
+    });
     $(document).ready(function() {
         let initialTableSettings = {
             searching: true,
@@ -314,11 +307,53 @@
                 >   
             >
         >`,
-            "columnDefs": [{
-                "orderable": false,
-                "targets": 6
-            }],
+            columnDefs: [
+                //removes the sort buttons in the buttons column
+                {
+                    orderable: false,
+                    "targets": 6
+                },
+                //Adds View Delete buttons to every row in the datatable
+                {
+                    targets: 6,
+                    data: null,
+                    defaultContent: `<div class="button-container">
+                        <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-view" data-toggle="modal" data-target="#viewDvd" onclick="viewDvd(this)">
+                            <i class="far fa-eye"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-delete" data-toggle="modal" data-target="#deleteRow">
+                            <i class="far fa-trash-alt"></i>
+                        </button>
+                    </div>`
+                }
+            ],
+            //alternatively you can use the syntax-->>>  ajax: "{% url 'customer:customer_dashboard' %}",
+            ajax: {
+                //empty means this will just redirect to the current url of the page
+                url: '',
+                dataSrc: "data"
+            },
+            //matches the data to appropriate column
+            columns: [{
+                "data": 'date_registered'
+            }, {
+                "data": 'genre'
+            }, {
+                "data": 'title'
+            }, {
+                "data": 'release_date'
+            }, {
+                "data": 'price'
+            }, {
+                "data": 'number_of_items'
+            }, ],
+            //Adds data-id attribute to each row
+            createdRow: function(row, data, dataIndex) {
+                $(row).attr('data-sku', data.sku);
+            },
             initComplete: function() {
+                // get data for view button listener
+                data = dvd_table.ajax.json().data;
                 this.api().columns().every(function() {
                     var column = this;
                     var select = $('<select class="form-control"><option value="">Filter None</option></select>')
@@ -338,10 +373,10 @@
             }
         }
         let table = $('#dvdTable').DataTable(initialTableSettings);
+        dvd_table = table;
         $("input[type=date][name$=min]").val(new Date(0).toISOString().slice(0, 10));
         $("input[type=date][name$=max]").val(new Date().toISOString().slice(0, 10));
         let dateRangeFunc = function(settings, data, dataIndex) {
-            console.log("RANGE FUNCTION")
             let min = new Date($('#min').val()).getTime();
             let max = new Date($('#max').val()).getTime();
             let date = new Date(data[0]).getTime();
@@ -361,20 +396,86 @@
             $("input[type=date][name$=max]").val(new Date().toISOString().slice(0, 10));
             table.draw();
         });
-        // $('#addDVD').on('submit', function(e) {
-        //     e.preventDefault();
-        //     console.log('prevent refresh');
-
-        //     $.ajax({
-        //         type: 'POST',
-        //         data: {
-        //             addtitle: $('#add-title').val,
-        //         },
-        //         success: function() {
-        //             // $('#addDVD').modal('hide');
-        //         }
-        //     })
-        // });
     });
+    //ajax form for add dvd
+    function initializedDvdListeners(csrf_token) {
+        let form = document.getElementById('addDvdForm');
+        $('#addDvdBtn').click(function() {
+            console.log('addDvdbutton');
+            let formData = new FormData(form);
+            $.ajax({
+                url: '',
+                type: 'post',
+                headers: {
+                    "X-CSRFToken": '{% csrf_token %}'
+                },
+                //data to be passed to django view
+                data: formData,
+                contentType: false,
+                processData: false,
+                //when successful, change the data in table with new data from server
+                success: function() {
+                    data = response.data;
+                    console.log('success');
+                    //resets the input form
+                    dvd_table.clear().draw();
+                    dvd_table.rows.add(response.data);
+                    dvd_table.columns.adjust().draw();
+                    form.reset();
+                },
+                error: function() {
+                    console.log('failed')
+                }
+            });
+            //closes the modal
+            $('#addDvd').modal('toggle');
+        });
+    }
+
+
+    function viewDvd(button) {
+        console.log('viewDvd');
+
+        //get id
+        let sku = button.parentNode.parentNode.parentNode.getAttribute("data-sku");
+        //console.log('ID is '+ id);
+        let dvd = null;
+        for (let i = 0; i < data.length; i++) {
+            console.log('sku = ' + sku);
+            console.log('data sku = ' + data[i].sku);
+            if (data[i].sku == sku) {
+                dvd = data[i];
+                //console.log('found you! '+ JSON.stringify(customer));
+                break;
+            }
+        }
+        //get input elements
+        let inputElements = document.getElementById('viewDvdForm').querySelectorAll("input");
+        //for looping and assigning values rather than manually assigning values to each input
+        let inputName;
+        for (let i = 0; i < inputElements.length; i++) {
+            inputName = inputElements[i].getAttribute("name");
+            // console.log('0000 - ' + dvd[inputName]);
+            //for radio buttons
+            // if (inputName == 'status' || inputName == 'gender') {
+            //     if (inputElements[i].value == dvd[inputName]) {
+            //         //console.log('Checking '+ customer[inputName]);
+            //         inputElements[i].checked = true;
+            //     }
+            // }
+            // //for date types
+            if (inputName == 'releasedate' && dvd[inputName] != null) {
+                inputElements[i].value = new Date(dvd[inputName]).toISOString().slice(0, 10);
+            }
+            //TBD
+            else if (inputName == 'picture') {
+
+            } else {
+                console.log(inputName);
+                console.log('xx - ' + dvd[inputName]); // undefined output
+                inputElements[i].value = dvd[inputName];
+            }
+        }
+    }
 </script>
 {% endblock scriptContent %}
