@@ -10,7 +10,7 @@ class CustomerForm(forms.ModelForm):
     brgy = forms.CharField(required=False)
     city = forms.CharField(required=False)
     state = forms.CharField(required=False)
-    zip = forms.IntegerField(required=False)
+    zip = forms.CharField(required=False)
     country = forms.CharField(required=False)
     gender = forms.CharField(required=False)
     birthdate = forms.DateField(required=False)
@@ -23,6 +23,8 @@ class CustomerForm(forms.ModelForm):
         model = Customer
         # fields to check for is_valid() method
         fields = (  'firstname', 'middlename', 'lastname',
+                    #email
+                    'email',
                     #address
                     'street', 'brgy', 'city', 'state', 'zip', 'country',
                     'gender',

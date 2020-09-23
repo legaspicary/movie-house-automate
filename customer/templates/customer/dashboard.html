@@ -117,7 +117,7 @@
         <!-- Add Customer Form -->
         <form id="addCustomerForm" enctype="multipart/form-data" name="addCustomerForm" action="" method="POST" class="needs-validation" aria-autocomplete="off" autocomplete="off">{% csrf_token %}
           <!-- Full name -->
-          <h6>Name</h6>
+          <h6>Email & Name</h6>
           <div class="form-row">
             <div class="form-group col-md-4">
               <label for="addFirstName" class="sr-only">First</label>
@@ -131,6 +131,11 @@
               <label for="addLastName" class="sr-only">Last</label>
               <input type="text" class="form-control" id="addLastName" name="lastname" placeholder="Last Name" required>
             </div>
+            <div class="form-group col-md-12">
+              <label for="addEmail" class="sr-only">Email</label>
+              <input type="email" class="form-control" id="addEmail" name="email" placeholder="Email" required>
+              <div class="invalid-feedback">Email already exists.</div>
+            </div>
           </div>
           <!-- Address -->
           <h6>Address</h6>
@@ -143,15 +148,19 @@
               <label for="addBrgy" class="sr-only">Barangay</label>
               <input type="text" class="form-control" id="addBrgy" name="brgy" placeholder="Barangay" >
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-7">
               <label for="addCity" class="sr-only">City</label>
               <input type="text" class="form-control" id="addCity" name="city" placeholder="City" >
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-5">
               <label for="addState" class="sr-only">State</label>
               <input type="text" class="form-control" id="addState" name="state" placeholder="State" >
             </div>
-            <div class="form-group col-md-2">
+            <div class="form-group col-md-9">
+              <label for="addCountry" class="sr-only">Country</label>
+              <input type="text" class="form-control" id="addCountry" name="country" placeholder="Country" >
+            </div>
+            <div class="form-group col-md-3">
               <label for="addZip" class="sr-only">Zip</label>
               <input type="text" class="form-control" id="addZip" name="zip" placeholder="Zip" >
             </div>
@@ -243,7 +252,7 @@
               <input type="file" accept="image/*" class="form-control-file" id="addPicture" name="profile_picture">
             </div>
           </div>
-          <button id="addCustomerBtn" type="button" class="btn btn-primary mt-3 float-right btn-md">Add</button>
+          <button id="addCustomerBtn" type="submit" class="btn btn-primary mt-3 float-right btn-md">Add</button>
         </form>
       </div>
     </div>
@@ -263,7 +272,7 @@
       <div class="modal-body">
         <form id="viewCustomerForm" class="needs-validation" aria-autocomplete="off" autocomplete="off">
           <!-- Full name -->
-          <h6>Name</h6>
+          <h6>Email & Name</h6>
           <div class="form-row">
             <div class="form-group col-md-4">
               <label for="firstName" class="sr-only">First</label>
@@ -277,6 +286,11 @@
               <label for="lastName" class="sr-only">Last</label>
               <input type="text" class="form-control" id="lastName" name="lastname" placeholder="Last Name" required>
             </div>
+            <div class="form-group col-md-12">
+              <label for="email" class="sr-only">Last</label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+              <div class="invalid-feedback">Email already exists.</div>
+            </div>
           </div>
           <!-- Address -->
           <h6>Address</h6>
@@ -289,15 +303,19 @@
               <label for="brgy" class="sr-only">Barangay</label>
               <input type="text" class="form-control" id="brgy" name="brgy" placeholder="Barangay" >
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-7">
               <label for="city" class="sr-only">City</label>
               <input type="text" class="form-control" id="city" name="city" placeholder="City" >
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-5">
               <label for="state" class="sr-only">State</label>
               <input type="text" class="form-control" id="state" name="state" placeholder="State" >
             </div>
-            <div class="form-group col-md-2">
+            <div class="form-group col-md-9">
+              <label for="country" class="sr-only">Country</label>
+              <input type="text" class="form-control" id="country" name="country" placeholder="country" >
+            </div>
+            <div class="form-group col-md-3">
               <label for="zip" class="sr-only">Zip</label>
               <input type="text" class="form-control" id="zip" name="zip" placeholder="Zip" >
             </div>
@@ -430,8 +448,8 @@
   $(document).ready(function () {
     let csrf_token = '{{ csrf_token }}';
     console.log("AFWWAFAWFAWFAW");
-    loadCustomerTable(csrf_token);
-    initializeCustomerListeners();
+    loadCustomerTable();
+    initializeCustomerListeners(csrf_token);
   });
 </script>
 {% endblock scriptContent %}

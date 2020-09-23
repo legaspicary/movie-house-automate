@@ -30,19 +30,26 @@ class CustomerView(View):
         return render(request, 'customer/dashboard.html', context)
     def post(self,request):
         if request.is_ajax():
-            form = CustomerForm(request.POST)
-            print("is form valid?"+str(form.is_valid()))
-            print(request.POST.get('zip'))
-            print(request.POST.get('status'))
-            if form.is_valid():
-                #print(form.cleaned_data['city'])
-                customer = form.save()
-                print('customer after save:')
-                print(customer.gender)
-                print(customer.status)
+            status = 500
+            email_available = True
+            email_msg = 'available'
+
+            if Customer.objects.filter(email=request.POST.get('email')).exists():
+                email_available = False
+                email_msg = 'unavailable'
+                print('email unavailable')
+            if email_available:
+                form = CustomerForm(request.POST)
+                print("is form valid?"+str(form.is_valid()))
+                if form.is_valid():
+                    #print(form.cleaned_data['city'])
+                    customer = form.save()
+                    status = 200
+                    print('customer '+customer.firstname+' saved')
+
             arr = list(Customer.objects.filter(is_deleted=False).values())
             format_date(arr)
-            json = {'data':arr,'status':'Saved from the database, passing new data'}
-            return JsonResponse(json)
+            json = {'data':arr,'status':'Finished processing data from views','email': email_msg}
+            return JsonResponse(json,status=status)
         else:
             return render(request,'customer/dashboard.html')

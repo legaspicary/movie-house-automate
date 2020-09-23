@@ -17,7 +17,7 @@ class Person(models.Model):
     brgy = models.CharField(max_length=50,blank=True,null=True)
     city = models.CharField(max_length=50,blank=True,null=True)
     state = models.CharField(max_length=20,blank=True,null=True)
-    zip = models.IntegerField(default=0,blank=True,null=True)
+    zip = models.CharField(max_length=10,blank=True,null=True)
     country = models.CharField(max_length=70,blank=True,null=True)
     # gender, to be replaced by TextChoices in Django
     gender = models.CharField(max_length=6,blank=True,null=True)
@@ -43,6 +43,7 @@ class Customer(Person):
     profile_picture = models.CharField(max_length=100,blank=True,null=True)
     # date registered
     date_registered = models.DateField(default=datetime.now())
-
+    # email
+    email = models.CharField(max_length=100)
     class Meta:
         db_table = "Customer"
