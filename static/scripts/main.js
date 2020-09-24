@@ -156,7 +156,7 @@ let addCustomerListener = function(csrf_token,form){
                 success: function (response) {
                     //update data
                     data = response.data;
-                    console.log(response.status);
+                    console.log('printing profile: '+response.data[0].profile_picture);
                     customer_table.clear().draw();
                     customer_table.rows.add(response.data);
                     customer_table.columns.adjust().draw();
@@ -165,7 +165,7 @@ let addCustomerListener = function(csrf_token,form){
                     $('#addCustomer').modal('toggle');
                 },
                 error: function(response){
-                    console.log('email response:' +response.responseJSON.email);
+                    //console.log('email response:' +response.responseJSON.email);
                     if (response.responseJSON.email == 'unavailable') {
                         console.log('trying to insert invalid class');
                         email.classList.add('is-invalid');
@@ -209,94 +209,18 @@ let updateCustomerListener = function (csrf_token,form) {
 function initializeCustomerListeners(csrf_token) {
     //ajax form for add customer
     let form = document.getElementById('addCustomerForm');
-<<<<<<< HEAD
     form.addEventListener('submit',function(e){e.preventDefault();});
     $('#addCustomerBtn').click(addCustomerListener(csrf_token,form));
-||||||| a9c59b2
-    $('#addCustomerBtn').click(function () {
-        let formData = new FormData(form);
-        $.ajax({
-            url: '',
-            type: 'post',
-            headers: {
-                //csrf token passed from the dashboard.html template under $(document).ready function
-                "X-CSRFToken": csrf_token
-            },
-            //data to be passed to django view
-            data: formData,
-            contentType: false,
-            processData: false,
-            //when successful, change the data in table with new data from server
-            success: function (response) {
-                //update data
-                data = response.data;
-                console.log(response.status);
-                customer_table.clear().draw();
-                customer_table.rows.add(response.data);
-                customer_table.columns.adjust().draw();
-                //resets the input form
-                form.reset();
-            }
-        });
-        //closes the modal
-        $('#addCustomer').modal('toggle');
-    });
-=======
-    $('#addCustomerBtn').click(function() {
-        let formData = new FormData(form);
-        $.ajax({
-            url: '',
-            type: 'post',
-            headers: {
-                //csrf token passed from the dashboard.html template under $(document).ready function
-                "X-CSRFToken": csrf_token
-            },
-            //data to be passed to django view
-            data: formData,
-            contentType: false,
-            processData: false,
-            //when successful, change the data in table with new data from server
-            success: function(response) {
-                //update data
-                data = response.data;
-                console.log(response.status);
-                customer_table.clear().draw();
-                customer_table.rows.add(response.data);
-                customer_table.columns.adjust().draw();
-                //resets the input form
-                form.reset();
-            }
-        });
-        //closes the modal
-        $('#addCustomer').modal('toggle');
-    });
->>>>>>> 6fa5f88dc437bdc17613e3af103d3b050eb3ca9c
 }
 //for the view button
-<<<<<<< HEAD
 function viewCustomer(button){
-||||||| a9c59b2
-
-function viewCustomer(button){
-=======
-
-function viewCustomer(button) {
->>>>>>> 6fa5f88dc437bdc17613e3af103d3b050eb3ca9c
     //get id
     let id = button.parentNode.parentNode.parentNode.getAttribute("data-id");
     //console.log('ID is '+ id);
     let customer = null;
-<<<<<<< HEAD
     for(let i = 0; i < data.length; i++){
         //data here is the latest json from ajax call
         if(data[i].id == id){
-||||||| a9c59b2
-    for(let i = 0; i < data.length; i++){
-        if(data[i].id == id){
-=======
-    for (let i = 0; i < data.length; i++) {
-        if (data[i].id == id) {
->>>>>>> 6fa5f88dc437bdc17613e3af103d3b050eb3ca9c
             customer = data[i];
             //console.log('found you! '+ JSON.stringify(customer));
             break;
@@ -321,11 +245,30 @@ function viewCustomer(button) {
         }
         //TBD
         else if (inputName == 'profile_picture') {
-
+            console.log('profile picture is:'+ customer[inputName])
+            document.getElementById('thumbnail').setAttribute("src",customer[inputName]);
         } else {
-            console.log(inputName);
+            //console.log(inputName);
             inputElements[i].value = customer[inputName];
         }
+    }
+}
+function uploadImg(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#thumbnail').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+function addUploadImg(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#addThumbnail').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
     }
 }
 // ******************************        CUSTOMER END       **************************

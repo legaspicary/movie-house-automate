@@ -1,7 +1,7 @@
 from django.db import models
 #from datetime import datetime
 from datetime import datetime
-
+import os
 # Base model for customer
 
 
@@ -40,10 +40,21 @@ class Person(models.Model):
 
 class Customer(Person):
     # picture, todo: search efficient ways of storing pictures in a server
-    profile_picture = models.CharField(max_length=100,blank=True,null=True)
+    profile_picture = models.ImageField(blank=True,null=True,upload_to="images/")
     # date registered
     date_registered = models.DateField(default=datetime.now())
     # email
     email = models.CharField(max_length=100)
     class Meta:
         db_table = "Customer"
+
+    def get_profile_picture(self):
+        if self.profile_picture:
+            return self.profile_picture.url
+        else:
+            return '/static/img/profile_default.png'
+
+def content_file_name(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = "%s_%s.%s" % ('customer', instance.id, ext)
+    return os.path.join('images', filename)

@@ -5,6 +5,7 @@ from .models import Customer
 
 
 class CustomerForm(forms.ModelForm):
+    profile_picture = forms.ImageField(required=False)
     middlename = forms.CharField(required=False)
     street = forms.CharField(required=False)
     brgy = forms.CharField(required=False)
@@ -30,8 +31,9 @@ class CustomerForm(forms.ModelForm):
                     'gender',
                     'birthdate',
                     #family info
-                    'status', 'spouse_name', 'spouse_occupation', 'no_of_children'
-                    #'profile_picture,
+                    'status', 'spouse_name', 'spouse_occupation', 'no_of_children',
+                    #picture
+                    'profile_picture'
                     )
 
     def __docstring__(self):

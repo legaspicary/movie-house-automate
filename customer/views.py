@@ -16,12 +16,24 @@ def format_date(customers):
         if customer['birthdate']:
             customer['birthdate'] = customer['birthdate'].strftime("%B %d, %Y")
 
+#Gets the profile picture url for each customer
+def prepare_profile_url(customer_dict,customers):
+    for i in range(len(customers)):
+        customer_dict[i]['profile_picture'] = customers[i].get_profile_picture()
+
+#Returns list for customers from db
+def get_customers():
+    customers = Customer.objects.filter(is_deleted=False)
+    customer_dict = customers.values()
+    format_date(customer_dict)
+    prepare_profile_url(customer_dict,customers)
+    return list(customer_dict)
+
 class CustomerView(View):
     def get(self, request):
         if request.is_ajax():
             #does not include deleted customer
-            arr = list(Customer.objects.filter(is_deleted=False).values())
-            format_date(arr)
+            arr = get_customers()
             json = {'data':arr}
             return JsonResponse(json)
         context = {
@@ -39,16 +51,19 @@ class CustomerView(View):
                 email_msg = 'unavailable'
                 print('email unavailable')
             if email_available:
-                form = CustomerForm(request.POST)
+                form = CustomerForm(request.POST,request.FILES)
+                print(request.FILES)
                 print("is form valid?"+str(form.is_valid()))
                 if form.is_valid():
                     #print(form.cleaned_data['city'])
-                    customer = form.save()
+                    customer = form.save(commit=False)
+                    customer.profile_picture = request.FILES.get('profile_picture','')
+                    customer.save()
                     status = 200
                     print('customer '+customer.firstname+' saved')
+                    #print('customer picture:'+customer.profile_picture.url+' saved')
 
-            arr = list(Customer.objects.filter(is_deleted=False).values())
-            format_date(arr)
+            arr = get_customers()
             json = {'data':arr,'status':'Finished processing data from views','email': email_msg}
             return JsonResponse(json,status=status)
         else:
