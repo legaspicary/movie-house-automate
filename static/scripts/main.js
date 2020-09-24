@@ -11,7 +11,6 @@ let customer_table = null;
 let data = null;
 
 function loadCustomerTable() {
-    console.log('ID is awfawfwa');
     //to be passed to DataTable constructor
     let initialTableSettings = {
         //enables search bar
@@ -135,48 +134,93 @@ function loadCustomerTable() {
         });
     }
 }
+//adding customer
+let addCustomerListener = function(csrf_token,form){
+    return function () {
+        let email = document.getElementById('addEmail');
+        email.classList.remove('is-invalid');
+        if(form.checkValidity()){
+            let formData = new FormData(form);//.append('action','add');
+            $.ajax({
+                url: '',
+                type: 'post',
+                headers: {
+                    //csrf token passed from the dashboard.html template under $(document).ready function
+                    "X-CSRFToken": csrf_token
+                },
+                //data to be passed to django view
+                data: formData,
+                contentType: false,
+                processData: false,
+                //when successful, change the data in table with new data from server
+                success: function (response) {
+                    //update data
+                    data = response.data;
+                    console.log('printing profile: '+response.data[0].profile_picture);
+                    customer_table.clear().draw();
+                    customer_table.rows.add(response.data);
+                    customer_table.columns.adjust().draw();
+                    //resets the input form
+                    form.reset();
+                    $('#addCustomer').modal('toggle');
+                },
+                error: function(response){
+                    //console.log('email response:' +response.responseJSON.email);
+                    if (response.responseJSON.email == 'unavailable') {
+                        console.log('trying to insert invalid class');
+                        email.classList.add('is-invalid');
+                    }
+                }
+            });
+        }
+    }
+}
+//updating customer
+let updateCustomerListener = function (csrf_token,form) {
+    let formData = new FormData(form).append('type','update');
+    $.ajax({
+        url: '',
+        type: 'post',
+        headers: {
+            //csrf token passed from the dashboard.html template under $(document).ready function
+            "X-CSRFToken": csrf_token
+        },
+        //data to be passed to django view
+        data: formData,
+        contentType: false,
+        processData: false,
+        //when successful, change the data in table with new data from server
+        success: function (response) {
+            console.log('Successfully updated customer');
+            //update data
+            data = response.data;
+            console.log(response.status);
+            customer_table.clear().draw();
+            customer_table.rows.add(response.data);
+            customer_table.columns.adjust().draw();
+            //resets the input form
+            form.reset();
+        }
+    });
+    //closes the modal
+    $('#viewCustomer').modal('toggle');
+}
 //Listeners unrelated to table are placed here
 function initializeCustomerListeners(csrf_token) {
     //ajax form for add customer
     let form = document.getElementById('addCustomerForm');
-    $('#addCustomerBtn').click(function() {
-        let formData = new FormData(form);
-        $.ajax({
-            url: '',
-            type: 'post',
-            headers: {
-                //csrf token passed from the dashboard.html template under $(document).ready function
-                "X-CSRFToken": csrf_token
-            },
-            //data to be passed to django view
-            data: formData,
-            contentType: false,
-            processData: false,
-            //when successful, change the data in table with new data from server
-            success: function(response) {
-                //update data
-                data = response.data;
-                console.log(response.status);
-                customer_table.clear().draw();
-                customer_table.rows.add(response.data);
-                customer_table.columns.adjust().draw();
-                //resets the input form
-                form.reset();
-            }
-        });
-        //closes the modal
-        $('#addCustomer').modal('toggle');
-    });
+    form.addEventListener('submit',function(e){e.preventDefault();});
+    $('#addCustomerBtn').click(addCustomerListener(csrf_token,form));
 }
 //for the view button
-
-function viewCustomer(button) {
+function viewCustomer(button){
     //get id
     let id = button.parentNode.parentNode.parentNode.getAttribute("data-id");
     //console.log('ID is '+ id);
     let customer = null;
-    for (let i = 0; i < data.length; i++) {
-        if (data[i].id == id) {
+    for(let i = 0; i < data.length; i++){
+        //data here is the latest json from ajax call
+        if(data[i].id == id){
             customer = data[i];
             //console.log('found you! '+ JSON.stringify(customer));
             break;
@@ -201,11 +245,30 @@ function viewCustomer(button) {
         }
         //TBD
         else if (inputName == 'profile_picture') {
-
+            console.log('profile picture is:'+ customer[inputName])
+            document.getElementById('thumbnail').setAttribute("src",customer[inputName]);
         } else {
-            console.log(inputName);
+            //console.log(inputName);
             inputElements[i].value = customer[inputName];
         }
+    }
+}
+function uploadImg(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#thumbnail').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+function addUploadImg(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#addThumbnail').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
     }
 }
 // ******************************        CUSTOMER END       **************************
