@@ -45,24 +45,24 @@ class CustomerView(View):
             status = 500
             email_available = True
             email_msg = 'available'
-
+            #Check if email already exists
             if Customer.objects.filter(email=request.POST.get('email')).exists():
                 email_available = False
                 email_msg = 'unavailable'
-                print('email unavailable')
+                #print('email unavailable')
+            #Check validity of form
             if email_available:
                 form = CustomerForm(request.POST,request.FILES)
-                print(request.FILES)
-                print("is form valid?"+str(form.is_valid()))
+                #print(request.FILES)
+                #print("is form valid?"+str(form.is_valid()))
                 if form.is_valid():
-                    #print(form.cleaned_data['city'])
                     customer = form.save(commit=False)
                     customer.profile_picture = request.FILES.get('profile_picture','')
                     customer.save()
                     status = 200
                     print('customer '+customer.firstname+' saved')
                     #print('customer picture:'+customer.profile_picture.url+' saved')
-
+            
             arr = get_customers()
             json = {'data':arr,'status':'Finished processing data from views','email': email_msg}
             return JsonResponse(json,status=status)

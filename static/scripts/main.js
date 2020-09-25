@@ -161,13 +161,14 @@ let addCustomerListener = function(csrf_token,form){
                     customer_table.rows.add(response.data);
                     customer_table.columns.adjust().draw();
                     //resets the input form
+                    document.getElementById('addThumbnail').setAttribute("src","/static/img/profile_default.png");
                     form.reset();
                     $('#addCustomer').modal('toggle');
                 },
                 error: function(response){
                     //console.log('email response:' +response.responseJSON.email);
                     if (response.responseJSON.email == 'unavailable') {
-                        console.log('trying to insert invalid class');
+                        //console.log('trying to insert invalid class');
                         email.classList.add('is-invalid');
                     }
                 }
@@ -175,7 +176,7 @@ let addCustomerListener = function(csrf_token,form){
         }
     }
 }
-//updating customer
+//TODO: updating customer
 let updateCustomerListener = function (csrf_token,form) {
     let formData = new FormData(form).append('type','update');
     $.ajax({
@@ -243,9 +244,9 @@ function viewCustomer(button){
         else if (inputName == 'birthdate' && customer[inputName] != null) {
             inputElements[i].value = new Date(customer[inputName]).toISOString().slice(0, 10);
         }
-        //TBD
+        //for picture
         else if (inputName == 'profile_picture') {
-            console.log('profile picture is:'+ customer[inputName])
+            //console.log('profile picture is:'+ customer[inputName])
             document.getElementById('thumbnail').setAttribute("src",customer[inputName]);
         } else {
             //console.log(inputName);
@@ -253,6 +254,7 @@ function viewCustomer(button){
         }
     }
 }
+//For view modal
 function uploadImg(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -262,6 +264,7 @@ function uploadImg(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+//For create modal
 function addUploadImg(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();

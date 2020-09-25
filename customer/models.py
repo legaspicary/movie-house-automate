@@ -1,10 +1,9 @@
 from django.db import models
 #from datetime import datetime
 from datetime import datetime
-import os
+#import os
+
 # Base model for customer
-
-
 class Person(models.Model):
     # Primary is provided by Django if it is not specified
     # id
@@ -54,7 +53,7 @@ class Customer(Person):
         else:
             return '/static/img/profile_default.png'
 
-def content_file_name(instance, filename):
+""" def content_file_name(instance, filename):
     ext = filename.split('.')[-1]
     filename = "%s_%s.%s" % ('customer', instance.id, ext)
-    return os.path.join('images', filename)
+    return os.path.join('images', filename) """
