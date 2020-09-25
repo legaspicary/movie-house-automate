@@ -7,6 +7,7 @@ class DVDForm(forms.ModelForm):
 	number_of_items = forms.IntegerField(required=False)
 	director = forms.CharField(required=False)
 	casts = forms.CharField(required=False)
+	picture = forms.FileField(required=False)
 	class Meta:
 		model = DVD
 		fields = ('title', 'director', 'genre', 'release_date',
