@@ -49,12 +49,9 @@ class CustomerView(View):
             if Customer.objects.filter(email=request.POST.get('email')).exists():
                 email_available = False
                 email_msg = 'unavailable'
-                #print('email unavailable')
             #Check validity of form
             if email_available:
                 form = CustomerForm(request.POST,request.FILES)
-                #print(request.FILES)
-                #print("is form valid?"+str(form.is_valid()))
                 if form.is_valid():
                     customer = form.save(commit=False)
                     customer.profile_picture = request.FILES.get('profile_picture','')
@@ -68,3 +65,29 @@ class CustomerView(View):
             return JsonResponse(json,status=status)
         else:
             return render(request,'customer/dashboard.html')
+
+class UpdateCustomerView(View):
+    def get(self, request):
+        return render(request,'customer/dashboard.html')
+    def post(self,request):
+        status = 500
+        email_available = True
+        email_msg = 'available'
+        if request.is_ajax():
+            customer = Customer.objects.get(id=request.POST.get('id'))
+            form = CustomerForm(request.POST,request.FILES,instance=customer)
+            #Check if email already exists
+            if Customer.objects.filter(email=request.POST.get('email')).exists() and customer.email != request.POST.get('email'):
+                email_available = False
+                email_msg = 'unavailable'
+            if email_available:
+                if form.is_valid():
+                    customer = form.save(commit=False)
+                    customer.profile_picture = request.FILES.get('profile_picture','')
+                    customer.save()
+                    status = 200
+                    print('customer '+customer.firstname+' updated')
+                    #print('customer picture:'+customer.profile_picture.url+' saved')
+        arr = get_customers()
+        json = {'data':arr,'status':'Finished processing data from views','email': email_msg}
+        return JsonResponse(json,status=status)

@@ -134,6 +134,28 @@ function loadCustomerTable() {
         });
     }
 }
+function reloadTable(data) {
+    //customer_table is global variable
+    customer_table.clear().draw();
+    customer_table.rows.add(data);
+    customer_table.columns.adjust().draw();
+}
+// Successfully adding a customer
+let addSuccess = function (response,form) {
+    //update data, a global variable, to get most recent entries
+    data = response.data;
+    reloadTable(data);
+    //resets the input form
+    document.getElementById('addThumbnail').setAttribute("src","/static/img/profile_default.png");
+    form.reset();
+    $('#addCustomer').modal('toggle');
+}
+// Add invalid to input to show validation error
+let emailExists = function(response,email_input){
+    if (response.responseJSON.email == 'unavailable') {
+        email_input.classList.add('is-invalid');
+    }
+}
 //adding customer
 let addCustomerListener = function(csrf_token,form){
     return function () {
@@ -153,75 +175,78 @@ let addCustomerListener = function(csrf_token,form){
                 contentType: false,
                 processData: false,
                 //when successful, change the data in table with new data from server
-                success: function (response) {
-                    //update data
-                    data = response.data;
-                    console.log('printing profile: '+response.data[0].profile_picture);
-                    customer_table.clear().draw();
-                    customer_table.rows.add(response.data);
-                    customer_table.columns.adjust().draw();
-                    //resets the input form
-                    document.getElementById('addThumbnail').setAttribute("src","/static/img/profile_default.png");
-                    form.reset();
-                    $('#addCustomer').modal('toggle');
+                success: function(response){
+                    addSuccess(response,form)
                 },
                 error: function(response){
-                    //console.log('email response:' +response.responseJSON.email);
-                    if (response.responseJSON.email == 'unavailable') {
-                        //console.log('trying to insert invalid class');
-                        email.classList.add('is-invalid');
-                    }
+                    emailExists(response,email);
                 }
             });
         }
     }
 }
-//TODO: updating customer
-let updateCustomerListener = function (csrf_token,form) {
-    let formData = new FormData(form).append('type','update');
-    $.ajax({
-        url: '',
-        type: 'post',
-        headers: {
-            //csrf token passed from the dashboard.html template under $(document).ready function
-            "X-CSRFToken": csrf_token
-        },
-        //data to be passed to django view
-        data: formData,
-        contentType: false,
-        processData: false,
-        //when successful, change the data in table with new data from server
-        success: function (response) {
-            console.log('Successfully updated customer');
-            //update data
-            data = response.data;
-            console.log(response.status);
-            customer_table.clear().draw();
-            customer_table.rows.add(response.data);
-            customer_table.columns.adjust().draw();
-            //resets the input form
-            form.reset();
-        }
-    });
-    //closes the modal
+//Update success
+let updateSucess = function (response,form) {
+    //update data, a global variable, to get most recent entries
+    data = response.data;
+    reloadTable(data);
+    //resets the input form
+    
+    //should be replaced with button to remove picture -->> document.getElementById('addThumbnail').setAttribute("src","/static/img/profile_default.png");
+    form.reset();
     $('#viewCustomer').modal('toggle');
 }
+//TODO: updating customer
+let updateCustomerListener = function (csrf_token,form,customer_update_url) {
+
+    return function () {
+        let email = document.getElementById('email');
+        email.classList.remove('is-invalid');
+        if(form.checkValidity()){
+            let formData = new FormData(form);//.append('id',viewedCustomerID);//.append('action','add');
+            formData.append('id',viewedCustomerID);
+            formData.append('csrfmiddlewaretoken',csrf_token);
+            $.ajax({
+                url: customer_update_url,
+                type: 'post',
+                //data to be passed to django view
+                data: formData,
+                contentType: false,
+                processData: false,
+                //when successful, change the data in table with new data from server
+                success: function(response){
+                    //console.log('SUBMIT OK');
+                    updateSucess(response,form);
+                },
+                error: function(response){
+                    //console.log('SUBMIT NOT OK');
+                    emailExists(response,email);
+                }
+            });
+        }
+    }
+}
 //Listeners unrelated to table are placed here
-function initializeCustomerListeners(csrf_token) {
+//Variables taken from Django follows python naming convention in this js file (e.g. csrf_token instead of csrfToken)
+function initializeCustomerListeners(csrf_token,customer_update_url) {
     //ajax form for add customer
     let form = document.getElementById('addCustomerForm');
     form.addEventListener('submit',function(e){e.preventDefault();});
     $('#addCustomerBtn').click(addCustomerListener(csrf_token,form));
+    let updateForm = document.getElementById('viewCustomerForm');
+    updateForm.addEventListener('submit',function(e){e.preventDefault();});
+    $('#updateCustomerBtn').click(updateCustomerListener(csrf_token,updateForm,customer_update_url));
 }
+let viewedCustomerID = 1;
 //for the view button
 function viewCustomer(button){
     //get id
-    let id = button.parentNode.parentNode.parentNode.getAttribute("data-id");
-    //console.log('ID is '+ id);
+    viewedCustomerID = button.parentNode.parentNode.parentNode.getAttribute("data-id");
+    console.log('ID is '+ viewedCustomerID);
     let customer = null;
     for(let i = 0; i < data.length; i++){
         //data here is the latest json from ajax call
-        if(data[i].id == id){
+        if(data[i].id == viewedCustomerID){
             customer = data[i];
             //console.log('found you! '+ JSON.stringify(customer));
             break;

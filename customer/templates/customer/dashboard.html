@@ -112,7 +112,8 @@
       <div class="modal-body">
         <!-- Add Customer Form -->
         <form id="addCustomerForm" enctype="multipart/form-data" name="addCustomerForm" action="" method="POST"
-          class="needs-validation" aria-autocomplete="off" autocomplete="off">{% csrf_token %}
+          class="needs-validation" aria-autocomplete="off" autocomplete="off">
+          {% csrf_token %}
           <!-- Profile pic -->
           <h6>Profile Picture</h6>
           <div class="form-row ml-1 d-flex float-left">
@@ -132,15 +133,15 @@
             <div class="form-group col-md-4">
               <label for="addFirstName" class="sr-only">First</label>
               <input type="text" class="form-control" id="addFirstName" name="firstname" placeholder="First Name"
-                required>
+              maxlength="100" required>
             </div>
             <div class="form-group col-md-4">
               <label for="addMiddleName" class="sr-only">Middle</label>
-              <input type="text" class="form-control" id="addMiddleName" name="middlename" placeholder="Middle name">
+              <input type="text" class="form-control" id="addMiddleName" name="middlename" placeholder="Middle name" maxlength="100">
             </div>
             <div class="form-group col-md-4">
               <label for="addLastName" class="sr-only">Last</label>
-              <input type="text" class="form-control" id="addLastName" name="lastname" placeholder="Last Name" required>
+              <input type="text" class="form-control" id="addLastName" name="lastname" placeholder="Last Name" maxlength="100" required>
             </div>
             <div class="form-group col-md-12">
               <label for="addEmail" class="sr-only">Email</label>
@@ -153,27 +154,27 @@
           <div class="form-row">
             <div class="form-group col-md-8">
               <label for="addStreet" class="sr-only">Street</label>
-              <input type="text" class="form-control" id="addStreet" name="street" placeholder="123 Main Street">
+              <input type="text" class="form-control" id="addStreet" name="street" placeholder="123 Main Street" maxlength="100">
             </div>
             <div class="form-group col-md-4">
               <label for="addBrgy" class="sr-only">Barangay</label>
-              <input type="text" class="form-control" id="addBrgy" name="brgy" placeholder="Barangay">
+              <input type="text" class="form-control" id="addBrgy" name="brgy" placeholder="Barangay" maxlength="100">
             </div>
             <div class="form-group col-md-7">
               <label for="addCity" class="sr-only">City</label>
-              <input type="text" class="form-control" id="addCity" name="city" placeholder="City">
+              <input type="text" class="form-control" id="addCity" name="city" placeholder="City" maxlength="100">
             </div>
             <div class="form-group col-md-5">
               <label for="addState" class="sr-only">State</label>
-              <input type="text" class="form-control" id="addState" name="state" placeholder="State">
+              <input type="text" class="form-control" id="addState" name="state" placeholder="State" maxlength="100">
             </div>
             <div class="form-group col-md-9">
               <label for="addCountry" class="sr-only">Country</label>
-              <input type="text" class="form-control" id="addCountry" name="country" placeholder="Country">
+              <input type="text" class="form-control" id="addCountry" name="country" placeholder="Country" maxlength="100">
             </div>
             <div class="form-group col-md-3">
               <label for="addZip" class="sr-only">Zip</label>
-              <input type="text" class="form-control" id="addZip" name="zip" placeholder="Zip">
+              <input type="text" class="form-control" id="addZip" name="zip" placeholder="Zip" maxlength="20">
             </div>
 
           </div>
@@ -240,13 +241,13 @@
           <div class="form-row spouse">
             <div class="form-group col-md-12">
               <label for="addSpouseName" class="sr-only">Spouse</label>
-              <input type="text" class="form-control" id="addSpouseName" name="spouse_name" placeholder="Spouse's Name">
+              <input type="text" class="form-control" id="addSpouseName" name="spouse_name" placeholder="Spouse's Name" maxlength="100">
             </div>
 
             <div class="form-group col-md-12">
               <label for="addSpouseOccupation" class="sr-only">Spouse Occupation</label>
               <input type="text" class="form-control" id="addSpouseOccupation" name="spouse_occupation"
-                placeholder="Spouse's Occupation">
+                placeholder="Spouse's Occupation" maxlength="100">
             </div>
           </div>
           <!-- No of Children -->
@@ -257,8 +258,9 @@
                 oninput="this.value = Math.abs(this.value)">
             </div>
           </div>
-
-          <button id="addCustomerBtn" type="button" class="btn btn-primary mt-3 float-right btn-md">Add</button>
+          <button type="button" class="btn btn-secondary mt-3 float-right btn-md ml-3"
+            data-dismiss="modal">Cancel</button>
+          <button id="addCustomerBtn" type="submit" class="btn btn-primary mt-3 float-right btn-md">Add</button>
         </form>
       </div>
     </div>
@@ -278,7 +280,9 @@
       </div>
       <!-- Modal body -->
       <div class="modal-body">
-        <form id="viewCustomerForm" class="needs-validation" aria-autocomplete="off" autocomplete="off">
+        <!-- View Customer Form -->
+        <form id="viewCustomerForm" enctype="multipart/form-data" name="viewCustomerForm" action ="" method="POST" class="needs-validation" aria-autocomplete="off" autocomplete="off">
+          {% csrf_token %}
           <!-- Profile pic -->
           <h6>Profile Picture</h6>
           <div class="form-row ml-1">
@@ -292,24 +296,24 @@
                 class="form-control-file ml-1" id="picture">
             </div>
           </div>
-          <!-- Full name -->
+          <!-- Email and Full name -->
           <h6>Email & Name</h6>
           <div class="form-row">
             <div class="form-group col-md-4">
               <label for="firstName" class="sr-only">First</label>
-              <input type="text" class="form-control" id="firstName" name="firstname" placeholder="First Name" required>
+              <input type="text" class="form-control" id="firstName" name="firstname" placeholder="First Name" maxlength="100" required>
             </div>
             <div class="form-group col-md-4">
               <label for="middleName" class="sr-only">Middle</label>
-              <input type="text" class="form-control" id="middleName" name="middlename" placeholder="Middle name">
+              <input type="text" class="form-control" id="middleName" name="middlename" placeholder="Middle name" maxlength="100">
             </div>
             <div class="form-group col-md-4">
               <label for="lastName" class="sr-only">Last</label>
-              <input type="text" class="form-control" id="lastName" name="lastname" placeholder="Last Name" required>
+              <input type="text" class="form-control" id="lastName" name="lastname" placeholder="Last Name" maxlength="100" required>
             </div>
             <div class="form-group col-md-12">
               <label for="email" class="sr-only">Last</label>
-              <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+              <input type="email" class="form-control" id="email" name="email" placeholder="Email" maxlength="100" required>
               <div class="invalid-feedback">Email already exists.</div>
             </div>
           </div>
@@ -318,27 +322,27 @@
           <div class="form-row">
             <div class="form-group col-md-8">
               <label for="street" class="sr-only">Street</label>
-              <input type="text" class="form-control" id="street" name="street" placeholder="123 Main Street">
+              <input type="text" class="form-control" id="street" name="street" placeholder="123 Main Street" maxlength="100">
             </div>
             <div class="form-group col-md-4">
               <label for="brgy" class="sr-only">Barangay</label>
-              <input type="text" class="form-control" id="brgy" name="brgy" placeholder="Barangay">
+              <input type="text" class="form-control" id="brgy" name="brgy" placeholder="Barangay" maxlength="100">
             </div>
             <div class="form-group col-md-7">
               <label for="city" class="sr-only">City</label>
-              <input type="text" class="form-control" id="city" name="city" placeholder="City">
+              <input type="text" class="form-control" id="city" name="city" placeholder="City" maxlength="100">
             </div>
             <div class="form-group col-md-5">
               <label for="state" class="sr-only">State</label>
-              <input type="text" class="form-control" id="state" name="state" placeholder="State">
+              <input type="text" class="form-control" id="state" name="state" placeholder="State" maxlength="50">
             </div>
             <div class="form-group col-md-9">
               <label for="country" class="sr-only">Country</label>
-              <input type="text" class="form-control" id="country" name="country" placeholder="country">
+              <input type="text" class="form-control" id="country" name="country" placeholder="country" maxlength="100">
             </div>
             <div class="form-group col-md-3">
               <label for="zip" class="sr-only">Zip</label>
-              <input type="text" class="form-control" id="zip" name="zip" placeholder="Zip">
+              <input type="text" class="form-control" id="zip" name="zip" placeholder="Zip" maxlength="20">
             </div>
           </div>
           <!-- Birthdate -->
@@ -404,13 +408,13 @@
           <div class="form-row spouse">
             <div class="form-group col-md-12">
               <label for="spouseName" class="sr-only">Spouse</label>
-              <input type="text" class="form-control" id="spouseName" name="spouse_name" placeholder="Spouse's Name">
+              <input type="text" class="form-control" id="spouseName" name="spouse_name" placeholder="Spouse's Name" maxlength="100">
             </div>
 
             <div class="form-group col-md-12">
               <label for="spouseOccupation" class="sr-only">Spouse Occupation</label>
               <input type="text" class="form-control" id="spouseOccupation" name="spouse_occupation"
-                placeholder="Spouse's Occupation">
+                placeholder="Spouse's Occupation" maxlength="100">
             </div>
           </div>
           <!-- No of Children -->
@@ -461,8 +465,9 @@
 <script>
   $(document).ready(function () {
     let csrf_token = '{{ csrf_token }}';
+    let customer_update_url = "{% url 'customer:customer_update' %}"
     loadCustomerTable();
-    initializeCustomerListeners(csrf_token);
+    initializeCustomerListeners(csrf_token,customer_update_url);
   });
 </script>
 {% endblock scriptContent %}

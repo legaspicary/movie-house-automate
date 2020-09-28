@@ -33,8 +33,8 @@ class Person(models.Model):
     class Meta:
         db_table = "Person"
 
-    def __str__(self):
-        return self.firstname + self.lastname
+    # def __str__(self):
+    #     return self.firstname + self.lastname
 
 
 class Customer(Person):
@@ -52,8 +52,3 @@ class Customer(Person):
             return self.profile_picture.url
         else:
             return '/static/img/profile_default.png'
-
-""" def content_file_name(instance, filename):
-    ext = filename.split('.')[-1]
-    filename = "%s_%s.%s" % ('customer', instance.id, ext)
-    return os.path.join('images', filename) """
