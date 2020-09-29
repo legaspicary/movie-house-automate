@@ -9,5 +9,7 @@ urlpatterns = [
   path('dashboard/', customer_views.CustomerView.as_view(), name = "customer_dashboard"),
   path('dashboard/customer', customer_views.CustomerView.as_view(), name = "customer_dashboard"),
   path('dashboard/customer/update/', customer_views.UpdateCustomerView.as_view(), name = "customer_update"),
-  path('dashboard/dvd', dvd_views.DvdView.as_view(), name = "dvd_dashboard"),
+  path('dashboard/dvd/', dvd_views.DvdView.as_view(), name = "dvd_dashboard"),
+  path('dashboard/dvd/update/', dvd_views.UpdateDvdView.as_view(), name = "dvd_update"),
+  path('dashboard/dvd/delete/', dvd_views.DeleteDvdView.as_view(), name = "dvd_delete"),
 ]
