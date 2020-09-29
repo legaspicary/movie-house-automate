@@ -163,6 +163,7 @@ let addCustomerListener = function(csrf_token,form){
         email.classList.remove('is-invalid');
         if(form.checkValidity()){
             let formData = new FormData(form);//.append('action','add');
+            formData.append('operation','create');
             $.ajax({
                 url: '',
                 type: 'post',
@@ -197,17 +198,17 @@ let updateSucess = function (response,form) {
     $('#viewCustomer').modal('toggle');
 }
 //TODO: updating customer
-let updateCustomerListener = function (csrf_token,form,customer_update_url) {
-
+let updateCustomerListener = function (csrf_token,form) {
     return function () {
         let email = document.getElementById('email');
         email.classList.remove('is-invalid');
         if(form.checkValidity()){
             let formData = new FormData(form);//.append('id',viewedCustomerID);//.append('action','add');
+            formData.append('operation','update');
             formData.append('id',viewedCustomerID);
             formData.append('csrfmiddlewaretoken',csrf_token);
             $.ajax({
-                url: customer_update_url,
+                url: '',
                 type: 'post',
                 //data to be passed to django view
                 data: formData,
@@ -228,14 +229,14 @@ let updateCustomerListener = function (csrf_token,form,customer_update_url) {
 }
 //Listeners unrelated to table are placed here
 //Variables taken from Django follows python naming convention in this js file (e.g. csrf_token instead of csrfToken)
-function initializeCustomerListeners(csrf_token,customer_update_url) {
+function initializeCustomerListeners(csrf_token) {
     //ajax form for add customer
     let form = document.getElementById('addCustomerForm');
     form.addEventListener('submit',function(e){e.preventDefault();});
     $('#addCustomerBtn').click(addCustomerListener(csrf_token,form));
     let updateForm = document.getElementById('viewCustomerForm');
     updateForm.addEventListener('submit',function(e){e.preventDefault();});
-    $('#updateCustomerBtn').click(updateCustomerListener(csrf_token,updateForm,customer_update_url));
+    $('#updateCustomerBtn').click(updateCustomerListener(csrf_token,updateForm));
 }
 let viewedCustomerID = 1;
 //for the view button

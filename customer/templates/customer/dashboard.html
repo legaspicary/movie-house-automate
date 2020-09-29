@@ -465,9 +465,8 @@
 <script>
   $(document).ready(function () {
     let csrf_token = '{{ csrf_token }}';
-    let customer_update_url = "{% url 'customer:customer_update' %}"
     loadCustomerTable();
-    initializeCustomerListeners(csrf_token,customer_update_url);
+    initializeCustomerListeners(csrf_token);
   });
 </script>
 {% endblock scriptContent %}
