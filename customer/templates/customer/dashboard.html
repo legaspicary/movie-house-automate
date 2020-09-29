@@ -435,7 +435,7 @@
   </div>
 </div>
 <!-- Delete Modal -->
-<div class="modal fade" id="deleteRow">
+<div class="modal fade" id="deleteCustomer">
   <div class="modal-dialog modal-l">
     <div class="modal-content">
       <!-- Modal Header -->
@@ -445,11 +445,12 @@
       </div>
       <!-- Modal body -->
       <div class="modal-body">
-        <form class="needs-validation" action="dashboard.html">
+        <form id="deleteCustomerForm" name="deleteCustomerForm" enctype="multipart/form-data" action ="" method="POST" class="needs-validation" aria-autocomplete="off" autocomplete="off">
+          {% csrf_token %}
           <!-- Question  -->
           <h6>Are you sure you want to delete this record?</h6>
           <button type="button" class="btn btn-secondary mt-3 float-right btn-md ml-3" data-dismiss="modal">No</button>
-          <button type="submit" class="btn btn-danger mt-3 float-right btn-md">Yes</button>
+          <button id="deleteCustomerBtn" type="submit" class="btn btn-danger mt-3 float-right btn-md">Yes</button>
         </form>
       </div>
     </div>
