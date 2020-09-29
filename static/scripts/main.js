@@ -56,7 +56,7 @@ function loadCustomerTable() {
                         <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-view" data-toggle="modal" data-target="#viewCustomer" onclick="viewCustomer(this)">
                             <i class="far fa-eye"></i>
                         </button>
-                        <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-delete" data-toggle="modal" data-target="#deleteRow" onclick="">
+                        <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-delete" data-toggle="modal" data-target="#deleteCustomer" onclick="deleteCustomer(this)">
                             <i class="far fa-trash-alt"></i>
                         </button>
                     </div>`
@@ -163,6 +163,7 @@ let addCustomerListener = function(csrf_token,form){
         email.classList.remove('is-invalid');
         if(form.checkValidity()){
             let formData = new FormData(form);//.append('action','add');
+            formData.append('operation','create');
             $.ajax({
                 url: '',
                 type: 'post',
@@ -196,18 +197,18 @@ let updateSucess = function (response,form) {
     form.reset();
     $('#viewCustomer').modal('toggle');
 }
-//TODO: updating customer
-let updateCustomerListener = function (csrf_token,form,customer_update_url) {
-
+//updating customer
+let updateCustomerListener = function (csrf_token,form) {
     return function () {
         let email = document.getElementById('email');
         email.classList.remove('is-invalid');
         if(form.checkValidity()){
             let formData = new FormData(form);//.append('id',viewedCustomerID);//.append('action','add');
+            formData.append('operation','update');
             formData.append('id',viewedCustomerID);
             formData.append('csrfmiddlewaretoken',csrf_token);
             $.ajax({
-                url: customer_update_url,
+                url: '',
                 type: 'post',
                 //data to be passed to django view
                 data: formData,
@@ -226,16 +227,54 @@ let updateCustomerListener = function (csrf_token,form,customer_update_url) {
         }
     }
 }
+//Update success
+let deleteSuccess = function (response,form) {
+    //update data, a global variable, to get most recent entries
+    data = response.data;
+    reloadTable(data);
+    //resets the input form
+    
+    //should be replaced with button to remove picture -->> document.getElementById('addThumbnail').setAttribute("src","/static/img/profile_default.png");
+    form.reset();
+    $('#deleteCustomer').modal('toggle');
+}
+//updating customer
+let deleteCustomerListener = function (csrf_token,form) {
+    return function () {
+        let formData = new FormData(form);//.append('id',viewedCustomerID);//.append('action','add');
+        formData.append('operation','delete');
+        formData.append('id',viewedCustomerID);
+        formData.append('csrfmiddlewaretoken',csrf_token);
+        $.ajax({
+            url: '',
+            type: 'post',
+            //data to be passed to django view
+            data: formData,
+            contentType: false,
+            processData: false,
+            //when successful, change the data in table with new data from server
+            success: function(response){
+                deleteSuccess(response,form);
+            },
+            error: function(response){
+                console.log('Delete failed');
+            }
+        });
+    }
+}
 //Listeners unrelated to table are placed here
 //Variables taken from Django follows python naming convention in this js file (e.g. csrf_token instead of csrfToken)
-function initializeCustomerListeners(csrf_token,customer_update_url) {
+function initializeCustomerListeners(csrf_token) {
     //ajax form for add customer
     let form = document.getElementById('addCustomerForm');
     form.addEventListener('submit',function(e){e.preventDefault();});
     $('#addCustomerBtn').click(addCustomerListener(csrf_token,form));
     let updateForm = document.getElementById('viewCustomerForm');
     updateForm.addEventListener('submit',function(e){e.preventDefault();});
-    $('#updateCustomerBtn').click(updateCustomerListener(csrf_token,updateForm,customer_update_url));
+    $('#updateCustomerBtn').click(updateCustomerListener(csrf_token,updateForm));
+    let deleteForm = document.getElementById('deleteCustomerForm');
+    deleteForm.addEventListener('submit',function(e){e.preventDefault();});
+    $('#deleteCustomerBtn').click(deleteCustomerListener(csrf_token,updateForm));
 }
 let viewedCustomerID = 1;
 //for the view button
@@ -278,6 +317,11 @@ function viewCustomer(button){
             inputElements[i].value = customer[inputName];
         }
     }
+}
+function deleteCustomer(button){
+    //get id
+    viewedCustomerID = button.parentNode.parentNode.parentNode.getAttribute("data-id");
+    console.log('Delete ID is '+ viewedCustomerID);
 }
 //For view modal
 function uploadImg(input) {
