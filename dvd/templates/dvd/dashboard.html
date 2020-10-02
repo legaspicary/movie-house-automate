@@ -108,7 +108,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="title" class="">DVD Title</label>
-                            <input type="text" class="form-control" id="add-title" name="add-title" placeholder="DVD Title" minlength="1" maxlength="50" required>
+                            <input type="text" class="form-control" id="add-title" name="add-title" placeholder="DVD Title" minlength="1" maxlength="10" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="director" class="">Director</label>
@@ -181,19 +181,19 @@
                     <div class="form-row">
                         <div class="form-group col-md-12" hidden>
                             <label for="title" class="">SKU</label>
-                            <input type="text" class="form-control" id="sku" name="sku" placeholder="SKU" minlength="0" maxlength="50" required>
+                            <input type="text" class="form-control" id="sku" name="sku" placeholder="SKU">
                         </div>
                         <div class="form-group col-md-12">
                             <label for="title" class="">DVD Title</label>
-                            <input type="text" class="form-control" id="title" name="title" placeholder="Kaguya-sama Love is War?" minlength="1" maxlength="50" required>
+                            <input type="text" class="form-control" id="title" name="title" placeholder="Title" minlength="1" maxlength="50" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="director" class="">Director</label>
-                            <input type="text" class="form-control" id="director" name="director" placeholder="Shinichi Omata" minlength="1" maxlength="50" required>
+                            <input type="text" class="form-control" id="director" name="director" placeholder="Last Name, First Name" minlength="1" maxlength="50" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="Genre" class="">Genre</label>
-                            <input type="text" class="form-control" id="lastName" name="genre" placeholder="RomCom" minlength="1" maxlength="50" required>
+                            <input type="text" class="form-control" id="lastName" name="genre" placeholder="Genre" minlength="1" maxlength="50" required>
                         </div>
                     </div>
                     <!-- Release Date -->
@@ -486,73 +486,79 @@
     function initializedDvdListeners(csrf_token) {
         let addDvdForm = document.getElementById('addDvdForm');
         $('#addDvdBtn').click(function(e) {
-            // e.preventDefault();
-            // if (form.checkValidity()) {
-            let formData = new FormData(addDvdForm);
-            for (var pair of formData.entries()) {
-                console.log(pair[0] + ' - ' + pair[1]);
-            }
-            $.ajax({
-                url: '',
-                type: 'post',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                //data to be passed to django view
-                data: formData,
-                contentType: false,
-                processData: false,
-                //when successful, change the data in table with new data from server
-                success: function(response) {
-                    data = response.data;
-                    //resets the input form
-                    dvd_table.clear().draw();
-                    dvd_table.rows.add(response.data);
-                    dvd_table.columns.adjust().draw();
-                    addDvdForm.reset();
-                    let dvPreview = document.getElementById("add-image-container");
-                    dvPreview.innerHTML = '';
-                    console.log('create dvd success');
-                },
-                error: function() {
-                    console.log('create dvd failed')
+
+            if (addDvdForm.checkValidity()) {
+                e.preventDefault();
+                let formData = new FormData(addDvdForm);
+                for (var pair of formData.entries()) {
+                    console.log(pair[0] + ' - ' + pair[1]);
                 }
-            });
-            // }
-            jQuery("#addDVD").modal('toggle');
+                $.ajax({
+                    url: '',
+                    type: 'post',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    //data to be passed to django view
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    //when successful, change the data in table with new data from server
+                    success: function(response) {
+                        data = response.data;
+                        //resets the input form
+                        dvd_table.clear().draw();
+                        dvd_table.rows.add(response.data);
+                        dvd_table.columns.adjust().draw();
+                        addDvdForm.reset();
+                        let dvPreview = document.getElementById("add-image-container");
+                        dvPreview.innerHTML = '';
+                        console.log('create dvd success');
+                        jQuery("#addDVD").modal('toggle');
+                    },
+                    error: function() {
+                        console.log('create dvd failed')
+                    }
+                });
+            }
+
         });
         let viewDvdForm = document.getElementById('viewDvdForm');
         $('#updateDvdBtn').click(function(e) {
             e.preventDefault();
-            console.log('updateDvdBtn');
-            let formData = new FormData(viewDvdForm);
-            formData.append('csrfmiddlewaretoken', $('meta[name="csrf-token"]').attr('content'))
-            for (var pair of formData.entries()) {
-                console.log(pair[0] + ' - ' + pair[1]);
-            }
-            $.ajax({
-                url: '{% url "customer:dvd_update" %}',
-                type: 'post',
-                //data to be passed to django view
-                data: formData,
-                contentType: false,
-                processData: false,
-                //when successful, change the data in table with new data from server
-                success: function(response) {
-                    data = response.data;
-                    //resets the input form
-                    dvd_table.clear().draw();
-                    dvd_table.rows.add(response.data);
-                    dvd_table.columns.adjust().draw();
-                    viewDvdForm.reset();
-                    console.log('update success');
-                },
-                error: function() {
-                    console.log('update failed')
-                    viewDvdForm.reset();
+            if (viewDvdForm.checkValidity()) {
+                // e.preventDefault();
+                console.log('updateDvdBtn');
+                let formData = new FormData(viewDvdForm);
+                formData.append('csrfmiddlewaretoken', $('meta[name="csrf-token"]').attr('content'))
+                for (var pair of formData.entries()) {
+                    console.log(pair[0] + ' - ' + pair[1]);
                 }
-            });
-            jQuery("#viewDvd").modal('toggle');
+                $.ajax({
+                    url: '{% url "customer:dvd_update" %}',
+                    type: 'post',
+                    //data to be passed to django view
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    //when successful, change the data in table with new data from server
+                    success: function(response) {
+                        data = response.data;
+                        //resets the input form
+                        dvd_table.clear().draw();
+                        dvd_table.rows.add(response.data);
+                        dvd_table.columns.adjust().draw();
+                        viewDvdForm.reset();
+                        console.log('update success');
+                        jQuery("#viewDvd").modal('toggle');
+                    },
+                    error: function() {
+                        console.log('update failed')
+                        viewDvdForm.reset();
+                    }
+                });
+            }
+
         });
         let deleteDvdForm = document.getElementById('deleteDvdForm');
         $('#deleteDvdBtn').click(function(e) {
