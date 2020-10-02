@@ -78,7 +78,8 @@ class CustomerView(View):
                 if email_available:
                     if form.is_valid():
                         customer = form.save(commit=False)
-                        customer.profile_picture = request.FILES.get('profile_picture','')
+                        if request.FILES.get('profile_picture'):
+                            customer.profile_picture = request.FILES.get('profile_picture')
                         customer.save()
                         status = 200
                         print('customer '+customer.firstname+' updated')
