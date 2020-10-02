@@ -66,8 +66,8 @@
                     <thead>
                         <tr>
                             <th>Date Registered</th>
-                            <th>Genre</th>
                             <th>Title</th>
+                            <th>Genre</th>
                             <th>Release Date</th>
                             <th>Price</th>
                             <th>No. of Items</th>
@@ -108,15 +108,15 @@
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="title" class="">DVD Title</label>
-                            <input type="text" class="form-control" id="add-title" name="add-title" placeholder="Kaguya-sama Love is War?" value="testing title" required>
+                            <input type="text" class="form-control" id="add-title" name="add-title" placeholder="DVD Title" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="director" class="">Director</label>
-                            <input type="text" class="form-control" id="add-director" name="add-director" placeholder="Shinichi Omata" value="testing" required>
+                            <input type="text" class="form-control" id="add-director" name="add-director" placeholder="Last Name, First Name" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="Genre" class="">Genre</label>
-                            <input type="text" class="form-control" id="add-genre" name="add-genre" placeholder="RomCom" value="testing" required>
+                            <input type="text" class="form-control" id="add-genre" name="add-genre" placeholder="Genre" required>
                         </div>
                     </div>
                     <!-- Release Date -->
@@ -130,7 +130,7 @@
                     <div class="form-group">
                         <label for="casts">Casts</label>
                         <div class="input-group" id="casts">
-                            <input type="text" class="form-control" id="add-casts" name="add-casts" placeholder="Last Name, First Name" aria-label="Cast's Full Name" aria-describedby="basic-addon2" value="testing" required>
+                            <input type="text" class="form-control" id="add-casts" name="add-casts" placeholder="Last Name, First Name" aria-label="Cast's Full Name" aria-describedby="basic-addon2" required>
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary" type="button">Add</button>
                             </div>
@@ -175,9 +175,14 @@
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-                <form id="viewDvdForm" class="needs-validation">
+                <form id="viewDvdForm" class="needs-validation" method="POST" aria-autocomplete="off" autocomplete="off" action="" enctype="multipart/form-data">
+                    {% csrf_token %}
                     <!-- DVD Title, Director, Genre -->
                     <div class="form-row">
+                        <div class="form-group col-md-12" hidden>
+                            <label for="title" class="">SKU</label>
+                            <input type="text" class="form-control" id="sku" name="sku" placeholder="SKU" minlength="0" maxlength="50" required>
+                        </div>
                         <div class="form-group col-md-12">
                             <label for="title" class="">DVD Title</label>
                             <input type="text" class="form-control" id="title" name="title" placeholder="Kaguya-sama Love is War?" minlength="0" maxlength="50" required>
@@ -230,14 +235,14 @@
                     </div>
                     <div id="view-image-container"></div>
                     <button type="button" class="btn btn-secondary mt-3 float-right btn-md ml-3" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-success mt-3 float-right btn-md">Update</button>
+                    <button id="updateDvdBtn" type="submit" class="btn btn-success mt-3 float-right btn-md">Update</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 <!-- Delete Modal -->
-<div class="modal fade" id="deleteRow">
+<div class="modal fade" id="deleteDvd">
     <div class="modal-dialog modal-l">
         <div class="modal-content">
             <!-- Modal Header -->
@@ -247,11 +252,18 @@
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-                <form class="needs-validation" action="dashboard.html">
+                <form id="deleteDvdForm" class="needs-validation" method="POST" aria-autocomplete="off" autocomplete="off" action="" enctype="multipart/form-data">
                     <!-- Question  -->
+
+                    <div class="form-row" hidden>
+                        <div class="form-group col-md-12">
+                            <label for="title" class="">SKU</label>
+                            <input type="text" class="form-control" id="delete-sku" name="sku" placeholder="SKU" minlength="0" maxlength="50" required>
+                        </div>
+                    </div>
                     <h6>Are you sure you want to delete this record?</h6>
                     <button type="button" class="btn btn-secondary mt-3 float-right btn-md ml-3" data-dismiss="modal">No</button>
-                    <button type="submit" class="btn btn-danger mt-3 float-right btn-md">Yes</button>
+                    <button id="deleteDvdBtn" type="submit" class="btn btn-danger mt-3 float-right btn-md">Yes</button>
                 </form>
             </div>
         </div>
@@ -359,7 +371,7 @@
                         <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-view" data-toggle="modal" data-target="#viewDvd" onclick="viewDvd(this)">
                             <i class="far fa-eye"></i>
                         </button>
-                        <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-delete" data-toggle="modal" data-target="#deleteRow">
+                        <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-delete" data-toggle="modal" data-target="#deleteDvd" onclick="deleteDvd(this)">
                             <i class="far fa-trash-alt"></i>
                         </button>
                     </div>`
@@ -375,9 +387,9 @@
             columns: [{
                 "data": 'date_registered'
             }, {
-                "data": 'genre'
-            }, {
                 "data": 'title'
+            }, {
+                "data": 'genre'
             }, {
                 "data": 'release_date'
             }, {
@@ -437,15 +449,18 @@
     });
     //ajax form for add dvd
     function initializedDvdListeners(csrf_token) {
-        let form = document.getElementById('addDvdForm');
-        $('#addDvdBtn').click(function() {
-            console.log('addDvdbutton');
-            let formData = new FormData(form);
+        let addDvdForm = document.getElementById('addDvdForm');
+        $('#addDvdBtn').click(function(e) {
+            e.preventDefault();
+            let formData = new FormData(addDvdForm);
+            for (var pair of formData.entries()) {
+                console.log(pair[0] + ' - ' + pair[1]);
+            }
             $.ajax({
                 url: '',
                 type: 'post',
                 headers: {
-                    "X-CSRFToken": '{% csrf_token %}'
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 //data to be passed to django view
                 data: formData,
@@ -458,32 +473,91 @@
                     dvd_table.clear().draw();
                     dvd_table.rows.add(response.data);
                     dvd_table.columns.adjust().draw();
-                    form.reset();
-                    console.log('success');
+                    addDvdForm.reset();
+                    let dvPreview = document.getElementById("add-image-container");
+                    dvPreview.innerHTML = '';
+                    console.log('create dvd success');
                 },
                 error: function() {
-                    console.log('failed')
+                    console.log('create dvd failed')
                 }
             });
-            //closes the modal
-            $('#addDvd').modal('toggle');
+            jQuery("#addDVD").modal('toggle');
+        });
+        let viewDvdForm = document.getElementById('viewDvdForm');
+        $('#updateDvdBtn').click(function(e) {
+            e.preventDefault();
+            console.log('updateDvdBtn');
+            let formData = new FormData(viewDvdForm);
+            formData.append('csrfmiddlewaretoken', $('meta[name="csrf-token"]').attr('content'))
+            for (var pair of formData.entries()) {
+                console.log(pair[0] + ' - ' + pair[1]);
+            }
+            $.ajax({
+                url: '{% url "customer:dvd_update" %}',
+                type: 'post',
+                //data to be passed to django view
+                data: formData,
+                contentType: false,
+                processData: false,
+                //when successful, change the data in table with new data from server
+                success: function(response) {
+                    data = response.data;
+                    //resets the input form
+                    dvd_table.clear().draw();
+                    dvd_table.rows.add(response.data);
+                    dvd_table.columns.adjust().draw();
+                    viewDvdForm.reset();
+                    console.log('update success');
+                },
+                error: function() {
+                    console.log('update failed')
+                    viewDvdForm.reset();
+                }
+            });
+            jQuery("#viewDvd").modal('toggle');
+        });
+        let deleteDvdForm = document.getElementById('deleteDvdForm');
+        $('#deleteDvdBtn').click(function(e) {
+            e.preventDefault();
+            console.log('deleteDvdBtn');
+            let formData = new FormData(deleteDvdForm);
+            formData.append('csrfmiddlewaretoken', $('meta[name="csrf-token"]').attr('content'))
+            for (var pair of formData.entries()) {
+                console.log(pair[0] + ' - ' + pair[1]);
+            }
+            $.ajax({
+                url: '{% url "customer:dvd_delete" %}',
+                type: 'post',
+                //data to be passed to django view
+                data: formData,
+                contentType: false,
+                processData: false,
+                //when successful, change the data in table with new data from server
+                success: function(response) {
+                    data = response.data;
+                    //resets the input form
+                    dvd_table.clear().draw();
+                    dvd_table.rows.add(response.data);
+                    dvd_table.columns.adjust().draw();
+                    console.log('delete success');
+                },
+                error: function() {
+                    console.log('delete failed')
+                }
+            });
+            jQuery("#deleteDvd").modal('toggle');
         });
     }
 
 
     function viewDvd(button) {
-        console.log('viewDvd');
-
-        //get id
+        //get sku
         let sku = button.parentNode.parentNode.parentNode.getAttribute("data-sku");
-        //console.log('ID is '+ id);
         let dvd = null;
         for (let i = 0; i < data.length; i++) {
-            console.log('sku = ' + sku);
-            console.log('data sku = ' + data[i].sku);
             if (data[i].sku == sku) {
                 dvd = data[i];
-                //console.log('found you! '+ JSON.stringify(customer));
                 break;
             }
         }
@@ -493,34 +567,31 @@
         let inputName;
         for (let i = 0; i < inputElements.length; i++) {
             inputName = inputElements[i].getAttribute("name");
-            console.log('inputName: ' + inputName);
-            // console.log('0000 - ' + dvd[inputName]);
-            //for radio buttons
-            // if (inputName == 'status' || inputName == 'gender') {
-            //     if (inputElements[i].value == dvd[inputName]) {
-            //         //console.log('Checking '+ customer[inputName]);
-            //         inputElements[i].checked = true;
-            //     }
-            // }
-            // //for date types
+            // Date
             if (inputName == 'release_date' && dvd[inputName] != null) {
                 inputElements[i].value = new Date(dvd[inputName]).toISOString().slice(0, 10);
             }
-            //TBD
-            else if (inputName == 'picture') {
+            // Image 
+            else if (inputName == 'picture' && dvd[inputName] != '') {
                 let dvPreview = document.getElementById("view-image-container");
                 dvPreview.innerHTML = '';
                 let img = document.createElement("IMG");
-                // img.height = "100%";
                 img.width = "100";
-                img.src = dvd[inputName];
+                img.src = '/media/' + dvd[inputName];
                 dvPreview.appendChild(img);
-            } else {
-                console.log(inputName);
-                console.log('xx - ' + dvd[inputName]); // undefined output
+            }
+            // Text 
+            else {
+                console.log(inputName + ': ' + dvd[inputName]);
                 inputElements[i].value = dvd[inputName];
             }
         }
+    }
+
+    function deleteDvd(button) {
+        let sku = button.parentNode.parentNode.parentNode.getAttribute("data-sku");
+        let deletesku = document.getElementById('delete-sku');
+        deletesku.value = sku;
     }
 </script>
 {% endblock scriptContent %}
