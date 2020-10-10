@@ -110,15 +110,15 @@
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="title" class="">DVD Title</label>
-                            <input type="text" class="form-control" id="add-title" name="add-title" placeholder="DVD Title" required>
+                            <input type="text" class="form-control" id="add-title" name="add-title" placeholder="DVD Title" minlength="1" maxlength="10" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="director" class="">Director</label>
-                            <input type="text" class="form-control" id="add-director" name="add-director" placeholder="Last Name, First Name" required>
+                            <input type="text" class="form-control" id="add-director" name="add-director" placeholder="Last Name, First Name" minlength="1" maxlength="50" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="Genre" class="">Genre</label>
-                            <input type="text" class="form-control" id="add-genre" name="add-genre" placeholder="Genre" required>
+                            <input type="text" class="form-control" id="add-genre" name="add-genre" placeholder="Genre" minlength="1" maxlength="50" required>
                         </div>
                     </div>
                     <!-- Release Date -->
@@ -132,7 +132,7 @@
                     <div class="form-group">
                         <label for="casts">Casts</label>
                         <div class="input-group" id="casts">
-                            <input type="text" class="form-control" id="add-casts" name="add-casts" placeholder="Last Name, First Name" aria-label="Cast's Full Name" aria-describedby="basic-addon2" required>
+                            <input type="text" class="form-control" id="add-casts" name="add-casts" placeholder="Last Name, First Name" aria-label="Cast's Full Name" aria-describedby="basic-addon2" minlength="0" maxlength="50">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary" type="button">Add</button>
                             </div>
@@ -183,19 +183,19 @@
                     <div class="form-row">
                         <div class="form-group col-md-12" hidden>
                             <label for="title" class="">SKU</label>
-                            <input type="text" class="form-control" id="sku" name="sku" placeholder="SKU" minlength="0" maxlength="50" required>
+                            <input type="text" class="form-control" id="sku" name="sku" placeholder="SKU">
                         </div>
                         <div class="form-group col-md-12">
                             <label for="title" class="">DVD Title</label>
-                            <input type="text" class="form-control" id="title" name="title" placeholder="Kaguya-sama Love is War?" minlength="0" maxlength="50" required>
+                            <input type="text" class="form-control" id="title" name="title" placeholder="Title" minlength="1" maxlength="50" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="director" class="">Director</label>
-                            <input type="text" class="form-control" id="director" name="director" placeholder="Shinichi Omata" minlength="0" maxlength="50" required>
+                            <input type="text" class="form-control" id="director" name="director" placeholder="Last Name, First Name" minlength="1" maxlength="50" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="Genre" class="">Genre</label>
-                            <input type="text" class="form-control" id="lastName" name="genre" placeholder="RomCom" minlength="0" maxlength="50" required>
+                            <input type="text" class="form-control" id="lastName" name="genre" placeholder="Genre" minlength="1" maxlength="50" required>
                         </div>
                     </div>
                     <!-- Release Date -->
@@ -209,7 +209,7 @@
                     <div class="form-group">
                         <label for="casts">Casts</label>
                         <div class="input-group" id="casts">
-                            <input type="text" class="form-control" id="casts" name="casts" placeholder="Last Name, First Name" aria-label="Cast's Full Name" aria-describedby="basic-addon2" minlength="0" maxlength="100" required>
+                            <input type="text" class="form-control" id="casts" name="casts" placeholder="Last Name, First Name" aria-label="Cast's Full Name" aria-describedby="basic-addon2" minlength="0" maxlength="100">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary" type="button">Add</button>
                             </div>
@@ -294,15 +294,50 @@
             }
         }
     });
-    // Show image after upload
+    // Show image after upload in Add modal
     var fileUpload = document.getElementById("add-picture");
     fileUpload.onchange = function() {
-        let dvPreview = document.getElementById("add-image-container");
-        if (fileUpload.files.length <= 3) {
+            let dvPreview = document.getElementById("view-image-container");
+            if (fileUpload.files.length <= 3) {
+                dvPreview.innerHTML = "";
+                let regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
+                for (var i = 0; i < fileUpload.files.length; i++) {
+                    let file = fileUpload.files[i];
+                    if (regex.test(file.name.toLowerCase())) {
+                        let reader = new FileReader();
+                        reader.onload = function(e) {
+                            // dvPreview.src = e.target.result;
+                            let img = document.createElement("IMG");
+                            // img.height = "100%";
+                            img.width = "100";
+                            img.src = e.target.result;
+                            dvPreview.appendChild(img);
+                            console.log(fileUpload.files.length + ' uploaded files.');
+                        }
+                        reader.readAsDataURL(file);
+                    } else {
+                        alert(file.name + " is not a valid image file.");
+                        dvPreview.innerHTML = "";
+                        return false;
+                    }
+                }
+            } else {
+                alert("You can only add up to 3 images");
+                // empty the input file and remove child of add-image-container
+                fileUpload.value = '';
+                dvPreview.innerHTML = '';
+                console.log("You can only add up to 3 images");
+            }
+        }
+        // Show image after upload in Viw modal
+    var fileUpload1 = document.getElementById("picture");
+    fileUpload1.onchange = function() {
+        let dvPreview = document.getElementById("view-image-container");
+        if (fileUpload1.files.length <= 3) {
             dvPreview.innerHTML = "";
             let regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
-            for (var i = 0; i < fileUpload.files.length; i++) {
-                let file = fileUpload.files[i];
+            for (var i = 0; i < fileUpload1.files.length; i++) {
+                let file = fileUpload1.files[i];
                 if (regex.test(file.name.toLowerCase())) {
                     let reader = new FileReader();
                     reader.onload = function(e) {
@@ -312,7 +347,7 @@
                         img.width = "100";
                         img.src = e.target.result;
                         dvPreview.appendChild(img);
-                        console.log(fileUpload.files.length + ' uploaded files.');
+                        console.log(fileUpload1.files.length + ' uploaded files.');
                     }
                     reader.readAsDataURL(file);
                 } else {
@@ -453,71 +488,79 @@
     function initializedDvdListeners(csrf_token) {
         let addDvdForm = document.getElementById('addDvdForm');
         $('#addDvdBtn').click(function(e) {
-            e.preventDefault();
-            let formData = new FormData(addDvdForm);
-            for (var pair of formData.entries()) {
-                console.log(pair[0] + ' - ' + pair[1]);
-            }
-            $.ajax({
-                url: '',
-                type: 'post',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                //data to be passed to django view
-                data: formData,
-                contentType: false,
-                processData: false,
-                //when successful, change the data in table with new data from server
-                success: function(response) {
-                    data = response.data;
-                    //resets the input form
-                    dvd_table.clear().draw();
-                    dvd_table.rows.add(response.data);
-                    dvd_table.columns.adjust().draw();
-                    addDvdForm.reset();
-                    let dvPreview = document.getElementById("add-image-container");
-                    dvPreview.innerHTML = '';
-                    console.log('create dvd success');
-                },
-                error: function() {
-                    console.log('create dvd failed')
+
+            if (addDvdForm.checkValidity()) {
+                e.preventDefault();
+                let formData = new FormData(addDvdForm);
+                for (var pair of formData.entries()) {
+                    console.log(pair[0] + ' - ' + pair[1]);
                 }
-            });
-            jQuery("#addDVD").modal('toggle');
+                $.ajax({
+                    url: '',
+                    type: 'post',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    //data to be passed to django view
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    //when successful, change the data in table with new data from server
+                    success: function(response) {
+                        data = response.data;
+                        //resets the input form
+                        dvd_table.clear().draw();
+                        dvd_table.rows.add(response.data);
+                        dvd_table.columns.adjust().draw();
+                        addDvdForm.reset();
+                        let dvPreview = document.getElementById("add-image-container");
+                        dvPreview.innerHTML = '';
+                        console.log('create dvd success');
+                        jQuery("#addDVD").modal('toggle');
+                    },
+                    error: function() {
+                        console.log('create dvd failed')
+                    }
+                });
+            }
+
         });
         let viewDvdForm = document.getElementById('viewDvdForm');
         $('#updateDvdBtn').click(function(e) {
             e.preventDefault();
-            console.log('updateDvdBtn');
-            let formData = new FormData(viewDvdForm);
-            formData.append('csrfmiddlewaretoken', $('meta[name="csrf-token"]').attr('content'))
-            for (var pair of formData.entries()) {
-                console.log(pair[0] + ' - ' + pair[1]);
-            }
-            $.ajax({
-                url: '{% url "customer:dvd_update" %}',
-                type: 'post',
-                //data to be passed to django view
-                data: formData,
-                contentType: false,
-                processData: false,
-                //when successful, change the data in table with new data from server
-                success: function(response) {
-                    data = response.data;
-                    //resets the input form
-                    dvd_table.clear().draw();
-                    dvd_table.rows.add(response.data);
-                    dvd_table.columns.adjust().draw();
-                    viewDvdForm.reset();
-                    console.log('update success');
-                },
-                error: function() {
-                    console.log('update failed')
-                    viewDvdForm.reset();
+            if (viewDvdForm.checkValidity()) {
+                // e.preventDefault();
+                console.log('updateDvdBtn');
+                let formData = new FormData(viewDvdForm);
+                formData.append('csrfmiddlewaretoken', $('meta[name="csrf-token"]').attr('content'))
+                for (var pair of formData.entries()) {
+                    console.log(pair[0] + ' - ' + pair[1]);
                 }
-            });
-            jQuery("#viewDvd").modal('toggle');
+                $.ajax({
+                    url: '{% url "customer:dvd_update" %}',
+                    type: 'post',
+                    //data to be passed to django view
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    //when successful, change the data in table with new data from server
+                    success: function(response) {
+                        data = response.data;
+                        //resets the input form
+                        dvd_table.clear().draw();
+                        dvd_table.rows.add(response.data);
+                        dvd_table.columns.adjust().draw();
+                        viewDvdForm.reset();
+                        console.log('update success');
+                        jQuery("#viewDvd").modal('toggle');
+                    },
+                    error: function() {
+                        console.log('update failed')
+                        viewDvdForm.reset();
+                    }
+                });
+            }
+
         });
         let deleteDvdForm = document.getElementById('deleteDvdForm');
         $('#deleteDvdBtn').click(function(e) {
