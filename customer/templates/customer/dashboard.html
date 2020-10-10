@@ -124,15 +124,15 @@
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label for="addFirstName" class="sr-only">First</label>
-                            <input type="text" class="form-control" id="addFirstName" name="firstname" placeholder="First Name" minlength="2" maxlength="10" required>
+                            <input type="text" class="form-control" id="addFirstName" name="firstname" placeholder="First Name" maxlength="100" required>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="addMiddleName" class="sr-only">Middle</label>
-                            <input type="text" class="form-control" id="addMiddleName" name="middlename" placeholder="Middle name" minlength="2" maxlength="10">
+                            <input type="text" class="form-control" id="addMiddleName" name="middlename" placeholder="Middle name" maxlength="100">
                         </div>
                         <div class="form-group col-md-4">
                             <label for="addLastName" class="sr-only">Last</label>
-                            <input type="text" class="form-control" id="addLastName" name="lastname" placeholder="Last Name" minlength="2" maxlength="10" required>
+                            <input type="text" class="form-control" id="addLastName" name="lastname" placeholder="Last Name" maxlength="100" required>
                         </div>
                         <div class="form-group col-md-12">
                             <label for="addEmail" class="sr-only">Email</label>
@@ -259,7 +259,7 @@
 
 <!-- View Customer Modal -->
 <div class="modal fade" id="viewCustomer">
-    <<<<<<< HEAD <div class="modal-dialog modal-l">
+    <div class="modal-dialog modal-l">
         <div class="modal-content p-2">
             <!-- Modal Header -->
             <div class="modal-header text-left">
@@ -344,94 +344,6 @@
                     <div class="form-row ml-3 statusRadio">
                         <div class="form-check-inline">
                             <label class="form-check-label radio-container">
-=======
-  <div class="modal-dialog modal-l">
-    <div class="modal-content p-2">
-      <!-- Modal Header -->
-      <div class="modal-header text-left">
-        <h3 class="modal-title">View Customer</h3>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <!-- Modal body -->
-      <div class="modal-body">
-        <!-- View Customer Form -->
-        <form id="viewCustomerForm" enctype="multipart/form-data" name="viewCustomerForm" action ="" method="POST" class="needs-validation" aria-autocomplete="off" autocomplete="off">
-          {% csrf_token %}
-          <!-- Profile pic -->
-          <h6>Profile Picture</h6>
-          <div class="form-row ml-1">
-            <div class="col-6">
-              <img id="thumbnail" src="{% static 'img/profile_default.png' %}" alt="" class="img-thumbnail mb-2"
-                width="100" height="100">
-            </div>
-            <div class="form-group">
-              <label for="picture" class="sr-only">Profile picture</label>
-                            <input type="file" accept="image/*" name="profile_picture" onchange="uploadImg(this);" class="form-control-file ml-1" id="picture">
-                        </div>
-                    </div>
-                    <!-- Email and Full name -->
-                    <h6>Email & Name</h6>
-                    <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label for="firstName" class="sr-only">First</label>
-                            <input type="text" class="form-control" id="firstName" name="firstname" placeholder="First Name" minlength="2" maxlength="10" required>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="middleName" class="sr-only">Middle</label>
-                            <input type="text" class="form-control" id="middleName" name="middlename" placeholder="Middle name" minlength="2" maxlength="10">
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="lastName" class="sr-only">Last</label>
-                            <input type="text" class="form-control" id="lastName" name="lastname" placeholder="Last Name" minlength="2" maxlength="10" required>
-                        </div>
-                        <div class="form-group col-md-12">
-                            <label for="email" class="sr-only">Last</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Email" maxlength="100" required>
-                            <div class="invalid-feedback">Email already exists.</div>
-                        </div>
-                    </div>
-                    <!-- Address -->
-                    <h6>Address</h6>
-                    <div class="form-row">
-                        <div class="form-group col-md-8">
-                            <label for="street" class="sr-only">Street</label>
-                            <input type="text" class="form-control" id="street" name="street" placeholder="123 Main Street" maxlength="100">
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="brgy" class="sr-only">Barangay</label>
-                            <input type="text" class="form-control" id="brgy" name="brgy" placeholder="Barangay" maxlength="100">
-                        </div>
-                        <div class="form-group col-md-7">
-                            <label for="city" class="sr-only">City</label>
-                            <input type="text" class="form-control" id="city" name="city" placeholder="City" maxlength="100">
-                        </div>
-                        <div class="form-group col-md-5">
-                            <label for="state" class="sr-only">State</label>
-                            <input type="text" class="form-control" id="state" name="state" placeholder="State" maxlength="50">
-                        </div>
-                        <div class="form-group col-md-9">
-                            <label for="country" class="sr-only">Country</label>
-                            <input type="text" class="form-control" id="country" name="country" placeholder="country" maxlength="100">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label for="zip" class="sr-only">Zip</label>
-                            <input type="text" class="form-control" id="zip" name="zip" placeholder="Zip" maxlength="20">
-                        </div>
-                    </div>
-                    <!-- Birthdate -->
-                    <h6>Birthdate</h6>
-                    <div class="form-row">
-                        <div class="form-group col-md-12">
-                            <label for="bdate" class="sr-only">Birthdate</label>
-                            <input type="date" class="form-control" id="bdate" name="birthdate">
-                        </div>
-                    </div>
-                    <!-- Status -->
-                    <h6>Status</h6>
-                    <div class="form-row ml-3 statusRadio">
-                        <div class="form-check-inline">
-                            <label class="form-check-label radio-container">
->>>>>>> 3ddac85227e9359c6b6f53061ced61f530ce5fd6
                 Single
                 <input type="radio" class="form-check-input" name="status" value="Single">
                 <span class="checkmark"></span>
@@ -503,7 +415,7 @@
                 </form>
             </div>
         </div>
-</div>
+    </div>
 </div>
 <!-- Delete Modal -->
 <div class="modal fade" id="deleteCustomer">
