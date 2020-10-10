@@ -25,4 +25,5 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('customer.urls',namespace = 'customer')),
+    path('orders', include('order.urls',namespace = 'order')),
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT) #for saving images
