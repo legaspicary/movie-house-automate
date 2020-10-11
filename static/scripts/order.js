@@ -9,16 +9,16 @@
 function loadCustomers(id, customers) {
     for (var i = 0; i < customers.length; i++) {
         $('#' + id).append($("<option></option>")
-        .attr("value", customers[i]['id'])
-        .text(customers[i]['firstname']+' '+customers[i]['lastname']));
+            .attr("value", customers[i]['id'])
+            .text(customers[i]['firstname'] + ' ' + customers[i]['lastname']));
     }
 }
 
 function loadDvds(id, dvds) {
     for (var i = 0; i < dvds.length; i++) {
         $('#' + id).append($("<option></option>")
-        .attr("value", dvds[i]['sku'])
-        .text(dvds[i]['title']));
+            .attr("value", dvds[i]['sku'])
+            .text(dvds[i]['title']));
     }
 }
 
@@ -26,12 +26,13 @@ function serverLoadCustomers() {
     $.ajax({
         url: '',
         type: 'get',
-        data: {'action':'get_customers'},
-        success: function(response){
+        data: { 'action': 'get_customers' },
+        success: function(response) {
             customers = response.data;
-            loadCustomers('customer-select',customers);
+            loadCustomers('customer-select', customers);
+            console.log("serverLoadCustomers success");
         },
-        error: function(response){
+        error: function(response) {
             console.log("Error in retrieving customer list")
         }
     });
@@ -41,12 +42,13 @@ function serverLoadDvds() {
     $.ajax({
         url: '',
         type: 'get',
-        data: {'action':'get_dvds'},
-        success: function(response){
+        data: { 'action': 'get_dvds' },
+        success: function(response) {
             dvds = response.data;
-            loadDvds('dvd-select',dvds);
+            loadDvds('dvd-select', dvds);
+            console.log("serverLoadDvds success");
         },
-        error: function(response){
+        error: function(response) {
             console.log("Error in retrieving dvd list")
         }
     });
@@ -55,9 +57,9 @@ function serverLoadDvds() {
 //****************************** ORDER *************************************
 let order_table = null;
 let data = null;
-let deleteCustomerID = 1;
+let deleteOrderID = 1;
 let customers = null;
-let dvds = null; 
+let dvds = null;
 let selectedDvdPrice = 0;
 
 function loadOrderTable() {
@@ -97,16 +99,16 @@ function loadOrderTable() {
             >`,
         columnDefs: [
             //removes the sort buttons in the buttons column
-            { orderable: false, "targets": 4 },
+            { orderable: false, "targets": 5 },
             //Adds View Delete buttons to every row in the datatable
             {
-                targets: 4,
+                targets: 5,
                 data: null,
                 defaultContent: `<div class="button-container">
-                        <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-view" data-toggle="modal" data-target="#viewCustomer" onclick="viewCustomer(this)">
+                        <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-view" data-toggle="modal" data-target="#viewOrder" onclick="viewOrder(this)">
                             <i class="far fa-eye"></i>
                         </button>
-                        <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-delete" data-toggle="modal" data-target="#deleteCustomer" onclick="deleteCustomer(this)">
+                        <button type="button" class="btn btn-sm mr-2 mb-2 w-auto vud vud-delete" data-toggle="modal" data-target="#deleteOrder" onclick="deleteOrder(this)">
                             <i class="far fa-trash-alt"></i>
                         </button>
                     </div>`
@@ -123,7 +125,8 @@ function loadOrderTable() {
             { "data": 'date_rented' },
             { "data": 'dvd_title' },
             { "data": 'customer_name' },
-            { "data": 'no_of_items'},
+            { "data": 'no_of_items' },
+            { "data": 'total_price' },
         ],
         //Adds data-id attribute to each row
         createdRow: function(row, data, dataIndex) {
@@ -151,8 +154,8 @@ function loadOrderTable() {
             });
         },
 
-		}
-		console.log('LOADED');
+    }
+    console.log('LOADED');
     let table = $('#orderTable').DataTable(initialTableSettings);
     //passing it to order_table, so that it can be used in loadInitializers function
     order_table = table;
@@ -184,6 +187,7 @@ function loadOrderTable() {
         });
     }
 }
+
 function reloadTable(data) {
     //order_table is global variable
     order_table.clear().draw();
@@ -191,29 +195,29 @@ function reloadTable(data) {
     order_table.columns.adjust().draw();
 }
 // Successfully adding a customer
-let addSuccess = function (response,form) {
-    //update data, a global variable, to get most recent entries
-    data = response.data;
-    reloadTable(data);
-    //resets the input form
-    form.reset();
-    //----------------------------------------------------------------------------------------
-    $('#addCustomer').modal('toggle');
-}
-// Add invalid to input to show validation error
-let no_stocks = function(response,stocks_input){
+let addSuccess = function(response, form) {
+        //update data, a global variable, to get most recent entries
+        data = response.data;
+        reloadTable(data);
+        //resets the input form
+        form.reset();
+        //----------------------------------------------------------------------------------------
+        $('#addOrder').modal('toggle');
+    }
+    // Add invalid to input to show validation error
+let no_stocks = function(response, stocks_input) {
     if (response.responseJSON.stocks_message == 'unavailable') {
         stocks_input.classList.add('is-invalid');
     }
 }
-let createOrderListener = function(csrf_token,form){
-    return function () {
+let createOrderListener = function(csrf_token, form) {
+    return function() {
         //----------------------------------------------------------------------------------------
         let number_of_items_input = document.getElementById('numberOfItems');
         number_of_items_input.classList.remove('is-invalid');
-        if(form.checkValidity()){
-            let formData = new FormData(form);//.append('action','add');
-            formData.append('operation','create');
+        if (form.checkValidity()) {
+            let formData = new FormData(form); //.append('action','add');
+            formData.append('operation', 'create');
             $.ajax({
                 url: '',
                 type: 'post',
@@ -226,59 +230,69 @@ let createOrderListener = function(csrf_token,form){
                 contentType: false,
                 processData: false,
                 //when successful, change the data in table with new data from server
-                success: function(response){
-                    addSuccess(response,form)
+                success: function(response) {
+                    addSuccess(response, form)
                 },
-                error: function(response){ 
-                    no_stocks(response,number_of_items_input);
+                error: function(response) {
+                    no_stocks(response, number_of_items_input);
                 }
             });
         }
     }
 }
-// let deleteSuccess = function (response,form) {
-//     //update data, a global variable, to get most recent entries
-//     data = response.data;
-//     reloadTable(data);
-//     //resets the input form
-    
-//     //should be replaced with button to remove picture -->> document.getElementById('addThumbnail').setAttribute("src","/static/img/profile_default.png");
-// 		form.reset();
-// 		///------------------------------------------------------
-//     $('#deleteCustomer').modal('toggle');
-// }
-// let deleteCustomerListener = function (csrf_token,form) {
-//     return function () {
-//         let formData = new FormData(form);//.append('id',viewedCustomerID);//.append('action','add');
-//         formData.append('operation','delete');
-//         formData.append('id',viewedCustomerID);
-//         formData.append('csrfmiddlewaretoken',csrf_token);
-//         $.ajax({
-//             url: '',
-//             type: 'post',
-//             //data to be passed to django view
-//             data: formData,
-//             contentType: false,
-//             processData: false,
-//             //when successful, change the data in table with new data from server
-//             success: function(response){
-// 							///------------------------------------------------------
-//                 deleteSuccess(response,form);
-//             },
-//             error: function(response){
-//                 console.log('Delete failed');
-//             }
-//         });
-//     }
-// }
-// function deleteCustomer(button){
-//     //get id
-//     deleteCustomerID = button.parentNode.parentNode.parentNode.getAttribute("data-id");
-//     console.log('Delete ID is '+ deleteCustomerID);
-// }
-function loadSelectTags(){
+let deleteSuccess = function(response, form) {
+    //update data, a global variable, to get most recent entries
+    data = response.data;
+    reloadTable(data);
+    //resets the input form
+
+    //should be replaced with button to remove picture -->> document.getElementById('addThumbnail').setAttribute("src","/static/img/profile_default.png");
+    // form.reset();
+    ///------------------------------------------------------
+    $('#deleteOrder').modal('toggle');
+}
+let deleteDvdForm = document.getElementById('deleteOrderForm');
+let deleteOrderListener = function(csrf_token) {
+    return function() {
+        console.log("Deleting..");
+        let formData = new FormData(deleteDvdForm); //.append('id',viewedCustomerID);//.append('action','add');
+        formData.append('operation', 'delete');
+        formData.append('id', deleteOrderID);
+        // formData.append('csrfmiddlewaretoken', csrf_token);
+        formData.append('csrfmiddlewaretoken', $('meta[name="csrf-token"]').attr('content'))
+        $.ajax({
+            url: '',
+            type: 'post',
+            //data to be passed to django view
+            data: formData,
+            contentType: false,
+            processData: false,
+            //when successful, change the data in table with new data from server
+            success: function(response) {
+                ///------------------------------------------------------
+                deleteSuccess(response);
+                console.log("Delete Success");
+            },
+            error: function(response) {
+                console.log('Delete failed');
+            }
+        });
+    }
+}
+
+function deleteOrder(button) {
+    //get id
+    deleteOrderID = button.parentNode.parentNode.parentNode.getAttribute("data-id");
+    console.log('Delete ID is ' + deleteOrderID);
+
+    let deleteorder_id = document.getElementById('order_id');
+    deleteorder_id.value = deleteOrderID;
+}
+
+function loadSelectTags() {
+    console.log("load seelect tag")
     $('#numberOfItems').change(function() {
-        $("#total-price").val(selectedDvdPrice*$('#numberOfItems').val());
+        $("#total-price").val(selectedDvdPrice * $('#numberOfItems').val());
     });
     $('#customer-select').change(function() {
         let selected = $("#customer-select option:selected").val();
@@ -303,7 +317,7 @@ function loadSelectTags(){
                 $("#director").val(dvds[i]['director']);
                 $("#price").val(dvds[i]['price']);
                 selectedDvdPrice = dvds[i]['price'];
-                $("#total-price").val(selectedDvdPrice*$('#numberOfItems').val());
+                $("#total-price").val(selectedDvdPrice * $('#numberOfItems').val());
                 break;
             }
         }
@@ -313,24 +327,24 @@ function loadSelectTags(){
 function initializeOrderListeners(csrf_token) {
     //ajax form for add customer
     let addOrderForm = document.getElementById('addOrderForm');
-		addOrderForm.addEventListener('submit',function(e){e.preventDefault();});
-		//------------------------------------------------------------------------------
-    $('#addOrderBtn').click(createOrderListener(csrf_token,addOrderForm));
-    // deleteForm.addEventListener('submit',function(e){e.preventDefault();});
-    // $('#deleteCustomerBtn').click(deleteCustomerListener(csrf_token,updateForm));
+    let deleteForm = document.getElementById('deleteOrderForm');
+    addOrderForm.addEventListener('submit', function(e) { e.preventDefault(); });
+    deleteForm.addEventListener('submit', function(e) { e.preventDefault(); });
+    //------------------------------------------------------------------------------
+    $('#addOrderBtn').click(createOrderListener(csrf_token, addOrderForm));
+
+    $('#deleteOrderBtn').click(deleteOrderListener(csrf_token));
 
     loadSelectTags();
 
-    $('#addOrderModalBtn').click(function(){
+    $('#addOrderModalBtn').click(function() {
         addOrderForm.reset();
-        $('#customer-select').text('');
         $('#customer-select').append('<option selected="true" disabled="disabled">Choose Customer</option>');
-        $('#dvd-select').text('');
         $('#dvd-select').append('<option selected="true" disabled="disabled">Choose Dvd</option>');
         serverLoadCustomers();
         serverLoadDvds();
     });
-    
+
 }
 
 // ******************************        ORDER END       **************************
