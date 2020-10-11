@@ -20,6 +20,11 @@ def format_dvd(orders):
         dvd = DVD.objects.get(sku=order['dvd_id'])
         order['dvd_title'] = dvd.title
 
+def get_customers():
+    customers = Customer.objects.filter(is_deleted=False)
+    customer_dict = customers.values()
+    return list(customer_dict)
+
 def get_orders():
     orders = Order.objects.filter(is_deleted=False)
     orders_dict = orders.values()
@@ -33,6 +38,11 @@ class OrderView(View):
         print(get_orders())
         if request.is_ajax():
             arr = get_orders()
+            if request.GET.get('action') == 'get_customers':
+                print('GETTING CUSTOMERS')
+                arr = get_customers()
+            if request.GET.get('action') == 'get_dvds':
+                arr = list(DVD.objects.filter(is_deleted=False).values())
             json = {'data': arr}
             return JsonResponse(json)
         return render(request, 'order/orders.html')
@@ -46,15 +56,19 @@ class OrderView(View):
                 dvd_id = request.POST.get('dvd_id')
                 dvd_instance = DVD.objects.get(sku=dvd_id)
                 number_of_items = request.POST.get('no_of_items')
-                if dvd_instance.number_of_items < int(number_of_items):
+                print(dvd_instance.number_of_items)
+                total_price = float(number_of_items)*float(dvd_instance.price)
+                if dvd_instance.number_of_items < int(number_of_items) or dvd_instance.number_of_items <= 0:
                     is_stocks_available = False
                     stocks_message = 'unavailable'
                 # Check validity of form
                 if is_stocks_available:
                     customer_id = request.POST.get('customer_id')
                     customer_instance = Customer.objects.get(id=customer_id)
-                    Order.objects.create(customer=customer_instance,dvd=dvd_instance,no_of_items = number_of_items)
+                    Order.objects.create(customer=customer_instance,dvd=dvd_instance,no_of_items = number_of_items,total_price=total_price)
                     status = 200
+                    dvd_instance.number_of_items -= int(number_of_items)
+                    dvd_instance.save()
                     print('order saved')
             # elif request.POST.get('operation') == 'update':
             #     customer = Customer.objects.get(id=request.POST.get('id'))

@@ -4,11 +4,61 @@
  */
 
 'use strict'
+//**************************** HELPER FUNCTIONS ***********************************
 
-//******************************        CUSTOMER by Legaspi C        **************************
+function loadCustomers(id, customers) {
+    for (var i = 0; i < customers.length; i++) {
+        $('#' + id).append($("<option></option>")
+        .attr("value", customers[i]['id'])
+        .text(customers[i]['firstname']+' '+customers[i]['lastname']));
+    }
+}
+
+function loadDvds(id, dvds) {
+    for (var i = 0; i < dvds.length; i++) {
+        $('#' + id).append($("<option></option>")
+        .attr("value", dvds[i]['sku'])
+        .text(dvds[i]['title']));
+    }
+}
+
+function serverLoadCustomers() {
+    $.ajax({
+        url: '',
+        type: 'get',
+        data: {'action':'get_customers'},
+        success: function(response){
+            customers = response.data;
+            loadCustomers('customer-select',customers);
+        },
+        error: function(response){
+            console.log("Error in retrieving customer list")
+        }
+    });
+}
+
+function serverLoadDvds() {
+    $.ajax({
+        url: '',
+        type: 'get',
+        data: {'action':'get_dvds'},
+        success: function(response){
+            dvds = response.data;
+            loadDvds('dvd-select',dvds);
+        },
+        error: function(response){
+            console.log("Error in retrieving dvd list")
+        }
+    });
+}
+
+//****************************** ORDER *************************************
 let order_table = null;
-//data variable to be used for view listener
 let data = null;
+let deleteCustomerID = 1;
+let customers = null;
+let dvds = null; 
+let selectedDvdPrice = 0;
 
 function loadOrderTable() {
     //to be passed to DataTable constructor
@@ -101,7 +151,8 @@ function loadOrderTable() {
             });
         },
 
-    }
+		}
+		console.log('LOADED');
     let table = $('#orderTable').DataTable(initialTableSettings);
     //passing it to order_table, so that it can be used in loadInitializers function
     order_table = table;
@@ -145,21 +196,20 @@ let addSuccess = function (response,form) {
     data = response.data;
     reloadTable(data);
     //resets the input form
-		form.reset();
-		//----------------------------------------------------------------------------------------
+    form.reset();
+    //----------------------------------------------------------------------------------------
     $('#addCustomer').modal('toggle');
 }
 // Add invalid to input to show validation error
 let no_stocks = function(response,stocks_input){
-    if (response.responseJSON.stock_message == 'unavailable') {
-			stocks_input.classList.add('is-invalid');
+    if (response.responseJSON.stocks_message == 'unavailable') {
+        stocks_input.classList.add('is-invalid');
     }
 }
-//adding customer
 let createOrderListener = function(csrf_token,form){
     return function () {
-				//----------------------------------------------------------------------------------------
-        let number_of_items_input = document.getElementById('addEmail');
+        //----------------------------------------------------------------------------------------
+        let number_of_items_input = document.getElementById('numberOfItems');
         number_of_items_input.classList.remove('is-invalid');
         if(form.checkValidity()){
             let formData = new FormData(form);//.append('action','add');
@@ -179,58 +229,13 @@ let createOrderListener = function(csrf_token,form){
                 success: function(response){
                     addSuccess(response,form)
                 },
-                error: function(response){
-									//-------------------------------------------------------
-									no_stocks(response,number_of_items_input);
+                error: function(response){ 
+                    no_stocks(response,number_of_items_input);
                 }
             });
         }
     }
 }
-//Update success
-// let updateSucess = function (response,form) {
-//     //update data, a global variable, to get most recent entries
-//     data = response.data;
-//     reloadTable(data);
-//     //resets the input form
-    
-//     //should be replaced with button to remove picture -->> document.getElementById('addThumbnail').setAttribute("src","/static/img/profile_default.png");
-// 		form.reset();
-// 		//------------------------------------------------------------------------------------------------------------
-//     $('#viewCustomer').modal('toggle');
-// }
-//updating customer
-//------------------------------------------------------------------------
-// let updateCustomerListener = function (csrf_token,form) {
-//     return function () {
-//         let email = document.getElementById('email');
-//         email.classList.remove('is-invalid');
-//         if(form.checkValidity()){
-//             let formData = new FormData(form);//.append('id',viewedCustomerID);//.append('action','add');
-//             formData.append('operation','update');
-//             formData.append('id',viewedCustomerID);
-//             formData.append('csrfmiddlewaretoken',csrf_token);
-//             $.ajax({
-//                 url: '',
-//                 type: 'post',
-//                 //data to be passed to django view
-//                 data: formData,
-//                 contentType: false,
-//                 processData: false,
-//                 //when successful, change the data in table with new data from server
-//                 success: function(response){
-//                     //console.log('SUBMIT OK');
-//                     updateSucess(response,form);
-//                 },
-//                 error: function(response){
-//                     //console.log('SUBMIT NOT OK');
-//                     emailExists(response,email);
-//                 }
-//             });
-//         }
-//     }
-// }
-
 // let deleteSuccess = function (response,form) {
 //     //update data, a global variable, to get most recent entries
 //     data = response.data;
@@ -242,7 +247,6 @@ let createOrderListener = function(csrf_token,form){
 // 		///------------------------------------------------------
 //     $('#deleteCustomer').modal('toggle');
 // }
-//updating customer
 // let deleteCustomerListener = function (csrf_token,form) {
 //     return function () {
 //         let formData = new FormData(form);//.append('id',viewedCustomerID);//.append('action','add');
@@ -267,66 +271,66 @@ let createOrderListener = function(csrf_token,form){
 //         });
 //     }
 // }
-//Listeners unrelated to table are placed here
-//Variables taken from Django follows python naming convention in this js file (e.g. csrf_token instead of csrfToken)
-function initializeCustomerListeners(csrf_token) {
+// function deleteCustomer(button){
+//     //get id
+//     deleteCustomerID = button.parentNode.parentNode.parentNode.getAttribute("data-id");
+//     console.log('Delete ID is '+ deleteCustomerID);
+// }
+function loadSelectTags(){
+    $('#numberOfItems').change(function() {
+        $("#total-price").val(selectedDvdPrice*$('#numberOfItems').val());
+    });
+    $('#customer-select').change(function() {
+        let selected = $("#customer-select option:selected").val();
+        for (var i = 0; i < customers.length; i++) {
+            if (selected == customers[i]['id']) {
+                $("#customerID").val(customers[i]['id']);
+                $("#firstname").val(customers[i]['firstname']);
+                $("#lastname").val(customers[i]['lastname']);
+                $("#email").val(customers[i]['email']);
+                break;
+            }
+        }
+    });
+    $('#dvd-select').change(function() {
+        let selected = $("#dvd-select option:selected").val();
+        for (var i = 0; i < dvds.length; i++) {
+            if (selected == dvds[i]['sku']) {
+                $("#dvdID").val(dvds[i]['sku']);
+                $("#title").val(dvds[i]['title']);
+                $("#releaseDate").val(dvds[i]['release_date']);
+                $("#stocks").val(dvds[i]['number_of_items']);
+                $("#director").val(dvds[i]['director']);
+                $("#price").val(dvds[i]['price']);
+                selectedDvdPrice = dvds[i]['price'];
+                $("#total-price").val(selectedDvdPrice*$('#numberOfItems').val());
+                break;
+            }
+        }
+    });
+}
+
+function initializeOrderListeners(csrf_token) {
     //ajax form for add customer
     let addOrderForm = document.getElementById('addOrderForm');
 		addOrderForm.addEventListener('submit',function(e){e.preventDefault();});
 		//------------------------------------------------------------------------------
-    $('#addOrderBtn').click(createOrderListener(csrf_token,form));
-    // let updateForm = document.getElementById('viewCustomerForm');
-    // updateForm.addEventListener('submit',function(e){e.preventDefault();});
-    // $('#updateCustomerBtn').click(updateCustomerListener(csrf_token,updateForm));
-    // let deleteForm = document.getElementById('deleteCustomerForm');
+    $('#addOrderBtn').click(createOrderListener(csrf_token,addOrderForm));
     // deleteForm.addEventListener('submit',function(e){e.preventDefault();});
     // $('#deleteCustomerBtn').click(deleteCustomerListener(csrf_token,updateForm));
+
+    loadSelectTags();
+
+    $('#addOrderModalBtn').click(function(){
+        addOrderForm.reset();
+        $('#customer-select').text('');
+        $('#customer-select').append('<option selected="true" disabled="disabled">Choose Customer</option>');
+        $('#dvd-select').text('');
+        $('#dvd-select').append('<option selected="true" disabled="disabled">Choose Dvd</option>');
+        serverLoadCustomers();
+        serverLoadDvds();
+    });
+    
 }
-// let viewedCustomerID = 1;
-// //for the view button
-// function viewCustomer(button){
-//     //get id
-//     viewedCustomerID = button.parentNode.parentNode.parentNode.getAttribute("data-id");
-//     console.log('ID is '+ viewedCustomerID);
-//     let customer = null;
-//     for(let i = 0; i < data.length; i++){
-//         //data here is the latest json from ajax call
-//         if(data[i].id == viewedCustomerID){
-//             customer = data[i];
-//             //console.log('found you! '+ JSON.stringify(customer));
-//             break;
-//         }
-//     }
-//     //get input elements
-//     let inputElements = document.getElementById('viewCustomerForm').querySelectorAll("input");
-//     //for looping and assigning values rather than manually assigning values to each input
-//     let inputName;
-//     for (let i = 0; i < inputElements.length; i++) {
-//         inputName = inputElements[i].getAttribute("name");
-//         //for radio buttons
-//         if (inputName == 'status' || inputName == 'gender') {
-//             if (inputElements[i].value == customer[inputName]) {
-//                 //console.log('Checking '+ customer[inputName]);
-//                 inputElements[i].checked = true;
-//             }
-//         }
-//         //for date types
-//         else if (inputName == 'birthdate' && customer[inputName] != null) {
-//             inputElements[i].value = new Date(customer[inputName]).toISOString().slice(0, 10);
-//         }
-//         //for picture
-//         else if (inputName == 'profile_picture') {
-//             //console.log('profile picture is:'+ customer[inputName])
-//             document.getElementById('thumbnail').setAttribute("src",customer[inputName]);
-//         } else {
-//             //console.log(inputName);
-//             inputElements[i].value = customer[inputName];
-//         }
-//     }
-// }
-// function deleteCustomer(button){
-//     //get id
-//     viewedCustomerID = button.parentNode.parentNode.parentNode.getAttribute("data-id");
-//     console.log('Delete ID is '+ viewedCustomerID);
-// }
+
 // ******************************        ORDER END       **************************
