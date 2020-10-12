@@ -294,6 +294,7 @@ function loadSelectTags() {
     $('#numberOfItems').change(function() {
         $("#total-price").val(selectedDvdPrice * $('#numberOfItems').val());
     });
+    
     $('#customer-select').change(function() {
         let selected = $("#customer-select option:selected").val();
         for (var i = 0; i < customers.length; i++) {
@@ -332,12 +333,13 @@ function initializeOrderListeners(csrf_token) {
     deleteForm.addEventListener('submit', function(e) { e.preventDefault(); });
     //------------------------------------------------------------------------------
     $('#addOrderBtn').click(createOrderListener(csrf_token, addOrderForm));
-
     $('#deleteOrderBtn').click(deleteOrderListener(csrf_token));
-
+    
     loadSelectTags();
 
     $('#addOrderModalBtn').click(function() {
+        $('#customer-select').text('')
+        $('#dvd-select').html('')
         addOrderForm.reset();
         $('#customer-select').append('<option selected="true" disabled="disabled">Choose Customer</option>');
         $('#dvd-select').append('<option selected="true" disabled="disabled">Choose Dvd</option>');
