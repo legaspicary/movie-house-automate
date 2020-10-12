@@ -91,6 +91,9 @@ class OrderView(View):
             elif request.POST.get('operation') == 'delete':
                 order = Order.objects.get(id=request.POST.get('order_id'))
                 order.is_deleted = True
+                dvd_instance = DVD.objects.get(sku=order.dvd.sku)
+                dvd_instance.number_of_items += order.no_of_items
+                dvd_instance.save()
                 order.save()
                 status = 200
                 # run permanent_delete_customers() to also remove customer from db
