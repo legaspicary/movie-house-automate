@@ -1,0 +1,45 @@
+table.table-custom-bg {
+    background-color: rgba($color: $first-color, $alpha: .9);
+    color: $text-color;
+    tbody{
+        tr:hover{
+            color: white;
+            background-color: $first-color;
+        }
+    }
+    thead{
+        color: $fourth-color;
+    }
+    .button-container {
+        display: flex;
+        flex-direction: row;
+    }
+
+    th, td {
+        border-top: none;
+    }
+
+    // override the form-control in table footer
+    .form-control{
+        height: 2rem;
+        background-color: #f3f3f3;
+        padding-top: 0.2rem;
+    }
+
+    .vud{
+        color: $text-color;
+        border: none;
+    }
+
+    .vud-view{
+        background-color: rgba($color: $primary, $alpha: .7);
+    }
+
+    .vud-update{
+        background-color: rgba($color: $success, $alpha: .7);
+    }
+
+    .vud-delete{
+        background-color: rgba($color: $danger, $alpha: .7);
+    }
+}

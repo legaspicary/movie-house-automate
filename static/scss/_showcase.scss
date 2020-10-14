@@ -1,0 +1,26 @@
+.showcase {
+  background: $first-color;
+  .showcase-text {
+    padding: 3rem;
+    color: $text-color;
+  }
+  .showcase-img {
+    min-height: 30rem;
+    background-size: cover;
+    
+  }
+  @media (min-width: 768px) {
+    .showcase-text {
+      padding: 7rem;
+    }
+  }
+  .overlay{
+    position: absolute;
+    background-color: $first-color;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    opacity: 1;
+  }
+}

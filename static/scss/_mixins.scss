@@ -1,0 +1,14 @@
+@import url(http://fonts.googleapis.com/css?family=Ubuntu:400italic,700italic,400,700bold);
+// Mixins
+// Background Cover Mixin
+@mixin background-cover {
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+// Font Mixins
+@mixin body-font {
+  font-family: 'Ubuntu', sans-serif;
+}

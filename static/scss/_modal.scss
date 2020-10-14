@@ -1,0 +1,132 @@
+
+
+
+
+.modal {
+    background-color: $modal-color;
+    .modal-content {
+        @include body-font();
+        background-color: $first-color;
+        color: $text-color;
+        label { color: $fourth-color}
+        .modal-header {
+            border-bottom: 5px solid $border-bottom-color;
+            .close{
+                color: white;
+                text-shadow: 0 1px 0px white;
+            }
+            button {
+                &:hover {
+                    color: $fourth-color;
+                }
+                &:active {
+                    color: $fourth-color;
+                }
+                &:focus {
+                    color: $fourth-color;
+                    outline-color: none;
+                }
+                &:target {
+                    outline-color: none;
+                }
+            }
+            .modal-title {
+                color: $fourth-color;
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+                font-weight: bold;
+            }
+        }
+        form {
+            h6 {
+                padding-top: 1em;
+                color: $fourth-color;
+                font-weight: bold;
+            }
+            .container {
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                margin: 0;
+                input {
+                    margin: 0;
+                    cursor: pointer;
+                }
+                .checkmark {
+                    &::after{
+                        background: yellow;
+                    }
+                }
+            }
+            input {
+                border: none;
+                border-radius: 0px;
+                background-color: transparent;
+                border-bottom: 3px solid $input-border-color;
+                color: white;
+                &:focus{
+                    border: 2px solid $fourth-color;
+                }
+                &::placeholder{
+                    color: $placeholder-color;
+                }
+            }
+            .radio-container {
+                display: block;
+                position: relative;
+                padding-left: 25px;
+                cursor: pointer;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                color: $placeholder-color;
+                input {
+                    position: absolute;
+                    opacity: 0;
+                    cursor: pointer;
+                }
+                .checkmark {
+                    position: absolute;
+                    top: 4.5px;
+                    left: 0;
+                    height: 15px;
+                    width: 15px;
+                    background-color: $border-bottom-color;
+                    border-radius: 50%;
+                    &::after {
+                        top: 9px;
+                        left: 9px;
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 50%;
+                        background: white;
+                    }
+                }
+                &:hover input ~ .checkmark {
+                    background-color: $third-color;
+                }
+                input:checked ~ .checkmark{
+                    background-color: $fourth-color;
+                }
+                &::after {
+                    content: "";
+                    position: absolute;
+                    display: none;
+                }
+                input:checked ~ .checkmark:after {
+                    display: block;
+                }
+            }
+            input[type=date]::-webkit-calendar-picker-indicator {
+                filter: invert(1);
+            }
+        }
+        .about-contact-us{
+            text-justify: inter-word;
+            text-align: justify;
+            margin: 10px;
+        }
+    }
+}

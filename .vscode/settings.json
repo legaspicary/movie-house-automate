@@ -1,0 +1,7 @@
+{
+    "liveServer.settings.port": 5501,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": false,
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
+}
