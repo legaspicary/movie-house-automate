@@ -173,19 +173,19 @@ function loadOrderTable() {
             //console.log('THE DATA IS WITHIN RANGE');
             return true;
         }
-        //adds the date range filter to the data table
-        $.fn.dataTable.ext.search.push(dateRangeFunc);
-        //redraws the table so that the filter will be in effect
-        $('#min, #max').change(function() {
-            table.draw();
-        });
-        //resets the date range and table
-        $('#resetDateRange').click(function() {
-            $("input[type=date][name$=min]").val(new Date(0).toISOString().slice(0, 10));
-            $("input[type=date][name$=max]").val(new Date().toISOString().slice(0, 10));
-            table.draw();
-        });
     }
+    //adds the date range filter to the data table
+    $.fn.dataTable.ext.search.push(dateRangeFunc);
+    //redraws the table so that the filter will be in effect
+    $('#min, #max').change(function() {
+        table.draw();
+    });
+    //resets the date range and table
+    $('#resetDateRange').click(function() {
+        $("input[type=date][name$=min]").val(new Date(0).toISOString().slice(0, 10));
+        $("input[type=date][name$=max]").val(new Date().toISOString().slice(0, 10));
+        table.draw();
+    });
 }
 
 function reloadTable(data) {
