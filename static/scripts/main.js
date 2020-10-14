@@ -111,28 +111,29 @@ function loadCustomerTable() {
     //sets the maximum default value for the date range
     $("input[type=date][name$=max]").val(new Date().toISOString().slice(0, 10));
     //function for filtering data according to date range
+    
     let dateRangeFunc = function(settings, data, dataIndex) {
         let min = new Date($('#min').val()).getTime();
         let max = new Date($('#max').val()).getTime();
         let date = new Date(data[0]).getTime();
         //console.log('DATE IS FROM TIME is:' + date+'\nWhile min and max is:' +min+'<>'+max);
         if (min <= date && date <= max) {
-            //console.log('THE DATA IS WITHIN RANGE');
             return true;
         }
-        //adds the date range filter to the data table
-        $.fn.dataTable.ext.search.push(dateRangeFunc);
-        //redraws the table so that the filter will be in effect
-        $('#min, #max').change(function() {
-            table.draw();
-        });
-        //resets the date range and table
-        $('#resetDateRange').click(function() {
-            $("input[type=date][name$=min]").val(new Date(0).toISOString().slice(0, 10));
-            $("input[type=date][name$=max]").val(new Date().toISOString().slice(0, 10));
-            table.draw();
-        });
     }
+    //adds the date range filter to the data table
+    $.fn.dataTable.ext.search.push(dateRangeFunc);
+    //redraws the table so that the filter will be in effect
+    $('#min, #max').change(function() {
+        console.log("CHANGINIG");
+        table.draw();
+    });
+    //resets the date range and table
+    $('#resetDateRange').click(function() {
+        $("input[type=date][name$=min]").val(new Date(0).toISOString().slice(0, 10));
+        $("input[type=date][name$=max]").val(new Date().toISOString().slice(0, 10));
+        table.draw();
+    });
 }
 function reloadTable(data) {
     //customer_table is global variable
